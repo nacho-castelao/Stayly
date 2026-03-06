@@ -1,0 +1,174 @@
+body{
+    display: flex;
+}
+
+.left{
+    flex: 0.95;
+    padding: 80px 60px;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
+}   
+
+section{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.form-wrapper{
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    width: 90%;
+}
+
+.form-wrapper .form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form div{
+    display: flex;
+    flex-direction: column;
+}
+
+.form a{
+    border-radius: 12px;
+    border: 1px solid #e0e0e0;
+    text-decoration: none;
+    padding: 12px 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+.form svg{
+    position: relative;
+    bottom: 1px;
+}
+
+.form a span{
+    color: var(--grey-700);
+    
+}
+
+.left .left-title{
+    font-size: var(--font-size-h2);
+    font-family: "Poppins-Medium";
+}
+
+.left .left{
+    font-size: var(--font-size-body-large);
+}
+
+.right{
+    flex: 1.05;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    border-top-left-radius: 24px;
+    border-bottom-left-radius: 24px;
+}
+
+.login-page .right{
+    background-image:
+        linear-gradient(rgba(0,0,0,0.08), rgba(0,0,0,0.08)),
+        url('../img/login.jfif');
+
+    background-size: cover;
+    background-position: 50% 70%;
+}
+
+.register-page .right{
+    background-image:
+        linear-gradient(rgba(0,0,0,0.08), rgba(0,0,0,0.08)),
+        url('../img/register.jpg');
+}
+
+.right .welcome{
+    font-size: 32px;
+    color: var(--text-on-primary);
+    position: relative;
+    left: 229px;
+    top: 476px;
+    width: max-content;
+}
+
+.right span:last-child{
+    font-family: "Poppins-Light";
+    font-size: var(--font-size-body-small);
+    color: var(--text-on-primary);
+
+    position: relative;
+    left: 229px;
+    top: 489px;
+    width: max-content;
+}
+
+label{
+    font-size: var(--font-size-body-small);
+    font-family: "Poppins-SemiBold";
+    color: var(--text-secondary);
+}
+
+input{
+    border: 1px solid #E0DAD2;
+    background-color: #FFFCF8;
+    border-radius: 12px;
+    padding: 12px 16px;
+}
+
+input[type='submit']{
+    background-color: var(--primary-500);
+    color: var(--text-on-primary);
+}
+
+input[type='checkbox']{
+    /* border-radius: 12px; */
+    appearance: none;
+    -webkit-appearance: none;
+    border-radius: 4px;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    
+}
+
+input[type='checkbox']:checked {
+  background-color: var(--grey-550);
+} 
+
+input[type='checkbox']:checked::after {
+  content: "";
+  position: absolute;
+
+  width: 5px;
+  height: 9px;
+
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+
+  transform: rotate(45deg);
+  top: 1px;
+  left: 5px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+

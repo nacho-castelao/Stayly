@@ -1,0 +1,14 @@
+{
+    "name": "nacho/proyecto-airbnb",
+    "description": "Airbnb-like marketplace built with plain PHP MVC",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Nacho"
+        }
+    ],
+    "require": {
+        "google/apiclient": "^2.19",
+        "kint-php/kint": "^6.1"
+    }
+}

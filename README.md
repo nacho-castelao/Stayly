@@ -1,5 +1,11 @@
 Stayly
 
-Stayly is a property booking platform inspired by Airbnb where users can browse properties and complete bookings through a simple checkout flow.
+Booking platform project built with PHP using MVC architecture.
 
-The project focuses on clean UI/UX, authentication, and booking flow design.
+Tech stack:
+- PHP
+- MySQL
+- HTML
+- CSS
+- JavaScript
+

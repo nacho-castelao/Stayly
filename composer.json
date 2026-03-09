@@ -9,6 +9,7 @@
     ],
     "require": {
         "google/apiclient": "^2.19",
-        "kint-php/kint": "^6.1"
+        "kint-php/kint": "^6.1",
+        "vlucas/phpdotenv": "^5.6"
     }
 }

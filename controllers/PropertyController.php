@@ -3,7 +3,12 @@ require_once '../models/Property.php';
 require_once '../models/User.php';
 
 class PropertyController{
+    private $propertyModel;
 
+    public function __construct(){
+        $this->propertyModel = new Property();
+    }
+    
     public function index(){
 
     }
@@ -11,13 +16,12 @@ class PropertyController{
     public function showOne(){
         $id = $_GET['id'] ?? false;
 
-        $property = new Property();
-        $property->setId($id);
+        $this->propertyModel->setId($id);
 
-        $prop = $property->getOne();
-        $images = $property->getImages();
-        $amenities = $property->getAmenities();
-        $host = $property->getHostInfo();
+        $prop = $this->propertyModel->getOne();
+        $images = $this->propertyModel->getImages();
+        $amenities = $this->propertyModel->getAmenities();
+        $host = $this->propertyModel->getHostInfo();
         
         $user = new User();
         $user->setId($prop['host_id']);

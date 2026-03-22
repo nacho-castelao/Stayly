@@ -15,7 +15,7 @@
     </head>
     <body class="login-page">
         <section class="left">
-            <a href="<?= DEFAULT_URL."public" ?>">
+            <a href="<?= DEFAULT_URL ?>public">
                 <svg width="192" height="68" viewBox="0 0 192 68" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#clip0_153_260)">
                     <rect width="191.857" height="67.5714" fill="white"/>

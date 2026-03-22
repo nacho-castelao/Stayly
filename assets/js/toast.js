@@ -2,7 +2,6 @@ const toastContainer = document.querySelector("#toast-container");
 
 function showToast(type = "info", message = "") {
   if (!toastContainer) return;
-
   const toast = document.createElement("div");
   toast.classList.add("toast", `toast--${type}`);
 

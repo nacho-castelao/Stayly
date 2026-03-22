@@ -58,7 +58,6 @@ class UserController{
 
         if($user){
             $_SESSION['user_id'] = $user['id'];
-            $_SESSION['user_name'] = $user['name'];
             $_SESSION['user'] = $user;
 
             $_SESSION['toast'] = [

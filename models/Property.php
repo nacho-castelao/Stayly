@@ -264,9 +264,11 @@ class Property
         $rooms = $this->getRooms();
         $bathrooms = $this->getBathrooms();
         $type = $this->getType();
+        $lat = $this->getLatitude();
+        $lon = $this->getLongitude();
 
         $sql = "
-            INSERT INTO properties VALUES (NULL,:host_id,:title,:description,:city,:address,:price,:max_guests,:rooms,:bathrooms,NULL,'published',CURRENT_TIMESTAMP(),0,0,NULL,:type)
+            INSERT INTO properties VALUES (NULL,:host_id,:title,:description,:city,:address,:price,:max_guests,:rooms,:bathrooms,NULL,'published',CURRENT_TIMESTAMP(),:latitude,:longitude,NULL,:type)
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -278,6 +280,8 @@ class Property
             'address' => $address,
             'price' => $price,
             'max_guests' => $guests,
+            'latitude' => $lat,
+            'longitude' => $lon,
             'rooms' => $rooms,
             'bathrooms' => $bathrooms,
             'type' => $type

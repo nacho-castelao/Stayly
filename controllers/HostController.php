@@ -44,7 +44,7 @@ class HostController extends BaseController
                 $_SESSION['property']['type'] = $prop_type;
                 $_SESSION['property']['title'] = $_POST['title'];
             } elseif ($step === 3) {
-                if (!isset($_POST['country']) || !isset($_POST['city']) || !isset($_POST['address']) || !isset($_POST['postal'])) {
+                if (empty($_POST['country']) || empty($_POST['city']) || empty($_POST['address']) || empty($_POST['postal'])) {
                     $this->loadToast('warning', 'You must complete the form!');
 
                     header("Location: " . DEFAULT_URL . "public/Host/wizard?step=2");
@@ -55,11 +55,47 @@ class HostController extends BaseController
                 $city = $_POST['city'];
                 $address = $_POST['address'];
                 $zipcode = $_POST['postal'];
+                // 1. Build full address
+                $fullAddress = $address . ', ' . $city . ', ' . $zipcode . ', ' . $country;
 
+                // 2. Prepare Nominatim URL
+                $url = "https://nominatim.openstreetmap.org/search?format=json&q=" . urlencode($fullAddress);
+
+                // 3. Create context (IMPORTANT: Nominatim requires User-Agent)
+                $options = [
+                    "http" => [
+                        "header" => "User-Agent: Stayly/1.0 (Nacho project)\r\n"
+                    ]
+                ];
+
+                $context = stream_context_create($options);
+
+                // 4. Call API
+                $response = file_get_contents($url, false, $context);
+
+                // 5. Decode JSON
+                $data = json_decode($response, true);
+
+                // 6. Handle result
+                if (empty($data)) {
+                    $this->loadToast("warning", "We couldn’t find that address. Do not write the floor number.");
+
+                    header("Location: " . DEFAULT_URL . "public/Host/wizard?step=2");
+                    exit;
+                }
+
+                // 7. Extract coordinates (first result)
+                $lat = $data[0]['lat'];
+                $lon = $data[0]['lon'];
+                $displayName = $data[0]['display_name'];
+                
                 $_SESSION['property']['country'] = $country;
                 $_SESSION['property']['city'] = $city;
                 $_SESSION['property']['address'] = $address;
                 $_SESSION['property']['postal'] = $zipcode;
+                $_SESSION['property']['latitude'] = $lat;
+                $_SESSION['property']['longitude'] = $lon;
+                $_SESSION['property']['full_address'] = $displayName;
             } elseif ($step === 4) {
 
                 if ($_FILES['photos']['error'][0] !== 0) {
@@ -124,7 +160,8 @@ class HostController extends BaseController
                 $this->propertyModel->setType($_SESSION['property']['type']);
                 $this->propertyModel->setCity($_SESSION['property']['city']);
                 $this->propertyModel->setGuests($_SESSION['property']['guests']);
-
+                $this->propertyModel->setLongitude($_SESSION['property']['longitude']);
+                $this->propertyModel->setLatitude($_SESSION['property']['latitude']);
                 $this->propertyModel->insertOne();
                 $this->propertyModel->insertAmenities();
                 $this->propertyModel->insertImages();

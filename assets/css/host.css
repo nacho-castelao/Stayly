@@ -1,0 +1,135 @@
+span{
+    color: var(--text-secondary);
+}
+
+.host-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    gap: 150px;
+}
+
+.host-hero{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: var(--text-primary);
+    gap: 32px;
+}
+
+.host-hero div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 22px;
+}
+
+.host-hero div span{
+    font-size: 18px;
+    color: var(--text-secondary);
+}
+
+.host-container a{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: var(--primary-500);
+    color: var(--text-on-primary);
+    padding: 14px 28px;
+    height: 52px;
+    width: 162px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: box-shadow 300ms, background-color 300ms;
+    transform-origin: center;
+    backface-visibility: hidden;
+}
+
+.host-container a:hover{
+    background-color: var(--primary-800);
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+}
+
+.host-steps-wrapper{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.host-steps-wrapper h4{
+    font-family: "Poppins-SemiBold";
+    font-size: var(--font-size-body-large);
+    color: var(--text-primary);
+}
+
+.host-steps-wrapper h2{
+    font-family: "Poppins-SemiBold";
+}
+
+.host-steps-wrapper .desc{
+    width: 220px;
+    text-align: center;
+}
+
+.steps{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.steps div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    max-width: 400px;
+}
+
+.host-benefits{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 60px;
+    
+}
+
+.host-benefits div:first-child{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+}
+
+.host-benefits .cards-grid{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    column-gap: 62px;
+    row-gap: 80px;
+    width: 1200px;
+}
+
+.host-benefits .cards-grid div{
+    width: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    text-align: center;
+}
+
+.host-benefits .cards-grid div h4{
+    display: inline;
+    
+}
+
+.final{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+}

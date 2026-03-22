@@ -1,0 +1,952 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --pink: #f4396d;
+  --pink-light: #fce7ed;
+  --pink-hover: #e02660;
+  --white: #ffffff;
+  --radius: 14px;
+  --transition: 0.18s ease;
+}
+
+body {
+  font-family: "DM Sans", sans-serif;
+  background: var(--white);
+  color: var(--gray-900);
+  
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 50px 40px;
+  height: 68px;
+  border-bottom: 1px solid var(--grey-400);
+  position: sticky;
+  top: 0;
+  background: var(--white);
+  z-index: 100;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+}
+
+.logo-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.logo-text {
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--pink);
+  letter-spacing: -0.5px;
+}
+
+.nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-save {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--grey-700);
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: background var(--transition);
+}
+
+.btn-save:hover {
+  background: var(--grey-100);
+}
+
+.btn-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  transition: background var(--transition);
+}
+
+.btn-close:hover {
+  background: var(--grey-100);
+}
+
+/* ── PROGRESS STEPS ── */
+.progress-bar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 0 40px;
+  height: 52px;
+  border-bottom: 1px solid var(--grey-400);
+  overflow-x: auto;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 18px 0 0;
+  white-space: nowrap;
+  cursor: default;
+  user-select: none;
+}
+
+.step-7{
+  gap: 24px;
+  margin-top: 50vh;
+  transform: translateY(-50%);
+}
+
+.step-7 p:last-child{
+  color: var(--text-tertiary);
+}
+
+.step-circle {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--grey-400);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition:
+    border-color var(--transition),
+    background var(--transition);
+}
+
+.step-circle .dot {
+  position: relative;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: transparent;
+  transition: background var(--transition);
+}
+
+.step.active .step-circle {
+  border-color: var(--pink);
+}
+
+.step.active .step-circle .dot {
+  background: var(--pink);
+}
+
+.step-label {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--gray-400);
+  transition: color var(--transition);
+}
+
+.step.active .step-label {
+  color: var(--gray-900);
+}
+
+.step-sep {
+  width: 16px;
+  height: 1px;
+  background: var(--gray-200);
+  flex-shrink: 0;
+  margin-right: 18px;
+}
+
+/* ── MAIN CONTENT ── */
+
+.heading {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.subheading {
+  font-size: 15px;
+  color: var(--text-secondary);
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+/* ── CARDS ── */
+.cards {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  width: 200px;
+  height: 180px;
+  border: 1.5px solid var(--grey-400);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  cursor: pointer;
+  transition:
+    border-color var(--transition),
+    box-shadow var(--transition),
+    transform var(--transition),
+    background var(--transition);
+  background: var(--white);
+  outline: none;
+}
+
+.card:hover {
+  border-color: var(--gray-400);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+  transform: translateY(-2px);
+}
+
+/* Selected state */
+.option input[type="radio"]:checked + .option-card {
+  border-color: var(--primary-500);
+  border-width: 2px;
+  background: var(--pink-light);
+  box-shadow: 0 4px 20px rgba(244, 57, 109, 0.12);
+}
+
+.card-icon {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--grey-900);
+}
+
+/* ── FOOTER ── */
+footer {
+  position: static;
+  height: 80px;
+  background: var(--white);
+  border-top: 1px solid var(--gray-200);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+}
+
+.btn-back {
+  background: none;
+  text-decoration: none;
+  border: 1.5px solid var(--grey-400);
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--grey-700);
+  padding: 11px 28px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    border-color var(--transition),
+    background var(--transition);
+}
+
+.btn-back:hover {
+  border-color: var(--grey-400);
+  background: var(--grey-100);
+}
+
+.btn-next {
+  background-color: var(--primary-500);
+  border: none;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+  padding: 12px 32px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition:
+    background-color var(--transition),
+    transform var(--transition),
+    box-shadow var(--transition);
+  box-shadow: 0 4px 14px rgba(244, 57, 109, 0.35);
+}
+
+.btn-next:hover {
+  background-color: var(--primary-800);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(244, 57, 109, 0.4);
+}
+
+.btn-next:active {
+  transform: translateY(0);
+}
+
+/* ── CARD ENTRANCE ANIMATION ── */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cards .card:nth-child(1) {
+  animation: fadeUp 0.4s ease 0.05s both;
+}
+
+.cards .card:nth-child(2) {
+  animation: fadeUp 0.4s ease 0.13s both;
+}
+
+.cards .card:nth-child(3) {
+  animation: fadeUp 0.4s ease 0.21s both;
+}
+
+/* ================================================
+   WIZARD STEPS 3–6
+   ================================================ */
+
+/* ── SHARED MAIN LAYOUT ── */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 52px 40px;
+}
+
+.heading {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.6px;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.subheading {
+  font-size: 15px;
+  color: var(--gray-400);
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 16px;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 
+STEP 2
+
+
+*/
+
+/* ================================================
+   STEP 2 – LOCATION
+   ================================================ */
+
+.step-2 {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 52px 40px;
+}
+
+.step-2 .form {
+  width: 100%;
+  max-width: 460px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.step-2 .field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: fadeUp 0.38s ease both;
+}
+
+.step-2 .field:nth-child(1) {
+  animation-delay: 0.04s;
+}
+.step-2 .field:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.step-2 .field:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.step-2 .field:nth-child(4) {
+  animation-delay: 0.22s;
+}
+
+.step-2 .field label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--grey-900);
+}
+
+.step-2 .field input,
+.step-2 .field select {
+  width: 100%;
+  height: 52px;
+  background: #f9f8f4;
+  border: 1.5px solid transparent;
+  border-radius: 10px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 14.5px;
+  color: var(--grey-400);
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  transition:
+    border-color 0.18s,
+    background 0.18s,
+    color 0.18s,
+    box-shadow 0.18s;
+}
+
+.step-2 .field input::placeholder {
+  color: var(--grey-400);
+}
+
+.step-2 .field input:focus,
+.step-2 .field select:focus {
+  border-color: var(--primary-500);
+  background: var(--white);
+  color: var(--grey-900);
+  box-shadow: 0 0 0 3px rgba(244, 57, 109, 0.08);
+}
+
+.step-2 .select-wrapper {
+  position: relative;
+}
+
+.step-2 .select-wrapper select {
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.step-2 .select-wrapper::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  right: 16px;
+  top: 45%;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--gray-400);
+  border-bottom: 2px solid var(--gray-400);
+  transform: translateY(-50%) rotate(45deg);
+}
+/* ================================================
+   STEP 3 – PHOTOS
+   ================================================ */
+
+.step-3{
+  text-align: center;
+}
+
+.upload-area {
+  width: 100%;
+  max-width: 520px;
+  background: #f4f5f4;
+  border: 1.5px dashed #ccc;
+  border-radius: 14px;
+  padding: 48px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition:
+    border-color 0.18s,
+    background 0.18s;
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+  border-color: var(--pink);
+  background: rgba(252, 231, 237, 0.2);
+}
+
+.upload-text {
+  font-size: 14.5px;
+  color: #666;
+  text-align: center;
+  line-height: 1.6;
+}
+
+.upload-link {
+  color: var(--pink);
+  font-weight: 500;
+  text-decoration: underline;
+}
+
+.upload-hint {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.photo-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+  max-width: 520px;
+  width: 100%;
+}
+
+.photo-thumb {
+  width: 150px;
+  height: 150px;
+  border-radius: 10px;
+  background: #d0d0d0;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.3s ease both;
+}
+
+.photo-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-thumb .remove-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  background: rgba(255, 255, 255, 0.85);
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  color: #444;
+  line-height: 1;
+  transition: background 0.15s;
+}
+
+.photo-thumb .remove-btn:hover {
+  background: #fff;
+}
+
+.photo-thumb.cover::after {
+  content: "Cover";
+  position: absolute;
+  bottom: 6px;
+  left: 6px;
+  background: var(--pink);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+/* ================================================
+   STEP 4 – DETAILS
+   ================================================ */
+
+.details-form {
+  width: 100%;
+  max-width: 520px;
+}
+
+.description-area {
+  width: 100%;
+  min-height: 130px;
+  background: #f4f5f4;
+  border: 1.5px solid transparent;
+  border-radius: 12px;
+  padding: 16px;
+  font-family: inherit;
+  font-size: 14px;
+  color: #555;
+  resize: vertical;
+  outline: none;
+  line-height: 1.6;
+  transition:
+    border-color 0.18s,
+    background 0.18s,
+    box-shadow 0.18s;
+}
+
+.description-area::placeholder {
+  color: #aaa;
+}
+
+.description-area:focus {
+  border-color: var(--pink);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(244, 57, 109, 0.08);
+}
+
+.char-hint {
+  font-size: 12.5px;
+  color: var(--gray-400);
+  margin-top: 8px;
+  text-align: center;
+}
+
+.char-hint.warn {
+  color: var(--pink);
+}
+
+.amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 8px 0;
+}
+
+.amenity {
+  cursor: pointer;
+}
+
+.amenity input {
+  display: none;
+}
+
+.amenity-inner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  color: #444;
+  font-size: 13.5px;
+  transition:
+    background 0.15s,
+    color 0.15s;
+}
+
+.amenity input:checked + .amenity-inner {
+  background: var(--pink-light);
+  color: var(--pink);
+}
+
+.amenity-inner svg {
+  flex-shrink: 0;
+}
+
+/* ================================================
+   STEP 5 – PRICING
+   ================================================ */
+
+.pricing-form {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.price-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.price-input {
+  width: 130px;
+  height: 52px;
+  border: 1.5px solid var(--gray-200);
+  border-radius: 10px;
+  padding: 0 16px;
+  font-family: inherit;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--gray-900);
+  background: var(--white);
+  outline: none;
+  transition:
+    border-color 0.18s,
+    box-shadow 0.18s;
+  -moz-appearance: textfield;
+}
+
+.price-input::-webkit-outer-spin-button,
+.price-input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+.price-input:focus {
+  border-color: var(--pink);
+  box-shadow: 0 0 0 3px rgba(244, 57, 109, 0.08);
+}
+
+.price-unit {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--gray-700);
+  white-space: nowrap;
+}
+
+.price-hint {
+  font-size: 13px;
+  color: var(--gray-400);
+  text-align: center;
+}
+
+/* ================================================
+   STEP 6 – REVIEW
+   ================================================ */
+
+.review-cards {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.review-card {
+  border: 1.5px solid var(--grey-400);
+  border-radius: 14px;
+  padding: 20px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  animation: fadeUp 0.35s ease both;
+}
+
+.review-card:nth-child(1) {
+  animation-delay: 0.04s;
+}
+.review-card:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.review-card:nth-child(3) {
+  animation-delay: 0.16s;
+}
+.review-card:nth-child(4) {
+  animation-delay: 0.22s;
+}
+
+.review-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.review-card-title {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.edit-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--pink);
+  text-decoration: none;
+  transition: opacity 0.15s;
+}
+
+.edit-link:hover {
+  opacity: 0.75;
+}
+
+.review-value {
+  font-size: 14px;
+  color: var(--gray-700);
+  line-height: 1.6;
+}
+
+.review-value.bold {
+  font-weight: 600;
+  color: var(--gray-900);
+}
+
+.review-value.muted {
+  color: var(--gray-400);
+}
+
+.amenity-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 2px 0;
+  margin-bottom: 6px;
+}
+
+.amenity-list span {
+  font-size: 14px;
+  color: var(--gray-700);
+  line-height: 1.8;
+}
+
+.more-link {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--gray-700);
+  text-decoration: none;
+  display: inline-block;
+  margin-top: 4px;
+}
+
+.more-link:hover {
+  color: var(--pink);
+}
+
+/* Hide the default radio */
+.option input[type="radio"] {
+  display: none;
+}
+
+.capacity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.capacity-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.capacity-item input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+.btn{
+  text-decoration: none;
+  background-color: var(--primary-500);
+  color: white;
+  padding: 10px 24px;
+  border-radius: 8px;
+}/* Field wrapper */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 28px;
+}
+
+/* Label */
+.field label {
+  font-family: var(--font-family);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-body-small);
+  color: var(--text-secondary);
+}
+
+/* Input */
+.field input[type="text"] {
+  width: 100%;
+  padding: 12px 16px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-primary);
+  background-color: var(--bg-cards);
+  border: 1.5px solid var(--border-default);
+  border-radius: 8px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+  box-sizing: border-box;
+}
+
+/* Placeholder */
+.field input[type="text"]::placeholder {
+  color: var(--text-disabled);
+  font-weight: var(--font-weight-regular);
+}
+
+/* Hover state */
+.field input[type="text"]:hover:not(:focus) {
+  border-color: var(--grey-550);
+  background-color: var(--bg-hover);
+}
+
+/* Focus state */
+.field input[type="text"]:focus {
+  border-color: var(--primary-500);
+  background-color: var(--white);
+  box-shadow: 0 0 0 3px var(--primary-200);
+}
+
+/* Error state (optional, add class="error" to .field) */
+.field.error input[type="text"] {
+  border-color: var(--error-primary);
+  background-color: var(--error-subtle);
+}
+
+.field.error input[type="text"]:focus {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.15);
+}
+
+/* Error message */
+.field .field-error {
+  font-family: var(--font-family);
+  font-size: var(--font-size-caption);
+  line-height: var(--line-height-caption);
+  color: var(--error-primary);
+}
+
+
+

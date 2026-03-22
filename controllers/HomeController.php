@@ -27,5 +27,13 @@ class HomeController{
     public function showLogin(){
         require_once '../views/home/login.php';
     }
+
+    public function showHost(){
+        require_once BASE_PATH . "/views/layout/header.php";
+
+        require_once BASE_PATH . "/views/home/host.php";
+
+        require_once BASE_PATH . "/views/layout/footer.php";
+    }
 }
 ?>

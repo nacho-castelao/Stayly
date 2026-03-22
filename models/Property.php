@@ -1,67 +1,186 @@
-<?php 
+<?php
 
-class Property{
+class Property
+{
     private $id;
     private $user_id;
     private $title;
     private $desc;
     private $price;
+    private $city;
+    private $address;
+    private $rooms;
+    private $latitude;
+    private $longitude;
+    private $bathrooms;
+    private $guests;
+    private $type;
     private $created_in;
     private $db;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->db = Database::connect();
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getUsuario_id() {
+    public function getUser_id()
+    {
         return $this->user_id;
     }
 
-    public function getTitle() {
+    public function getTitle()
+    {
         return $this->title;
     }
 
-    public function getDesc() {
+    public function getDesc()
+    {
         return $this->desc;
     }
 
-    public function getPrice() {
+    public function getPrice()
+    {
         return $this->price;
     }
 
-    public function getCreated_in() {
+    public function getCreated_in()
+    {
         return $this->created_in;
     }
 
-    public function setId($id): void {
+    public function setId($id): void
+    {
         $this->id = $id;
     }
 
-    public function setUser_id($user_id): void {
+    public function setUser_id($user_id): void
+    {
         $this->user_id = $user_id;
     }
 
-    public function setTitle($title): void {
+    public function setTitle($title): void
+    {
         $this->title = $title;
     }
 
-    public function setDesc($desc): void {
+    public function setDesc($desc): void
+    {
         $this->desc = $desc;
     }
 
-    public function setPrice($price): void {
+    public function setPrice($price): void
+    {
         $this->price = $price;
     }
 
-    public function setCreated_in($created_in): void {
+    public function setCreated_in($created_in): void
+    {
         $this->created_in = $created_in;
     }
 
-    public function getAll(){
+    public function getCity()
+    {
+        return $this->city;
+    }
+
+    public function setCity($city)
+    {
+        $this->city = $city;
+
+        return $this;
+    }
+
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getRooms()
+    {
+        return $this->rooms;
+    }
+
+    public function setRooms($rooms)
+    {
+        $this->rooms = $rooms;
+
+        return $this;
+    }
+
+    public function getLatitude()
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude($latitude)
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude()
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude($longitude)
+    {
+        $this->longitude = $longitude;
+
+        return $this;
+    }
+
+    public function getBathrooms()
+    {
+        return $this->bathrooms;
+    }
+
+    public function getGuests()
+    {
+        return $this->guests;
+    }
+
+    public function setGuests($guests)
+    {
+        $this->guests = $guests;
+
+        return $this;
+    }
+
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    public function setType($type)
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+
+    public function setBathrooms($bathrooms)
+    {
+        $this->bathrooms = $bathrooms;
+
+        return $this;
+    }
+
+    public function getAll() {
         $sql = "
             SELECT p.*, i.image_url AS url
             FROM properties p
@@ -76,10 +195,10 @@ class Property{
         return $stmt->fetchAll();
     }
 
-    public function getOne(){
+    public function getOne() {
         $id = $this->getId();
 
-        $sql ="
+        $sql = "
             SELECT p.* FROM properties p
             WHERE id = ?
         ";
@@ -90,7 +209,7 @@ class Property{
         return $stmt->fetch();
     }
 
-    public function getImages(){
+    public function getImages() {
         $id = $this->getId();
 
         $sql = "
@@ -104,7 +223,7 @@ class Property{
         return $stmt;
     }
 
-    public function getAmenities(){
+    public function getAmenities() {
         $id = $this->getId();
 
         $sql = "
@@ -119,10 +238,10 @@ class Property{
         return $stmt;
     }
 
-    public function getHostInfo(){
+    public function getHostInfo() {
         $id = $this->getId();
 
-        $sql ="
+        $sql = "
             SELECT u.* FROM users u 
             INNER JOIN properties p ON p.host_id = u.id
             WHERE p.id = ?
@@ -134,5 +253,114 @@ class Property{
         return $stmt->fetch();
     }
 
+    public function insertOne() {
+        $host_id = $this->getUser_id();
+        $title = $this->getTitle();
+        $desc = $this->getDesc();
+        $city = $this->getCity();
+        $address = $this->getAddress();
+        $price = $this->getPrice();
+        $guests = $this->getGuests();
+        $rooms = $this->getRooms();
+        $bathrooms = $this->getBathrooms();
+        $type = $this->getType();
+
+        $sql = "
+            INSERT INTO properties VALUES (NULL,:host_id,:title,:description,:city,:address,:price,:max_guests,:rooms,:bathrooms,NULL,'published',CURRENT_TIMESTAMP(),0,0,NULL,:type)
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            'host_id' => $host_id,
+            'title' => $title,
+            'description' => $desc,
+            'city' => $city,
+            'address' => $address,
+            'price' => $price,
+            'max_guests' => $guests,
+            'rooms' => $rooms,
+            'bathrooms' => $bathrooms,
+            'type' => $type
+        ]);
+    }
+
+    public function insertAmenities() {
+        $property_id = $this->db->lastInsertId();
+        $this->setId($property_id);
+
+        $amenities = $_SESSION['property']['amenities'];
+
+        if(empty($amenities)){
+            return;
+        }
+
+        $amenities_ids = [];
+
+        $placeholders = implode(',', array_fill(0, count($amenities), '?'));
+
+        $sql = "
+            SELECT id FROM amenities
+            WHERE name IN ($placeholders)
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($amenities);
+
+        while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
+            $amenities_ids[] = $row->id;
+        }
+        
+        $sql2 = "
+            INSERT INTO property_amenities (property_id, amenity_id) VALUES (:property_id,:amenity_id)
+        ";
+
+        $stmt = $this->db->prepare($sql2);
+
+        foreach ($amenities_ids as $amenity_id) {
+            $stmt->execute([
+                'property_id' => $property_id,
+                'amenity_id' => $amenity_id
+            ]);
+        }
+    }
+
+    public function insertImages() {
+        $property_id = $this->getId();
+        $allowed = ['jpg', 'jpeg', 'png', 'webp'];
+
+        $baseDir = "assets/img/properties/uploads/$property_id/";
+        $publicPath = "img/properties/uploads/$property_id/";
+
+        if(!is_dir($baseDir)){
+            mkdir($baseDir, 0777, true);
+        }
+
+        $sql = "
+            INSERT INTO property_images VALUES (:prop_id,:img_url,NULL,:is_main)
+        ";
+
+        $stmt = $this->db->prepare($sql);
+
+        $images = $_SESSION['property']['images'];
+
+        foreach ($images['name'] as $index => $img_file_name) {
+            $ext = pathinfo($img_file_name, PATHINFO_EXTENSION);
+
+            if (!in_array(strtolower($ext), $allowed)) {
+                continue; // skip invalid files
+            }
+
+            $destination = $baseDir.$index.'.'.$ext;
+
+            $dbPath = $publicPath.$index.'.'.$ext;
+
+            if (move_uploaded_file($images['tmp_name'][$index], $destination)) {
+                $stmt->execute([
+                    'prop_id' => $property_id,
+                    'img_url' => $dbPath,
+                    'is_main' => $index === 0 ? 1 : 0
+                ]);
+            }
+        }
+    }
 }
-?>

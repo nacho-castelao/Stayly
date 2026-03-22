@@ -1,6 +1,7 @@
 <?php
 
-class User{
+class User
+{
     private $id;
     private $name;
     private $email;
@@ -9,59 +10,73 @@ class User{
     private $db;
     private $googleId;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->db = Database::connect();
     }
 
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function getEmail() {
+    public function getEmail()
+    {
         return $this->email;
     }
 
-    public function getPsw() {
+    public function getPsw()
+    {
         return $this->psw;
     }
 
-    public function getCreated_in() {
+    public function getCreated_in()
+    {
         return $this->created_in;
     }
 
-    public function getGoogleId(){
+    public function getGoogleId()
+    {
         return $this->googleId;
     }
 
-    public function setId($id): void {
+    public function setId($id): void
+    {
         $this->id = $id;
     }
 
-    public function setName($name): void {
+    public function setName($name): void
+    {
         $this->name = $name;
     }
 
-    public function setEmail($email): void {
+    public function setEmail($email): void
+    {
         $this->email = $email;
     }
 
-    public function setPsw($psw): void {
+    public function setPsw($psw): void
+    {
         $this->psw = $psw;
     }
 
-    public function setCreated_in($created_in): void {
+    public function setCreated_in($created_in): void
+    {
         $this->created_in = $created_in;
     }
 
-    public function setGoogleId($googleId): void{
+    public function setGoogleId($googleId): void
+    {
         $this->googleId = $googleId;
     }
 
-    public function register($name,$email,$psw){
+    public function register($name, $email, $psw)
+    {
         $hash = password_hash($psw, PASSWORD_BCRYPT);
 
         try {
@@ -84,7 +99,8 @@ class User{
         }
     }
 
-    public function createGoogleUser($googleId, $name, $email){
+    public function createGoogleUser($googleId, $name, $email)
+    {
         $sql = "
             INSERT INTO users 
             (google_id, name, email, role, created_at) 
@@ -97,7 +113,8 @@ class User{
         return $this->db->lastInsertId();
     }
 
-    public function login($email, $password){
+    public function login($email, $password)
+    {
         $sql = "SELECT * FROM users WHERE email = :email LIMIT 1";
         $stmt = $this->db->prepare($sql);
         $stmt->bindParam(':email', $email);
@@ -112,7 +129,8 @@ class User{
         return false; // Login failed
     }
 
-    public function getLanguages(){
+    public function getLanguages()
+    {
         $id = $this->getId();
 
         $sql = "
@@ -127,7 +145,8 @@ class User{
         return $stmt->fetchAll();
     }
 
-    public function findByGoogleId($googleId){
+    public function findByGoogleId($googleId)
+    {
         $sql = "
             SELECT * 
             FROM users 
@@ -140,10 +159,4 @@ class User{
 
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
-
-    
-
-    
 }
-
-?>

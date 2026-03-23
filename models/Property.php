@@ -180,7 +180,8 @@ class Property
         return $this;
     }
 
-    public function getAll() {
+    public function getAll()
+    {
         $sql = "
             SELECT p.*, i.image_url AS url
             FROM properties p
@@ -195,7 +196,8 @@ class Property
         return $stmt->fetchAll();
     }
 
-    public function getOne() {
+    public function getOne()
+    {
         $id = $this->getId();
 
         $sql = "
@@ -209,7 +211,8 @@ class Property
         return $stmt->fetch();
     }
 
-    public function getImages() {
+    public function getImages()
+    {
         $id = $this->getId();
 
         $sql = "
@@ -223,7 +226,8 @@ class Property
         return $stmt;
     }
 
-    public function getAmenities() {
+    public function getAmenities()
+    {
         $id = $this->getId();
 
         $sql = "
@@ -238,7 +242,8 @@ class Property
         return $stmt;
     }
 
-    public function getHostInfo() {
+    public function getHostInfo()
+    {
         $id = $this->getId();
 
         $sql = "
@@ -253,7 +258,8 @@ class Property
         return $stmt->fetch();
     }
 
-    public function insertOne() {
+    public function insertOne()
+    {
         $host_id = $this->getUser_id();
         $title = $this->getTitle();
         $desc = $this->getDesc();
@@ -288,13 +294,14 @@ class Property
         ]);
     }
 
-    public function insertAmenities() {
+    public function insertAmenities()
+    {
         $property_id = $this->db->lastInsertId();
         $this->setId($property_id);
 
         $amenities = $_SESSION['property']['amenities'];
 
-        if(empty($amenities)){
+        if (empty($amenities)) {
             return;
         }
 
@@ -313,7 +320,7 @@ class Property
         while ($row = $stmt->fetch(PDO::FETCH_OBJ)) {
             $amenities_ids[] = $row->id;
         }
-        
+
         $sql2 = "
             INSERT INTO property_amenities (property_id, amenity_id) VALUES (:property_id,:amenity_id)
         ";
@@ -328,13 +335,14 @@ class Property
         }
     }
 
-    public function insertImages() {
+    public function insertImages()
+    {
         $property_id = $this->getId();
 
-        $baseDir = BASE_PATH. "/assets/img/properties/uploads/$property_id/";
+        $baseDir = BASE_PATH . "/assets/img/properties/uploads/$property_id/";
         $publicPath = "img/properties/uploads/$property_id/";
 
-        if(!is_dir($baseDir)){
+        if (!is_dir($baseDir)) {
             mkdir($baseDir, 0777, true);
         }
 

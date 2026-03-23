@@ -86,14 +86,15 @@ class UserController
         }
     }
 
-    public function logout(){
+    public function logout()
+    {
         session_start();
 
         $_SESSION = [];
 
         session_destroy();
 
-        header("Location: ". DEFAULT_URL."public/User/login");
+        header("Location: " . DEFAULT_URL . "public/User/login");
         exit;
     }
 

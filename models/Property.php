@@ -330,9 +330,8 @@ class Property
 
     public function insertImages() {
         $property_id = $this->getId();
-        $allowed = ['jpg', 'jpeg', 'png', 'webp'];
 
-        $baseDir = "assets/img/properties/uploads/$property_id/";
+        $baseDir = BASE_PATH. "/assets/img/properties/uploads/$property_id/";
         $publicPath = "img/properties/uploads/$property_id/";
 
         if(!is_dir($baseDir)){
@@ -340,31 +339,27 @@ class Property
         }
 
         $sql = "
-            INSERT INTO property_images VALUES (:prop_id,:img_url,NULL,:is_main)
+            INSERT INTO property_images VALUES (NULL,:prop_id,:img_url,NULL,:is_main)
         ";
 
         $stmt = $this->db->prepare($sql);
 
         $images = $_SESSION['property']['images'];
 
-        foreach ($images['name'] as $index => $img_file_name) {
-            $ext = pathinfo($img_file_name, PATHINFO_EXTENSION);
+        foreach ($images as $index => $tempPath) {
 
-            if (!in_array(strtolower($ext), $allowed)) {
-                continue; // skip invalid files
-            }
+            $ext = pathinfo($tempPath, PATHINFO_EXTENSION);
 
-            $destination = $baseDir.$index.'.'.$ext;
+            $finalPath = $baseDir . $index . '.' . $ext;
+            rename($tempPath, $finalPath);
 
-            $dbPath = $publicPath.$index.'.'.$ext;
+            $dbPath = $publicPath . $index . '.' . $ext;
 
-            if (move_uploaded_file($images['tmp_name'][$index], $destination)) {
-                $stmt->execute([
-                    'prop_id' => $property_id,
-                    'img_url' => $dbPath,
-                    'is_main' => $index === 0 ? 1 : 0
-                ]);
-            }
+            $stmt->execute([
+                'prop_id' => $property_id,
+                'img_url' => $dbPath,
+                'is_main' => $index === 0 ? 1 : 0
+            ]);
         }
     }
 }

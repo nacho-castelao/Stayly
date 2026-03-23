@@ -132,7 +132,7 @@
 
         <div class="host-info">
             <div class="host-img">
-                <img src="../../assets/img/users/<?= $host['avatar_url'] ?>" alt="avatar">
+                <img src="<?= DEFAULT_URL ?>assets/img/users/<?= $host['avatar_url'] ?>" alt="avatar">
             </div>
 
             <div class="host-details">

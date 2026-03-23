@@ -9,8 +9,6 @@
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
         <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
         <script src="<?=DEFAULT_URL?>assets/js/main.js" defer></script>
-        
-
         <title>Stayly</title>
     </head>
     <body class="login-page">
@@ -39,7 +37,7 @@
                 </section>
 
                 <section class="form">
-                    <form method="post" action="<?=DEFAULT_URL?>public/User/login">
+                    <form method="post" action="<?=DEFAULT_URL?>public/User/login?redirect=<?= $redirect ?>">
                         <div>
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" placeholder="name@example.com">
@@ -53,8 +51,7 @@
                         <input type="submit" value="Log In">
                     </form>
                     
-                    
-                    <a href="<?=DEFAULT_URL?>public/User/googleLogin">
+                    <a href="<?=DEFAULT_URL?>public/User/googleLogin?redirect=<?= $redirect ?>">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_634_510)">
                             <mask id="mask0_634_510" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
@@ -79,9 +76,6 @@
                     </a>
                 </section>
             </section>
-            
-            
-
         </section>
 
         <section class="right">

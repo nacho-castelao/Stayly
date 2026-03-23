@@ -16,7 +16,8 @@ class HostController extends BaseController
 
     public function wizard()
     {
-        $this->requireAuth();
+        $redirect_to = "Host/wizard";
+        $this->requireAuth($redirect_to);
 
         $step = (int) ($_GET['step'] ?? 1);
 
@@ -97,14 +98,13 @@ class HostController extends BaseController
                 $_SESSION['property']['longitude'] = $lon;
                 $_SESSION['property']['full_address'] = $displayName;
             } elseif ($step === 4) {
+                $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
                 if ($_FILES['photos']['error'][0] !== 0) {
                     $this->loadToast('warning', 'You must upload some images!');
                     header("Location: " . DEFAULT_URL . "public/Host/wizard?step=3");
                     exit;
                 }
-
-                $allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
                 foreach ($_FILES['photos']['tmp_name'] as $index => $temp_path) {
 
@@ -126,7 +126,35 @@ class HostController extends BaseController
                     }
                 }
 
-                $_SESSION['property']['images'] = $_FILES['photos'];
+                $uploadedImages = [];
+
+                $tempDir = BASE_PATH."/assets/img/temp/";
+
+                if (!is_dir($tempDir)) {
+                    mkdir($tempDir, 0777, true);
+                }
+
+                foreach ($_FILES['photos']['tmp_name'] as $index => $tmpPath) {
+
+                    $type = $_FILES['photos']['type'][$index];
+                    $ext = pathinfo($_FILES['photos']['name'][$index], PATHINFO_EXTENSION);
+
+                    if (!in_array($type, $allowedTypes)) {
+                        continue;
+                    }
+
+                    $fileName = uniqid() . '.' . $ext;
+
+                    // temporary folder (before property_id exists)
+                    $destination = BASE_PATH. "/assets/img/temp/" . $fileName;
+
+                    move_uploaded_file($tmpPath, $destination);
+
+                    // store ONLY the path
+                    $uploadedImages[] = $destination;
+                }
+
+                $_SESSION['property']['images'] = $uploadedImages;
             } elseif ($step === 5) {
                 if (empty($_POST['description']) || empty($_POST['amenities'])) {
                     $this->loadToast('warning', 'You must add a description and some amenities!');

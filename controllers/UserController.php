@@ -98,47 +98,53 @@ class UserController
         exit;
     }
 
-    public function googleLogin(){
+    public function googleLogin()
+    {
+        $state = $_GET['redirect'] ?? '/';
+
         $client = new Google_Client();
 
         $client->setClientId(GOOGLE_CLIENT_ID);
         $client->setClientSecret(GOOGLE_CLIENT_SECRET);
         $client->setRedirectUri(GOOGLE_REDIRECT_URI);
+
         $client->addScope('email');
         $client->addScope('profile');
 
+        $client->setState($state);
+
         $authUrl = $client->createAuthUrl();
+
         header('Location: ' . $authUrl);
         exit;
-
     }
 
-    public function googleCallback(){
-        if(isset($_GET['error'])){
-            header("Location: ".DEFAULT_URL."Home/showRegister?login=false");
+    public function googleCallback()
+    {
+        session_start();
+
+        if (isset($_GET['error'])) {
+            header("Location: " . DEFAULT_URL . "Home/showRegister?login=false");
             exit;
         }
 
-        if(!isset($_GET['code'])){
-            // invalid access
+        if (!isset($_GET['code'])) {
             header("Location: " . DEFAULT_URL);
             exit;
         }
 
-        $code = $_GET['code']; 
+        $code = $_GET['code'];
 
         $client = new Google_Client();
 
         $client->setClientId(GOOGLE_CLIENT_ID);
         $client->setClientSecret(GOOGLE_CLIENT_SECRET);
         $client->setRedirectUri(GOOGLE_REDIRECT_URI);
-        $client->addScope('email');
-        $client->addScope('profile');
 
+        // Exchange code for token
         $token = $client->fetchAccessTokenWithAuthCode($code);
 
         if (isset($token['error'])) {
-            // token exchange failed
             header("Location: " . DEFAULT_URL);
             exit;
         }
@@ -149,10 +155,15 @@ class UserController
         $userInfo = $oAuth->userinfo->get();
 
         $user = new User();
+        $existingUser = $user->findByGoogleId($userInfo->id);
 
-        $existingUser= $user->findByGoogleId($userInfo->id);
+        $redirect = $_GET['state'] ?? '';
 
-        if($existingUser){
+        if (!$redirect) {
+            $redirect = 'index.php';
+        }
+
+        if ($existingUser) {
             $_SESSION['user_id'] = $existingUser['id'];
             $_SESSION['user_name'] = $existingUser['name'];
             $_SESSION['toast'] = [
@@ -160,22 +171,25 @@ class UserController
                 'message' => 'Welcome back!'
             ];
 
-            header("Location: " . DEFAULT_URL.'public/index.php');
+            header("Location: " . DEFAULT_URL . "public/" . $redirect);
             exit;
         }
 
-        $newUserId = $user->createGoogleUser($userInfo->id,$userInfo->name,$userInfo->email);
+        // New user
+        $newUserId = $user->createGoogleUser(
+            $userInfo->id,
+            $userInfo->name,
+            $userInfo->email
+        );
 
         $_SESSION['user_id'] = $newUserId;
         $_SESSION['user_name'] = $userInfo->name;
         $_SESSION['toast'] = [
-                'type' => 'success',
-                'message' => 'Welcome back!'
+            'type' => 'success',
+            'message' => 'Welcome!'
         ];
-        header("Location: " . DEFAULT_URL .'public/index.php');
+
+        header("Location: " . DEFAULT_URL . "public/" . $redirect);
         exit;
-        
     }
 }
-
-?>

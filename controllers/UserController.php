@@ -1,19 +1,20 @@
-<?php 
+<?php
 require_once '../models/User.php';
 
-class UserController{
+class UserController
+{
 
     private $userModel;
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->userModel = new User();
     }
-    
-    public function index(){
-    
-    }
 
-    public function register(){
+    public function index() {}
+
+    public function register()
+    {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header("Location: " . DEFAULT_URL . "public/Home/showRegister");
             exit;
@@ -45,18 +46,19 @@ class UserController{
         exit;
     }
 
-    public function login(){
-        if($_SERVER['REQUEST_METHOD'] !== "POST"){
-            header("Location: ".DEFAULT_URL."public/Home/showLogin");
+    public function login()
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== "POST") {
+            header("Location: " . DEFAULT_URL . "public/Home/showLogin");
             exit;
         }
 
         $email = trim($_POST['email'] ?? '');
         $psw = $_POST['psw'] ?? '';
 
-        $user = $this->userModel->login($email,$psw);
+        $user = $this->userModel->login($email, $psw);
 
-        if($user){
+        if ($user) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user'] = $user;
 

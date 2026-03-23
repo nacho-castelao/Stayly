@@ -67,16 +67,21 @@ class UserController
                 'message' => 'Welcome back!'
             ];
 
-            header("Location: ".DEFAULT_URL.'public/Home/index');
+            if (empty($_GET['redirect'])) {
+                header("Location: " . DEFAULT_URL . 'public/Home/index');
+                exit;
+            }
+
+            header("Location: " . DEFAULT_URL . "public/" . $_GET['redirect']);
             exit;
-        }else{
+        } else {
             $_SESSION['login_failed'] = 1;
             $_SESSION['toast'] = [
                 'type' => 'error',
                 'message' => 'Invalid credentials'
             ];
 
-            header("Location: ".DEFAULT_URL.'public/Home/showLogin');
+            header("Location: " . DEFAULT_URL . 'public/Home/showLogin');
             exit;
         }
     }

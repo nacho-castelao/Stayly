@@ -25,6 +25,9 @@ class HomeController{
     }
 
     public function showLogin(){
+        
+        $redirect = $_GET['redirect'] ?? '';
+
         require_once '../views/home/login.php';
     }
 

@@ -1,7 +1,7 @@
 <?php
 
 class BaseController{
-    protected function requireAuth(){
+    protected function requireAuth($redirect_url){
         if (empty($_SESSION['user_id'])) {
 
             $_SESSION['toast'] = [
@@ -9,7 +9,7 @@ class BaseController{
                 'message' => 'You must be logged in to use this feature!'
             ];
 
-            header("Location: " . DEFAULT_URL . "public/Home/showLogin");
+            header("Location: " . DEFAULT_URL . "public/Home/showLogin?redirect=$redirect_url");
             exit;
         }
     }

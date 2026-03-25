@@ -1,7 +1,9 @@
 <?php
 
-class BaseController{
-    protected function requireAuth($redirect_url){
+class BaseController
+{
+    protected function requireAuth($redirect_url)
+    {
         if (empty($_SESSION['user_id'])) {
 
             $_SESSION['toast'] = [
@@ -14,43 +16,33 @@ class BaseController{
         }
     }
 
-    protected function render($view, $data = []){
+    protected function render($view, $data = [])
+    {
         extract($data);
 
         require dirname(__DIR__) . "/views/$view.php";
     }
 
-    protected function redirect($path){
+    protected function redirect($path)
+    {
         header("Location: " . DEFAULT_URL . $path);
         exit;
     }
 
-    protected function loadToast($type,$message) {
+    protected function loadToast($type, $message)
+    {
         $_SESSION['toast'] = [
             'type' => $type,
             'message' => $message
         ];
     }
+
+    protected function view($view, $data = [])
+    {
+        // Convert array keys into variables
+        extract($data);
+
+        // Load the view file
+        require_once BASE_PATH."views/$view.php";
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-?>

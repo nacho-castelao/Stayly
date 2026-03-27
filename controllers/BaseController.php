@@ -16,13 +16,6 @@ class BaseController
         }
     }
 
-    protected function render($view, $data = [])
-    {
-        extract($data);
-
-        require dirname(__DIR__) . "/views/$view.php";
-    }
-
     protected function redirect($path)
     {
         header("Location: " . DEFAULT_URL . $path);
@@ -43,6 +36,6 @@ class BaseController
         extract($data);
 
         // Load the view file
-        require_once BASE_PATH."views/$view.php";
+        require_once BASE_PATH . "/views/$view.php";
     }
 }

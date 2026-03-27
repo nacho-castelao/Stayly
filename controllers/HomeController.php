@@ -1,7 +1,8 @@
-<?php 
+<?php
 require_once '../models/Property.php';
-
-class HomeController{
+require_once BASE_PATH . '/controllers/BaseController.php';
+class HomeController extends BaseController
+{
     private $propertyModel;
 
     public function __construct()
@@ -9,29 +10,49 @@ class HomeController{
         $this->propertyModel = new Property();
     }
 
-    public function index(){
+    public function index()
+    {
+        $page = $_GET['page'] ?? 1;
+        $page = (int) $page;
+        $limit = 8;
+        $offset = ($page - 1) * $limit;
 
-        require_once BASE_PATH . "/views/layout/header.php";
+        if ($page < 1) {
+            $page = 1;
+        }
 
-        $properties = $this->propertyModel->getAll();
-        
-        require_once BASE_PATH . "/views/home/home.php";
-        
-        require_once BASE_PATH . "/views/layout/footer.php";
+        $this->view('layout/header');
+
+        $properties = $this->propertyModel->getPaginated($limit, $offset);
+        $total = $this->propertyModel->countAll();
+        $totalPages = ceil($total / $limit);
+
+        $this->view('home/home', [
+            'properties' => $properties,
+            'page' => $page,
+            'totalPages' => $totalPages
+        ]);
+
+        $this->view('/layout/footer');
     }
 
-    public function showRegister(){
-        require_once '../views/home/register.php';
+    public function showRegister()
+    {
+        $this->view('home/register');
     }
 
-    public function showLogin(){
-        
-        $redirect = $_GET['redirect'] ?? '';
+    public function showLogin()
+    {
 
-        require_once '../views/home/login.php';
+        $redirect = $_GET['redirect'] ?? ' ';
+
+        $this->view('home/login',[
+            'redirect' => $redirect
+        ]);
     }
 
-    public function showHost(){
+    public function showHost()
+    {
         require_once BASE_PATH . "/views/layout/header.php";
 
         require_once BASE_PATH . "/views/home/host.php";
@@ -39,4 +60,3 @@ class HomeController{
         require_once BASE_PATH . "/views/layout/footer.php";
     }
 }
-?>

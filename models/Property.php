@@ -180,20 +180,41 @@ class Property
         return $this;
     }
 
-    public function getAll()
+    public function getPaginated($limit, $offset)
     {
+        $offset = $offset < 0 ? 0 : $offset;
+        
         $sql = "
             SELECT p.*, i.image_url AS url
             FROM properties p
             INNER JOIN property_images i ON i.property_id = p.id
             WHERE i.is_main = 1
             ORDER BY p.id DESC
+            LIMIT :limit 
+            OFFSET :offset
+        ";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue('offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        
+        return $stmt->fetchAll();
+    }
+
+    public function countAll()
+    {
+        $sql = "
+            SELECT COUNT(DISTINCT p.id) as total
+            FROM properties p
+            INNER JOIN property_images i ON i.property_id = p.id
+            WHERE i.is_main = 1
         ";
 
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetchAll();
+        return $stmt->fetch()['total'];
     }
 
     public function getOne()
@@ -370,4 +391,6 @@ class Property
             ]);
         }
     }
+
+
 }

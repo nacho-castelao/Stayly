@@ -135,8 +135,8 @@ class User
 
         $sql = "
             SELECT l.name FROM languages l
-            INNER JOIN user_languages lu ON lu.language_id = l.id
-            WHERE lu.user_id = ?
+            INNER JOIN user_languages ul ON ul.language_id = l.id
+            WHERE ul.user_id = ?
         ";
 
         $stmt = $this->db->prepare($sql);

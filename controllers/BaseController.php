@@ -2,7 +2,7 @@
 
 class BaseController
 {
-    protected function requireAuth($redirect_url)
+    protected function requireAuth($redirect_url = '')
     {
         if (empty($_SESSION['user_id'])) {
 

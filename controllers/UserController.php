@@ -1,7 +1,7 @@
 <?php
-require_once '../models/User.php';
-
-class UserController
+require_once BASE_PATH . '/models/User.php';
+require_once BASE_PATH . '/controllers/BaseController.php';
+class UserController extends BaseController
 {
 
     private $userModel;
@@ -166,6 +166,7 @@ class UserController
         if ($existingUser) {
             $_SESSION['user_id'] = $existingUser['id'];
             $_SESSION['user_name'] = $existingUser['name'];
+            $_SESSION['user'] = $existingUser;
             $_SESSION['toast'] = [
                 'type' => 'success',
                 'message' => 'Welcome back!'
@@ -191,5 +192,14 @@ class UserController
 
         header("Location: " . DEFAULT_URL . "public/" . $redirect);
         exit;
+    }
+
+    public function showDashboard()
+    {
+        $this->requireAuth();
+        
+        $this->view('user/dashboard',[
+            'user' => $_SESSION['user']
+        ]);
     }
 }

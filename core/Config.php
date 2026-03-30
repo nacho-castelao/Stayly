@@ -1,14 +1,13 @@
 <?php
 
-$clientID = $_ENV['GOOGLE_CLIENT_ID'];
-$clientSecret = $_ENV['GOOGLE_CLIENT_SECRET'];
+$clientID = $_ENV['GOOGLE_CLIENT_ID'] ?? null;
+$clientSecret = $_ENV['GOOGLE_CLIENT_SECRET'] ?? null;
 
-define("BASE_PATH", dirname(__DIR__));
-define("DEFAULT_URL","http://localhost/PROYECTOAIRBNB/");
+define("DEFAULT_URL","http://localhost/Stayly/");
 define("DEFAULT_CONTROLLER","HomeController");
 define("DEFAULT_ACTION","index");
 define("GOOGLE_CLIENT_ID",$clientID);
 define("GOOGLE_CLIENT_SECRET",$clientSecret);
-define("GOOGLE_REDIRECT_URI","http://localhost/PROYECTOAIRBNB/public/User/googleCallback");
+define("GOOGLE_REDIRECT_URI", DEFAULT_URL . "public/User/googleCallback");
 
 ?>

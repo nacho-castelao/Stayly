@@ -1,10 +1,15 @@
 <?php
 session_start();
-require_once __DIR__ . '/../vendor/autoload.php';
-$dotenv = Dotenv\Dotenv::createImmutable(dirname(__DIR__));
+
+define("BASE_PATH", dirname(__DIR__));
+
+require_once BASE_PATH . '/vendor/autoload.php';
+
+$dotenv = Dotenv\Dotenv::createImmutable(BASE_PATH);
 $dotenv->load();
-require_once '../core/Autoloader.php'; 
-require_once '../core/Config.php';
+
+require_once BASE_PATH . '/core/Autoloader.php'; 
+require_once BASE_PATH . '/core/Config.php';
 
 $action = $_GET['action'] ?? DEFAULT_ACTION;
 

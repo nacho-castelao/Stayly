@@ -3,7 +3,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Poppins';
+  font-family: "Poppins";
 }
 
 body {
@@ -12,7 +12,9 @@ body {
 
 /* LAYOUT */
 .dashboard {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(8, 80px);
   min-height: 100vh;
 }
 
@@ -23,6 +25,8 @@ body {
   padding: 24px 16px;
   display: flex;
   flex-direction: column;
+  grid-row: 1 / 8;
+  grid-column: 1 / 2;
 }
 
 .logo {
@@ -39,10 +43,10 @@ body {
   height: 100%;
 }
 
-.menu div{
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+.menu div {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .menu-item {
@@ -68,7 +72,7 @@ body {
 }
 
 .menu-bottom {
-  margin-top: auto;
+  margin-top: 60px;
 }
 
 .icon {
@@ -78,7 +82,7 @@ body {
 
 /* MAIN */
 .main {
-  flex: 1;
+  grid-column: 2 / 7;
   display: flex;
   flex-direction: column;
 }
@@ -91,13 +95,14 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
+  grid-column: 2 / 7;
 }
 
 .topbar h3 {
   font-size: var(--font-size-h4);
 }
 
-.user {
+.topbar .user {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -167,4 +172,591 @@ body {
 .card p {
   font-size: var(--font-size-body-small);
   color: var(--text-tertiary);
+}
+
+.logo img {
+  width: 49px;
+  height: 67px;
+}
+
+.empty-state {
+  font-family: var(--font-family);
+  background: var(--white);
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.empty-state__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.empty-state__title {
+  margin: 0;
+  font-size: var(--font-size-h3);
+  line-height: var(--line-height-h3);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  letter-spacing: 0;
+}
+
+.empty-state__subtitle {
+  margin: 0;
+  font-size: var(--font-size-body-small);
+  line-height: var(--line-height-body-small);
+  font-weight: var(--font-weight-regular);
+  color: var(--text-tertiary);
+}
+
+.empty-state__btn {
+  margin-top: 16px;
+  background: var(--primary-500);
+  color: var(--white);
+  border: none;
+  border-radius: 12px;
+  padding: 14px 40px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  line-height: var(--line-height-body);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.empty-state__btn:hover {
+  background: var(--primary-800);
+}
+
+/* ============================================================
+   PROFILE SETTINGS — settings.css
+   Depends on root CSS variables already declared in your
+   root/global stylesheet (--color-primary, --color-bg, etc.)
+   ============================================================ */
+
+/* ── Local variable overrides (safe to redefine here) ── */
+:root {
+  --settings-accent: #ff3b6b;
+  --settings-accent-hover: #e02d5c;
+  --settings-accent-light: #fff0f3;
+  --settings-border: #ebebeb;
+  --settings-bg: #ffffff;
+  --settings-text: #1a1a1a;
+  --settings-muted: #888888;
+  --settings-input-bg: #fdf8f8;
+  --settings-radius: 8px;
+  --settings-radius-sm: 5px;
+  --settings-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+}
+
+/* ── Layout ─────────────────────────────────────────── */
+.settings-main {
+  max-width: 780px;
+  width: 100%;
+  padding-left: 32px;
+}
+
+.settings-section {
+  padding: 1.5rem 0;
+}
+
+.settings-section:first-child {
+  padding-top: 0;
+}
+
+.settings-divider {
+  border: none;
+  border-top: 1px solid var(--settings-border);
+  margin: 0;
+}
+
+/* ── Section headings ───────────────────────────────── */
+.settings-section__title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--settings-text);
+  margin: 25px 0 0.25rem;
+}
+
+.settings-section__title--md {
+  font-size: 1rem;
+}
+
+.settings-section__subtitle {
+  font-size: 0.85rem;
+  color: var(--settings-muted);
+  margin: 0 0 1.25rem;
+}
+
+/* ── Avatar row ──────────────────────────────────────── */
+.avatar-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.avatar-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #f0e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--settings-muted);
+}
+
+.avatar-placeholder svg {
+  width: 36px;
+  height: 36px;
+}
+
+.avatar-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.avatar-label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--settings-text);
+}
+
+.avatar-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* ── Buttons ─────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--settings-radius-sm);
+  cursor: pointer;
+  padding: 0.55rem 1.1rem;
+  transition:
+    background 0.15s,
+    opacity 0.15s,
+    transform 0.1s;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn--primary {
+  background: var(--settings-accent);
+  color: #fff;
+}
+.btn--primary:hover {
+  background: var(--settings-accent-hover);
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--settings-text);
+  border: 1px solid var(--settings-border);
+}
+.btn--ghost:hover {
+  background: var(--settings-border);
+}
+
+.btn--danger {
+  background: var(--error-primary);
+  color: #fff;
+}
+.btn--danger:hover {
+  background: var(--settings-accent-hover);
+}
+
+.btn--sm {
+  font-size: 0.78rem;
+  padding: 0.4rem 0.85rem;
+}
+
+.btn--save {
+  width: 20%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn--disabled {
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+/* ── Form grid ───────────────────────────────────────── */
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem 1.25rem;
+}
+
+@media (max-width: 560px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.form-group--inline {
+  flex-direction: column;
+  max-width: 180px;
+}
+
+/* ── Labels ──────────────────────────────────────────── */
+.form-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--settings-text);
+}
+
+/* ── Inputs ──────────────────────────────────────────── */
+.form-input {
+  background: var(--settings-input-bg);
+  border: 1px solid var(--settings-border);
+  border-radius: var(--settings-radius-sm);
+  padding: 0.55rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--settings-text);
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-input::placeholder {
+  color: #bbb;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--settings-accent);
+  box-shadow: 0 0 0 3px var(--settings-accent-light);
+}
+
+.form-input--icon {
+  padding-right: 2.2rem;
+}
+
+/* ── Input with icon ─────────────────────────────────── */
+.input-icon-wrapper {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  right: 0.65rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--settings-muted);
+  display: flex;
+  align-items: center;
+}
+
+.input-icon--btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+}
+
+.input-icon--btn:hover {
+  color: var(--settings-text);
+}
+
+/* ── Select ──────────────────────────────────────────── */
+.select-wrapper {
+  position: relative;
+}
+
+.select-wrapper::after {
+  content: "";
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--settings-muted);
+  pointer-events: none;
+}
+
+.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: var(--settings-input-bg);
+  border: 1px solid var(--settings-border);
+  border-radius: var(--settings-radius-sm);
+  padding: 0.5rem 2rem 0.5rem 0.75rem;
+  font-size: 0.85rem;
+  color: var(--settings-text);
+  cursor: pointer;
+  min-width: 130px;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: var(--settings-accent);
+  box-shadow: 0 0 0 3px var(--settings-accent-light);
+}
+
+/* ── Toggle list ─────────────────────────────────────── */
+.toggle-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 0.3rem;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  cursor: pointer;
+  max-width: 260px;
+}
+
+.toggle-row__label {
+  font-size: 0.85rem;
+  color: var(--settings-text);
+}
+
+/* Toggle switch */
+.toggle {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.toggle input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.toggle__track {
+  display: block;
+  width: 42px;
+  height: 24px;
+  border-radius: 100px;
+  background: #ddd;
+  transition: background 0.2s;
+  position: relative;
+}
+
+.toggle__track::after {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s;
+}
+
+.toggle input:checked + .toggle__track {
+  background: var(--settings-accent);
+}
+
+.toggle input:checked + .toggle__track::after {
+  transform: translateX(18px);
+}
+
+/* ── Delete zone ─────────────────────────────────────── */
+.settings-warning {
+  margin-top: 0.6rem;
+  font-size: 0.8rem;
+  color: var(--settings-muted);
+}
+
+/* ── Accessibility ───────────────────────────────────── */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ===== MODAL OVERLAY ===== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+
+  z-index: 1000;
+
+  opacity: 1;
+  transition: opacity 0.2s ease;
+}
+
+/* ===== HIDDEN STATE ===== */
+.modal.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ===== MODAL BOX ===== */
+.modal-box {
+  position: relative;
+  background: var(--bg-cards);
+  border-radius: 12px;
+  padding: 24px;
+  width: 600px;
+  max-width: 90%;
+
+  border: 1px solid var(--border-default);
+
+  transform: scale(1);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+/* Small zoom animation when appearing */
+.modal.hidden .modal-box {
+  transform: scale(0.95);
+}
+
+/* ===== TEXT ===== */
+.modal-box h3 {
+  margin: 0 0 8px;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+}
+
+.modal-box p {
+  margin: 0 0 20px;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-body-small);
+}
+
+/* ===== ACTIONS (BUTTON CONTAINER) ===== */
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+/* ===== BUTTON BASE ===== */
+.btn {
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: var(--font-size-body-small);
+  cursor: pointer;
+  border: none;
+  transition: all 0.15s ease;
+}
+
+/* ===== CANCEL BUTTON ===== */
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border-default);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  background: var(--bg-hover);
+}
+
+/* ===== DELETE BUTTON ===== */
+.btn-danger {
+  background: var(--error-primary);
+  color: var(--white);
+}
+
+.btn-danger:hover {
+  opacity: 0.9;
+}
+
+/* ===== OPTIONAL: CLOSE BUTTON (X) ===== */
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+
+  background: transparent;
+  border: none;
+
+  font-size: 18px;
+  line-height: 1;
+
+  cursor: pointer;
+  color: var(--text-tertiary);
+
+  transition: color 0.15s ease, transform 0.1s ease;
+}
+
+.modal-close:hover {
+  color: var(--text-primary);
+  transform: scale(1.1);
 }

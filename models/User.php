@@ -120,7 +120,7 @@ class User
         $stmt->bindParam(':email', $email);
         $stmt->execute();
 
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        $user = $stmt->fetch();
 
         if ($user && password_verify($password, $user['password_hash'])) {
             return $user; // Login success

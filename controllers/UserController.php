@@ -3,7 +3,6 @@ require_once BASE_PATH . '/models/User.php';
 require_once BASE_PATH . '/controllers/BaseController.php';
 class UserController extends BaseController
 {
-
     private $userModel;
 
     public function __construct()
@@ -197,9 +196,31 @@ class UserController extends BaseController
     public function showDashboard()
     {
         $this->requireAuth();
-        
+        $id = $_SESSION['user_id'];
+        $page = $_GET['page'] ?? 'dashboard';
+        $deleteError = (int) ($_GET['deleteError'] ?? 0);
+        $bookingsCount = $this->userModel->getBookingsCount($id);
+        $wishlistCount = $this->userModel->getWishlistCount($id);
+
         $this->view('user/dashboard',[
-            'user' => $_SESSION['user']
+            'user' => $_SESSION['user'],
+            'bookings' => $bookingsCount,
+            'wishlist' => $wishlistCount,
+            'page' => $page,
+            'deleteError' => $deleteError
         ]);
+    }
+
+    public function delete()
+    {
+        $id = $_SESSION['user_id'];
+
+        if($this->userModel->delete($id)) {
+            $this->logout();
+            $this->redirect('public/');
+            exit;
+        }
+
+        header("Location: " . DEFAULT_URL . "User/showDashboard?page=settings&deleteError=1");
     }
 }

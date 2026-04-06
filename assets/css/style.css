@@ -899,4 +899,33 @@ footer .media a:hover {
   pointer-events: none;
 }
 
-/* TOASTS */
+.fav-icon {
+  position: relative;
+  top: -67px;
+  right: -475px;
+  background: rgba(255, 255, 255, 0.25);
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  padding: 0;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.fav-icon:hover {
+  background: rgba(255, 255, 255, 0.65);
+  transform: scale(1.08);
+}
+
+.fav-icon img {
+  width: 26px;
+  height: 26px;
+}
+
+

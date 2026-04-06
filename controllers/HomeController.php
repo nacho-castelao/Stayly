@@ -1,5 +1,5 @@
 <?php
-require_once '../models/Property.php';
+require_once BASE_PATH . '/models/Property.php';
 require_once BASE_PATH . '/controllers/BaseController.php';
 class HomeController extends BaseController
 {
@@ -43,7 +43,6 @@ class HomeController extends BaseController
 
     public function showLogin()
     {
-
         $redirect = $_GET['redirect'] ?? ' ';
 
         $this->view('home/login',[

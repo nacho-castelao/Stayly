@@ -13,6 +13,10 @@
             <img src="<?= DEFAULT_URL ?>assets/<?= $img['image_url'] ?>" alt="">
 
         <?php endwhile; ?>
+
+        <button class="fav-icon">
+            <img src="<?= DEFAULT_URL ?>assets/img/favButton1.svg" alt="Fav icon">
+        </button>
     </div>
 
     <div class="property-main">

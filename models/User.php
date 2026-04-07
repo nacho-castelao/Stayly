@@ -113,6 +113,21 @@ class User
         return $this->db->lastInsertId();
     }
 
+    public function findByGoogleId($googleId)
+    {
+        $sql = "
+            SELECT * 
+            FROM users 
+            WHERE google_id = ?
+            LIMIT 1
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$googleId]);
+
+        return $stmt->fetch();
+    }
+
     public function login($email, $password)
     {
         $sql = "SELECT * FROM users WHERE email = :email LIMIT 1";
@@ -145,18 +160,104 @@ class User
         return $stmt->fetchAll();
     }
 
-    public function findByGoogleId($googleId)
+    public function getBookingsCount($id)
     {
         $sql = "
-            SELECT * 
-            FROM users 
-            WHERE google_id = ?
-            LIMIT 1
+            SELECT COUNT(*) AS total 
+            FROM bookings
+            WHERE user_id = ?
         ";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$googleId]);
+        $stmt->execute([$id]);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+        return $stmt->fetch()['total'];
+    }
+
+    public function getBookings($id)
+    {
+        $sql = "
+            SELECT * 
+            FROM bookings
+            WHERE user_id = ? 
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+
+        return $stmt->fetchAll();
+    }
+
+    public function getHostPropertiesCount($id)
+    {
+        $sql = "
+            SELECT COUNT(DISTINCT id) AS total
+            FROM properties
+            WHERE host_id = ?
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+
+        return $stmt->fetch()['total'];
+    }
+
+    public function getHostProperties($id)
+    {
+        $sql = "
+            SELECT *
+            FROM properties
+            WHERE host_id = ?
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+
+        return $stmt->fetchAll();
+    }
+
+    public function getWishlistCount($id)
+    {
+        $sql = "
+            SELECT COUNT(DISTINCT p.id) as total
+            FROM properties p
+            INNER JOIN wishlist wi ON wi.property_id = p.id
+            WHERE wi.user_id = ?
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+
+        return $stmt->fetch()['total'];
+    }
+
+    public function getWishlist($id)
+    {
+        $sql = "
+            SELECT *
+            FROM properties p
+            INNER JOIN wishlist wi ON wi.property_id = p.id
+            WHERE wi.user_id = ?
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+
+        return $stmt->fetchAll();
+    }
+
+    public function delete($id)
+    {
+        $id = (int)$id;
+        $sql = "
+            DELETE
+            FROM users 
+            WHERE id = ?
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $deleted = $stmt->execute([$id]);
+
+        return $deleted ? $deleted : false;
     }
 }

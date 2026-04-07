@@ -70,7 +70,7 @@
                 </svg>
             <?php if(isset($_SESSION['user_id'])): ?>
                 <div class="drop-down drop-down-logged">
-                    <a href="<?= DEFAULT_URL ?>public/User/showDashboard">
+                    <a href="<?= DEFAULT_URL ?>public/User/showDashboard?page=dashboard">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M10 15H6C4.93913 15 3.92172 15.4214 3.17157 16.1716C2.42143 16.9217 2 17.9391 2 19V21" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                             <path d="M14.3051 16.53L15.2281 16.148" stroke="#1A1A1A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

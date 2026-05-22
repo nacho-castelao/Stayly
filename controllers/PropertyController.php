@@ -31,6 +31,10 @@ class PropertyController{
         $languagesName = array_column($languages, 'name');
         $languagesPacked = implode(',',$languagesName);
         
+        $this->wishlistModel->setUser_id($_SESSION['user_id']);
+        $this->wishlistModel->setProperty_id($id);
+        $isSaved = $this->wishlistModel->isSaved();
+
         require_once BASE_PATH . "/views/layout/header.php";
         
         require_once BASE_PATH. '/views/property/show.php';

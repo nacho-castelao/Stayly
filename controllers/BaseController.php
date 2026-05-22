@@ -30,13 +30,13 @@ class BaseController
         }
     }
 
-    protected function redirect($path)
+    protected function redirect(string $path)
     {
         header("Location: " . DEFAULT_URL . $path);
         exit;
     }
 
-    protected function loadToast($type, $message)
+    protected function loadToast(string $type, string $message)
     {
         $_SESSION['toast'] = [
             'type' => $type,
@@ -44,7 +44,7 @@ class BaseController
         ];
     }
 
-    protected function view($view, $data = [])
+    protected function view(string $view, $data = [])
     {
         // Convert array keys into variables
         extract($data);

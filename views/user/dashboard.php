@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/style.css" />
     <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/dashboard.css" />
     <script src="<?= DEFAULT_URL ?>assets/js/main.js" defer></script>
+    <script src="<?= DEFAULT_URL ?>assets/js/modal.js" defer></script>
 </head>
 
 <body>

@@ -1,6 +1,8 @@
 Stayly
 
-Booking platform project built with PHP using MVC architecture.
+Modern booking platform inspired by Airbnb, built with PHP and MVC architecture.
+
+Users can browse properties, manage wishlists, and complete booking workflows through a responsive interface.
 
 ## Tech Stack
 

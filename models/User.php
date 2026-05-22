@@ -2,13 +2,13 @@
 
 class User
 {
-    private $id;
-    private $name;
-    private $email;
-    private $psw;
-    private $created_in;
-    private $db;
-    private $googleId;
+    private int $id;
+    private string $name;
+    private string $email;
+    private string $psw;
+    private string $created_in;
+    private \PDO $db;
+    private string $googleId;
 
     public function __construct()
     {
@@ -45,37 +45,37 @@ class User
         return $this->googleId;
     }
 
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function setName($name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
 
-    public function setEmail($email): void
+    public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
-    public function setPsw($psw): void
+    public function setPsw(string $psw): void
     {
         $this->psw = $psw;
     }
 
-    public function setCreated_in($created_in): void
+    public function setCreated_in(string $created_in): void
     {
         $this->created_in = $created_in;
     }
 
-    public function setGoogleId($googleId): void
+    public function setGoogleId(string $googleId): void
     {
         $this->googleId = $googleId;
     }
 
-    public function register($name, $email, $psw)
+    public function register(string $name, string $email, string $psw)
     {
         $hash = password_hash($psw, PASSWORD_BCRYPT);
 
@@ -99,7 +99,7 @@ class User
         }
     }
 
-    public function createGoogleUser($googleId, $name, $email)
+    public function createGoogleUser(string $googleId, string $name, string $email)
     {
         $sql = "
             INSERT INTO users 
@@ -113,7 +113,7 @@ class User
         return $this->db->lastInsertId();
     }
 
-    public function findByGoogleId($googleId)
+    public function findByGoogleId(string $googleId)
     {
         $sql = "
             SELECT * 
@@ -128,7 +128,7 @@ class User
         return $stmt->fetch();
     }
 
-    public function login($email, $password)
+    public function login(string $email, string $password)
     {
         $sql = "SELECT * FROM users WHERE email = :email LIMIT 1";
         $stmt = $this->db->prepare($sql);
@@ -160,7 +160,7 @@ class User
         return $stmt->fetchAll();
     }
 
-    public function getBookingsCount($id)
+    public function getBookingsCount(int $id)
     {
         $sql = "
             SELECT COUNT(*) AS total 
@@ -174,7 +174,7 @@ class User
         return $stmt->fetch()['total'];
     }
 
-    public function getBookings($id)
+    public function getBookings(int $id)
     {
         $sql = "
             SELECT * 
@@ -188,7 +188,7 @@ class User
         return $stmt->fetchAll();
     }
 
-    public function getHostPropertiesCount($id)
+    public function getHostPropertiesCount(int $id)
     {
         $sql = "
             SELECT COUNT(DISTINCT id) AS total
@@ -202,7 +202,7 @@ class User
         return $stmt->fetch()['total'];
     }
 
-    public function getHostProperties($id)
+    public function getHostProperties(int $id)
     {
         $sql = "
             SELECT *
@@ -216,7 +216,7 @@ class User
         return $stmt->fetchAll();
     }
 
-    public function getWishlistCount($id)
+    public function getWishlistCount(int $id)
     {
         $sql = "
             SELECT COUNT(DISTINCT p.id) as total
@@ -231,7 +231,7 @@ class User
         return $stmt->fetch()['total'];
     }
 
-    public function getWishlist($id)
+    public function getWishlist(int $id)
     {
         $sql = "
             SELECT *
@@ -246,9 +246,10 @@ class User
         return $stmt->fetchAll();
     }
 
-    public function delete($id)
+    public function delete(int $id)
     {
         $id = (int)$id;
+        
         $sql = "
             DELETE
             FROM users 

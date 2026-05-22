@@ -1,12 +1,12 @@
 <?php
 
 class Booking{
-    private $id;
-    private $property_id;
-    private $user_id;
-    private $start_date;
-    private $end_date;
-    private $created_in;
+    private int $id;
+    private int $property_id;
+    private int $user_id;
+    private string $start_date;
+    private string $end_date;
+    private string $created_in;
     private $db;
 
     public function __construct(){

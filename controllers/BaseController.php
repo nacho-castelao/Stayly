@@ -5,6 +5,20 @@ class BaseController
     protected function requireAuth($redirect_url = '')
     {
         if (empty($_SESSION['user_id'])) {
+            $isAjaxRequest = isset($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+                $_SERVER['HTTP_X_REQUESTED_WITH'] === 'XMLHttpRequest';
+
+            if ($isAjaxRequest) {
+
+                header('Content-Type: application/json');
+                http_response_code(401);
+
+                echo json_encode([
+                    "status" => "unauthorized"
+                ]);
+
+                exit;
+            }
 
             $_SESSION['toast'] = [
                 'type' => 'error',

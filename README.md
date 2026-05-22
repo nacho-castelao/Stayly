@@ -21,6 +21,13 @@ Booking platform project built with PHP using MVC architecture.
 
 ## Screenshots
 
+### Homepage
+![Homepage](assets/img/screenshots/home.png)
+
+### Property page
+![Property Page](assets/img/screenshots/property-page.png)
+
+- Responsive design improvements currently in progress
 ## Technical Decisions
 
 - AJAX used for wishlist interactions to avoid full page reloads

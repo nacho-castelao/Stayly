@@ -1,12 +1,14 @@
 <?php
-require_once '../models/Property.php';
-require_once '../models/User.php';
-
+require_once BASE_PATH . '/models/Property.php';
+require_once BASE_PATH . '/models/User.php';
+require_once BASE_PATH . '/models/Wishlist.php';
 class PropertyController{
-    private $propertyModel;
+    private Property $propertyModel;
+    private Wishlist $wishlistModel;
 
     public function __construct(){
         $this->propertyModel = new Property();
+        $this->wishlistModel = new Wishlist();
     }
     
     public function index(){

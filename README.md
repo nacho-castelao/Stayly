@@ -25,7 +25,7 @@ Booking platform project built with PHP using MVC architecture.
 ![Homepage](assets/img/screenshots/home.png)
 
 ### Property page
-![Property Page](assets/img/screenshots/property-page.png)
+![Property Page](assets/img/screenshots/property.png)
 
 - Responsive design improvements currently in progress
 ## Technical Decisions

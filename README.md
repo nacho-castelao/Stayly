@@ -1,5 +1,4 @@
 ![Stayly Banner](assets/img/Github-banner.png)
-Stayly
 
 Modern booking platform inspired by Airbnb, built with PHP and MVC architecture.
 

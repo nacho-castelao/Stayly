@@ -912,20 +912,32 @@ footer .media a:hover {
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition: background-color 0.2s, transform 0.15s;
   padding: 0;
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
 }
 
 .fav-icon:hover {
-  background: rgba(255, 255, 255, 0.65);
+  background-color: rgba(255, 255, 255, 0.65);
   transform: scale(1.08);
 }
 
 .fav-icon img {
   width: 26px;
   height: 26px;
+}
+
+.fav-icon.active {
+  background-color: rgba(255, 80, 80, 0.85);
+}
+
+.fav-icon.active:hover {
+  background-color: rgba(255, 80, 80, 0.95);
+}
+
+.fav-icon.active img {
+  filter: brightness(0) invert(1); /* pone el icono en blanco si es SVG/PNG oscuro */
 }
 
 

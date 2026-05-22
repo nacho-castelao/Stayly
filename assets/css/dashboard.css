@@ -13,20 +13,21 @@ body {
 /* LAYOUT */
 .dashboard {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-template-rows: repeat(8, 80px);
-  min-height: 100vh;
+  grid-template-columns: 240px repeat(5, 1fr);
+  grid-template-rows: repeat(8, 1fr);
+  height: 100vh;
 }
 
 /* SIDEBAR */
 .sidebar {
-  width: 240px;
+  grid-row: 1 / 9;
+  grid-column: 1 / 2;
+
   border-right: 1px solid var(--border-default);
   padding: 24px 16px;
   display: flex;
   flex-direction: column;
-  grid-row: 1 / 8;
-  grid-column: 1 / 2;
+  
 }
 
 .logo {
@@ -40,6 +41,7 @@ body {
 .menu {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   height: 100%;
 }
 
@@ -181,7 +183,6 @@ body {
 
 .empty-state {
   font-family: var(--font-family);
-  background: var(--white);
   min-height: 340px;
   display: flex;
   align-items: center;

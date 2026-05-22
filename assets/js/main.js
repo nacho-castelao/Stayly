@@ -1,4 +1,5 @@
 "use strict";
+const BASE_URL = "/stayly";
 
 const arriveCol = document.querySelector(".date-col.arrive");
 const endCol = document.querySelector(".date-col.end");
@@ -42,25 +43,35 @@ document.querySelectorAll(".toggle-pw").forEach((btn) => {
   });
 });
 
-// Delete Account (modal logic)
-const deleteAccountform = document.getElementById("delete-form");
-const modal = document.getElementById("deleteModal");
-const formButton = document.querySelector("#confirmDelete");
+// Wishlist button logic
 
-deleteAccountform.addEventListener("submit", function (e) {
-  e.preventDefault(); // stop instant submit
-  modal.classList.remove("hidden"); // show modal
+const favIcon = document.querySelector(".fav-icon");
+
+function toggleWishlist(houseId) {
+  fetch(`${BASE_URL}/public/Wishlist/toggle`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",   //“The data I´m gonna send you is in JSON format.”
+      "X-Requested-With": "XMLHttpRequest", //“This request comes from JavaScript/AJAX and not from a traditional form.”
+    },
+    body: JSON.stringify({                  //Converts the JS object to JSON.
+      propertyId: houseId,                  //Pass the house id.
+    }),
+  })
+    .then((response) => response.text())
+    .then((data) => {
+      console.log(data);
+
+      if (JSON.parse(data).remove === false) {
+        showToast("success", "Added to wishlist!");
+      }
+    });
+}
+
+favIcon.addEventListener("click", function (e) {
+  const propertyId = this.dataset.id;
+
+  toggleWishlist(propertyId);
+
+  this.classList.toggle("active");
 });
-
-modal.addEventListener("click", (e) => {
-  if (e.target === modal) {
-    modal.classList.add("hidden");
-  }
-});
-
-deleteAccountform.addEventListener('click', () => {
-  form.submit();
-});
-
-
-

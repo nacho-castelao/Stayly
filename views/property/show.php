@@ -13,8 +13,8 @@
             <img src="<?= DEFAULT_URL ?>assets/<?= $img['image_url'] ?>" alt="">
 
         <?php endwhile; ?>
-
-        <button class="fav-icon">
+        <!-- CURRENTLY WORKING ON THIS BUTTON -->
+        <button class="fav-icon <?= $isSaved ? 'active' : '' ?>" data-id="<?= $prop['id'] ?>">
             <img src="<?= DEFAULT_URL ?>assets/img/favButton1.svg" alt="Fav icon">
         </button>
     </div>
@@ -192,7 +192,9 @@
 
     </div>
 
-
+    <div id="toast-container">
+        
+    </div>
 <?php else: ?>
     <h1>Property not found</h1>
     <p>The property you are looking for does not exist.</p>

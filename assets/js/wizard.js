@@ -104,22 +104,26 @@ document.addEventListener("DOMContentLoaded", () => {
   let seconds = 5;
   let countdownEl = document.querySelector("#countdown");
 
-  const cancelRedirect = () => {
-    isCancelled = true;
-    clearInterval(interval);
-  };
-
-  document.addEventListener("click", cancelRedirect);
-
-  const interval = setInterval(() => {
-    if (isCancelled) return;
-
-    seconds--;
-    countdownEl.textContent = seconds;
-
-    if (seconds <= 0) {
+  if (countdownEl) {
+    const cancelRedirect = () => {
+      isCancelled = true;
       clearInterval(interval);
-      window.location.href = "http://localhost/PROYECTOAIRBNB/public";
-    }
-  }, 1000);
+    };
+
+    document.addEventListener("click", cancelRedirect);
+
+    const interval = setInterval(() => {
+      if (isCancelled) return;
+
+      seconds--;
+      if (countdownEl) {
+        countdownEl.textContent = seconds;
+      }
+      
+      if (seconds <= 0) {
+        clearInterval(interval);
+        window.location.href = "http://localhost/stayly/public";
+      }
+    }, 1000);
+  }
 });

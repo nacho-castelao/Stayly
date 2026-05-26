@@ -2,6 +2,7 @@
 require_once BASE_PATH . '/models/Property.php';
 require_once BASE_PATH . '/models/User.php';
 require_once BASE_PATH . '/models/Wishlist.php';
+
 class PropertyController{
     private Property $propertyModel;
     private Wishlist $wishlistModel;
@@ -18,6 +19,7 @@ class PropertyController{
     public function showOne(){
         $id = $_GET['id'] ?? false;
 
+        $userId = $_SESSION['user_id'] ?? false;
         $this->propertyModel->setId($id);
 
         $prop = $this->propertyModel->getOne();
@@ -31,14 +33,14 @@ class PropertyController{
         $languagesName = array_column($languages, 'name');
         $languagesPacked = implode(',',$languagesName);
         
-        $this->wishlistModel->setUser_id($_SESSION['user_id']);
-        $this->wishlistModel->setProperty_id($id);
-        $isSaved = $this->wishlistModel->isSaved();
-
-        require_once BASE_PATH . "/views/layout/header.php";
+        if ($userId) {
+            $this->wishlistModel->setUser_id($userId);
+            $this->wishlistModel->setProperty_id($id);
+            $isSaved = $this->wishlistModel->isSaved();
+        }
         
-        require_once BASE_PATH. '/views/property/show.php';
-
+        require_once BASE_PATH . "/views/layout/header.php";
+        require_once BASE_PATH . '/views/property/show.php';
         require_once BASE_PATH . "/views/layout/footer.php";
     }
 }

@@ -3,7 +3,7 @@ require_once BASE_PATH . '/models/Property.php';
 require_once BASE_PATH . '/controllers/BaseController.php';
 class HomeController extends BaseController
 {
-    private $propertyModel;
+    private Property $propertyModel;
 
     public function __construct()
     {

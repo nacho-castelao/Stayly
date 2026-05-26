@@ -2,188 +2,187 @@
 
 class Property
 {
-    private $id;
-    private $user_id;
-    private $title;
-    private $desc;
-    private $price;
-    private $city;
-    private $address;
-    private $rooms;
-    private $latitude;
-    private $longitude;
-    private $bathrooms;
-    private $guests;
-    private $type;
-    private $created_in;
-    private $db;
+    private ?int $id = null;
+    private ?int $user_id = null;
+    private ?string $title = null;
+    private ?string $desc = null;
+    private ?float $price = null;
+    private ?string $city = null;
+    private ?string $address = null;
+    private ?int $rooms = null;
+    private ?float $latitude = null;
+    private ?float $longitude = null;
+    private ?int $bathrooms = null;
+    private ?int $guests = null;
+    private ?string $type = null;
+    private ?string $created_in = null;
+    private PDO $db;
 
     public function __construct()
     {
         $this->db = Database::connect();
     }
 
-    public function getId()
+    public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getUser_id()
+    public function getUser_id(): ?int
     {
         return $this->user_id;
     }
 
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    public function getDesc()
+    public function getDesc(): ?string
     {
         return $this->desc;
     }
 
-    public function getPrice()
+    public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    public function getCreated_in()
+    public function getCreated_in(): ?string
     {
         return $this->created_in;
     }
 
-    public function setId($id): void
+    public function setId(int $id): void
     {
         $this->id = $id;
     }
 
-    public function setUser_id($user_id): void
+    public function setUser_id(int $user_id): void
     {
         $this->user_id = $user_id;
     }
 
-    public function setTitle($title): void
+    public function setTitle(string $title): void
     {
         $this->title = $title;
     }
 
-    public function setDesc($desc): void
+    public function setDesc(string $desc): void
     {
         $this->desc = $desc;
     }
 
-    public function setPrice($price): void
+    public function setPrice(float $price): void
     {
         $this->price = $price;
     }
 
-    public function setCreated_in($created_in): void
+    public function setCreated_in(string $created_in): void
     {
         $this->created_in = $created_in;
     }
 
-    public function getCity()
+    public function getCity(): ?string
     {
         return $this->city;
     }
 
-    public function setCity($city)
+    public function setCity(string $city): self
     {
         $this->city = $city;
 
         return $this;
     }
 
-    public function getAddress()
+    public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    public function setAddress($address)
+    public function setAddress(string $address): self
     {
         $this->address = $address;
 
         return $this;
     }
 
-    public function getRooms()
+    public function getRooms(): ?int
     {
         return $this->rooms;
     }
 
-    public function setRooms($rooms)
+    public function setRooms(int $rooms): self
     {
         $this->rooms = $rooms;
 
         return $this;
     }
 
-    public function getLatitude()
+    public function getLatitude(): ?float
     {
         return $this->latitude;
     }
 
-    public function setLatitude($latitude)
+    public function setLatitude(float $latitude): self
     {
         $this->latitude = $latitude;
 
         return $this;
     }
 
-    public function getLongitude()
+    public function getLongitude(): ?float
     {
         return $this->longitude;
     }
 
-    public function setLongitude($longitude)
+    public function setLongitude(float $longitude): self
     {
         $this->longitude = $longitude;
 
         return $this;
     }
 
-    public function getBathrooms()
+    public function getBathrooms(): ?int
     {
         return $this->bathrooms;
     }
 
-    public function getGuests()
+    public function getGuests(): ?int
     {
         return $this->guests;
     }
 
-    public function setGuests($guests)
+    public function setGuests(int $guests): self
     {
         $this->guests = $guests;
 
         return $this;
     }
 
-    public function getType()
+    public function getType(): ?string
     {
         return $this->type;
     }
 
-    public function setType($type)
+    public function setType(string $type): self
     {
         $this->type = $type;
 
         return $this;
     }
 
-
-    public function setBathrooms($bathrooms)
+    public function setBathrooms(int $bathrooms): self
     {
         $this->bathrooms = $bathrooms;
 
         return $this;
     }
 
-    public function getPaginated($limit, $offset)
+    public function getPaginated(int $limit, int $offset): array
     {
         $offset = $offset < 0 ? 0 : $offset;
-        
+
         $sql = "
             SELECT p.*, i.image_url AS url
             FROM properties p
@@ -193,16 +192,35 @@ class Property
             LIMIT :limit 
             OFFSET :offset
         ";
-        
+
         $stmt = $this->db->prepare($sql);
         $stmt->bindValue('limit', $limit, PDO::PARAM_INT);
         $stmt->bindValue('offset', $offset, PDO::PARAM_INT);
         $stmt->execute();
-        
+
         return $stmt->fetchAll();
     }
 
-    public function countAll()
+    public function getBySearch(string $search)
+    {
+        $search = '%'.$search.'%';
+
+        $sql = "
+            SELECT p.*, i.image_url AS url
+            FROM properties p
+            INNER JOIN property_images i ON i.property_id = p.id 
+            WHERE i.is_main = 1
+            AND p.city LIKE ?
+            ORDER BY p.id DESC
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$search]);
+
+        return $stmt->fetchAll();
+    }
+
+    public function countAll(): int
     {
         $sql = "
             SELECT COUNT(DISTINCT p.id) as total
@@ -214,10 +232,10 @@ class Property
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
 
-        return $stmt->fetch()['total'];
+        return (int) $stmt->fetch()['total'];
     }
 
-    public function getOne()
+    public function getOne(): array|false
     {
         $id = $this->getId();
 
@@ -232,7 +250,7 @@ class Property
         return $stmt->fetch();
     }
 
-    public function getImages()
+    public function getImages(): PDOStatement
     {
         $id = $this->getId();
 
@@ -247,14 +265,14 @@ class Property
         return $stmt;
     }
 
-    public function getAmenities()
+    public function getAmenities(): PDOStatement
     {
         $id = $this->getId();
 
         $sql = "
             SELECT a.name,a.icon FROM amenities a
             INNER JOIN property_amenities pa ON pa.amenity_id = a.id
-            WHERE pa.property_id = ?;
+            WHERE pa.property_id = ?
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -263,7 +281,7 @@ class Property
         return $stmt;
     }
 
-    public function getHostInfo()
+    public function getHostInfo(): array|false
     {
         $id = $this->getId();
 
@@ -279,7 +297,7 @@ class Property
         return $stmt->fetch();
     }
 
-    public function insertOne()
+    public function insertOne(): void
     {
         $host_id = $this->getUser_id();
         $title = $this->getTitle();
@@ -295,10 +313,16 @@ class Property
         $lon = $this->getLongitude();
 
         $sql = "
-            INSERT INTO properties VALUES (NULL,:host_id,:title,:description,:city,:address,:price,:max_guests,:rooms,:bathrooms,NULL,'published',CURRENT_TIMESTAMP(),:latitude,:longitude,NULL,:type)
+            INSERT INTO properties VALUES (
+                NULL,:host_id,:title,:description,:city,:address,
+                :price,:max_guests,:rooms,:bathrooms,NULL,
+                'published',CURRENT_TIMESTAMP(),:latitude,
+                :longitude,NULL,:type
+            )
         ";
 
         $stmt = $this->db->prepare($sql);
+
         $stmt->execute([
             'host_id' => $host_id,
             'title' => $title,
@@ -315,9 +339,9 @@ class Property
         ]);
     }
 
-    public function insertAmenities()
+    public function insertAmenities(): void
     {
-        $property_id = $this->db->lastInsertId();
+        $property_id = (int) $this->db->lastInsertId();
         $this->setId($property_id);
 
         $amenities = $_SESSION['property']['amenities'];
@@ -343,7 +367,9 @@ class Property
         }
 
         $sql2 = "
-            INSERT INTO property_amenities (property_id, amenity_id) VALUES (:property_id,:amenity_id)
+            INSERT INTO property_amenities 
+            (property_id, amenity_id) 
+            VALUES (:property_id,:amenity_id)
         ";
 
         $stmt = $this->db->prepare($sql2);
@@ -356,7 +382,7 @@ class Property
         }
     }
 
-    public function insertImages()
+    public function insertImages(): void
     {
         $property_id = $this->getId();
 
@@ -368,7 +394,8 @@ class Property
         }
 
         $sql = "
-            INSERT INTO property_images VALUES (NULL,:prop_id,:img_url,NULL,:is_main)
+            INSERT INTO property_images 
+            VALUES (NULL,:prop_id,:img_url,NULL,:is_main)
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -380,6 +407,7 @@ class Property
             $ext = pathinfo($tempPath, PATHINFO_EXTENSION);
 
             $finalPath = $baseDir . $index . '.' . $ext;
+
             rename($tempPath, $finalPath);
 
             $dbPath = $publicPath . $index . '.' . $ext;
@@ -391,6 +419,4 @@ class Property
             ]);
         }
     }
-
-
 }

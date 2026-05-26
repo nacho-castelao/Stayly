@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>User Dashboard</title>
+    <title>User Settings</title>
     <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/style.css" />
     <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/dashboard.css" />
     <script src="<?= DEFAULT_URL ?>assets/js/main.js" defer></script>

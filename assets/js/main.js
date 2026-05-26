@@ -1,4 +1,10 @@
 "use strict";
+
+import './map.js';
+import './modal.js';
+import "./toast.js";
+import "./wizard.js";
+
 const BASE_URL = "/stayly";
 
 const arriveCol = document.querySelector(".date-col.arrive");
@@ -51,11 +57,12 @@ function toggleWishlist(houseId) {
   fetch(`${BASE_URL}/public/Wishlist/toggle`, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",   //“The data I´m gonna send you is in JSON format.”
-      "X-Requested-With": "XMLHttpRequest", //“This request comes from JavaScript/AJAX and not from a traditional form.”
+      "Content-Type": "application/json", //"The data I´m gonna send you is in JSON format."
+      "X-Requested-With": "XMLHttpRequest", //"This request comes from JavaScript/AJAX and not from a traditional form."
     },
-    body: JSON.stringify({                  //Converts the JS object to JSON.
-      propertyId: houseId,                  //Pass the house id.
+    body: JSON.stringify({
+      //Converts the JS object to JSON.
+      propertyId: houseId, //Pass the house id.
     }),
   })
     .then((response) => response.text())

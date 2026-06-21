@@ -1,0 +1,281 @@
+/* ── Stayly date-range picker ───────────────────────────────────
+ * Embedded build of the standalone datepicker. Design tokens
+ * (--primary-*, --bg-*, --text-*, --font-*, …) are inherited from
+ * Stayly's assets/css/style.css :root — intentionally NOT redefined
+ * here. Global resets, body styles and the Google Fonts link from
+ * the standalone version are dropped; Stayly owns those.
+ * ─────────────────────────────────────────────────────────────── */
+
+/* ── Card ───────────────────────────────────────────────────── */
+.cal-card {
+  background: #f3f4f6;
+  border-radius: 16px;
+  border: 0.5px solid rgba(255, 255, 255, 0.85);
+  box-shadow: 0 1px 4px rgba(0, 14, 51, 0.07);
+  width: 430px;
+  max-width: 100%;
+  padding: 0 0 16px;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+.cal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 16px 14px;
+  gap: 10px;
+}
+
+.nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--white);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 14, 51, 0.06);
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s, box-shadow 0.15s;
+}
+
+.nav-btn:hover {
+  background: var(--bg-hover);
+  box-shadow: 0 2px 6px rgba(0, 14, 51, 0.1);
+}
+
+.nav-btn:active {
+  background: var(--bg-active);
+}
+
+.nav-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.month-pills {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  justify-content: center;
+}
+
+.month-pill {
+  background: var(--white);
+  border-radius: 6px;
+  padding: 0 14px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  box-shadow: 0 1px 2px rgba(0, 14, 51, 0.06);
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-bold);
+  color: #141414;
+  position: relative;
+  overflow: hidden;
+}
+
+.pill-corner {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 14px;
+  height: 14px;
+  background: var(--primary-200);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+}
+
+/* ── Day Labels ─────────────────────────────────────────────── */
+.cal-days-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  padding: 0 10px;
+  margin-bottom: 4px;
+}
+
+.day-label {
+  text-align: center;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  padding: 4px 0 8px;
+}
+
+/* ── Grid ───────────────────────────────────────────────────── */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.cal-cell {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  cursor: pointer;
+}
+
+.cal-cell.faded {
+  cursor: default;
+}
+
+.cal-cell-inner {
+  width: 50px;
+  height: 44px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  position: relative;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family);
+  color: var(--text-primary);
+  transition: background 0.12s, color 0.12s;
+}
+
+/* ── Hover (idle — no selection in progress) ────────────────── */
+.cal-cell:not(.faded):not(.disabled):not(.range-start):not(.range-mid):not(.range-end):hover .cal-cell-inner {
+  background: var(--bg-active);
+}
+
+/* ── Keyboard focus ─────────────────────────────────────────── */
+.cal-cell:focus {
+  outline: none;
+}
+
+.cal-cell:focus-visible .cal-cell-inner {
+  outline: 2px solid var(--primary-800);
+  outline-offset: -2px;
+}
+
+/* ── Faded (other month) ────────────────────────────────────── */
+.cal-cell.faded .cal-cell-inner {
+  color: rgba(0, 23, 84, 0.15);
+}
+
+.faded {
+  color: rgba(0, 23, 84, 0.15);
+}
+
+/* ── Disabled (past / unavailable, in-month) ────────────────── */
+.cal-cell.disabled:not(.faded) {
+  cursor: not-allowed;
+}
+
+.cal-cell.disabled:not(.faded) .cal-cell-inner {
+  color: var(--text-disabled);
+  text-decoration: line-through;
+  text-decoration-thickness: 1px;
+}
+
+/* ── Today ──────────────────────────────────────────────────── */
+.cal-cell.today .cal-cell-inner {
+  background: var(--white);
+  border: 2px solid var(--border-default);
+  color: var(--text-primary);
+}
+
+/* ── Range: start cap ───────────────────────────────────────── */
+.cal-cell.range-start .cal-cell-inner {
+  background: var(--primary-800);
+  color: var(--white);
+  border-radius: 6px;
+}
+
+.cal-cell.range-start::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 50%;
+  background: var(--primary-200);
+  z-index: 0;
+  display: none;
+}
+
+/* Only draw the trailing connector once a range exists or while hovering */
+.cal-grid:has(.range-end) .cal-cell.range-start::after,
+.cal-grid.hovering .cal-cell.range-start::after {
+  display: block;
+}
+
+/* ── Range: middle ──────────────────────────────────────────── */
+.cal-cell.range-mid .cal-cell-inner {
+  background: var(--primary-200);
+  border-radius: 0;
+  width: 100%;
+  color: var(--primary-800);
+}
+
+/* ── Range: end cap ─────────────────────────────────────────── */
+.cal-cell.range-end .cal-cell-inner {
+  background: var(--primary-800);
+  color: var(--white);
+  border-radius: 6px;
+}
+
+.cal-cell.range-end::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 50%;
+  background: var(--primary-200);
+  z-index: 0;
+}
+
+/* ── Single day selected (start = end) ──────────────────────── */
+.cal-cell.range-start.range-end::before,
+.cal-cell.range-start.range-end::after {
+  display: none;
+}
+
+/* ── Range caps: subtle pop ─────────────────────────────────── */
+.cal-cell.range-start .cal-cell-inner,
+.cal-cell.range-end .cal-cell-inner {
+  box-shadow: 0 1px 3px rgba(179, 55, 99, 0.35);
+}
+
+/* ── Hover preview: middle ──────────────────────────────────── */
+.cal-cell.hover-mid .cal-cell-inner {
+  background: rgba(255, 197, 221, 0.45);
+  border-radius: 0;
+  width: 100%;
+  color: var(--primary-800);
+}
+
+/* ── Hover preview: end ─────────────────────────────────────── */
+.cal-cell.hover-end .cal-cell-inner {
+  background: rgba(179, 55, 99, 0.18);
+  border-radius: 6px;
+}
+
+.cal-cell.hover-end::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 50%;
+  background: rgba(255, 197, 221, 0.45);
+  z-index: 0;
+}
+
+/* ── Status bar ─────────────────────────────────────────────── */
+.cal-status {
+  font-size: var(--font-size-caption);
+  color: var(--text-tertiary);
+  text-align: center;
+  min-height: 18px;
+  padding: 8px 16px 0;
+  font-family: var(--font-family);
+}
+
+.cal-status strong {
+  color: var(--primary-800);
+  font-weight: var(--font-weight-medium);
+}

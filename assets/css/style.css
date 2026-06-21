@@ -635,6 +635,120 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   background-color: var(--primary-800);
 }
 
+/* ── Booking panel: date-range picker ───────────────────────── */
+.property-main .cta {
+  height: auto;
+}
+
+.booking-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* Align the date field, guests box and button to one column width. */
+.booking-form > * {
+  width: 430px;
+  max-width: 100%;
+}
+
+/* Trigger field that opens the calendar popover */
+.date-field-wrap {
+  position: relative;
+}
+
+.date-field {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  background: #fff;
+  border: 1px solid var(--grey-400);
+  border-radius: 10px;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-family);
+  text-align: left;
+  overflow: hidden;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.date-field:hover {
+  border-color: var(--grey-550);
+}
+
+.date-field[aria-expanded="true"] {
+  border-color: var(--primary-800);
+  box-shadow: 0 0 0 1px var(--primary-800);
+}
+
+.date-field-col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 14px;
+}
+
+.date-field-divider {
+  width: 1px;
+  background: var(--grey-400);
+}
+
+.date-field-val {
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.date-field-val.is-empty {
+  color: var(--text-tertiary);
+  font-weight: var(--font-weight-regular);
+}
+
+/* Popover holding the calendar (the .cal-card brings its own shadow) */
+.cal-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+}
+
+.cal-popover[hidden] {
+  display: none;
+}
+
+.booking-form .guests {
+  border-top: none;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid var(--grey-400);
+  padding: 8px 10px;
+}
+
+.reserve-btn {
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  background-color: var(--primary-500);
+  color: var(--text-on-primary);
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-family: var(--font-family);
+  font-size: var(--font-size-body);
+  transition: background-color 0.15s, opacity 0.15s;
+}
+
+.reserve-btn:hover:not(:disabled) {
+  background-color: var(--primary-800);
+}
+
+.reserve-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .amenities {
   grid-column-start: 2;
   display: flex;

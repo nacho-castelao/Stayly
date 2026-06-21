@@ -97,37 +97,44 @@
         <div class="cta">
             <span class="price_per_night"> <?= $prop['price_per_night'] ?> € / night</span>
 
-            <form action="" method="post">
-                <div class="dates">
-                    <div class="arrive">
-                        <div class="date-col arrive">
-                            <span class="text-caption">Arrive</span>
+            <form action="" method="post" id="booking-form" class="booking-form">
+                <!-- Trigger field. Clicking it expands the calendar popover
+                     (assets/js/calendar.js); the picked range is mirrored into
+                     the labels here and the hidden inputs below (ISO YYYY-MM-DD). -->
+                <div class="date-field-wrap">
+                    <button type="button" class="date-field" id="date-field"
+                        aria-haspopup="dialog" aria-expanded="false" aria-controls="cal-popover">
+                        <span class="date-field-col">
+                            <span class="text-caption">Check-in</span>
+                            <span class="date-field-val is-empty" id="checkin-label">Add date</span>
+                        </span>
+                        <span class="date-field-divider"></span>
+                        <span class="date-field-col">
+                            <span class="text-caption">Check-out</span>
+                            <span class="date-field-val is-empty" id="checkout-label">Add date</span>
+                        </span>
+                    </button>
 
-                            <input type="date" name="arrive" id="arrive">
-                        </div>
-
-                        <div class="date-col end">
-                            <span class="text-caption">End</span>
-
-                            <input type="date" name="end" id="end">
-                        </div>
-                    </div>
-
-                    <div class="guests">
-                        <span class="text-caption">Guests</span>
-
-                        <select name="guests" id="guests">
-                            <?php for ($i = 1; $i <= $prop['max_guests']; $i++): ?>
-                                <option value="<?= $i ?>"><span class="text-body"><?= $i ?> guests</span></option>
-                            <?php endfor; ?>
-
-
-                        </select>
+                    <div class="cal-popover" id="cal-popover" role="dialog" aria-label="Choose dates" hidden>
+                        <div id="stay-calendar" class="stay-calendar"></div>
                     </div>
                 </div>
-            </form>
 
-            <a href="">Reserve</a>
+                <input type="hidden" name="start_date" id="start_date">
+                <input type="hidden" name="end_date" id="end_date">
+
+                <div class="guests">
+                    <span class="text-caption">Guests</span>
+
+                    <select name="guests" id="guests">
+                        <?php for ($i = 1; $i <= $prop['max_guests']; $i++): ?>
+                            <option value="<?= $i ?>"><?= $i ?> guests</option>
+                        <?php endfor; ?>
+                    </select>
+                </div>
+
+                <button type="submit" class="reserve-btn" id="reserve-btn" disabled>Reserve</button>
+            </form>
         </div>
 
         <div class="description">
@@ -193,8 +200,74 @@
     </div>
 
     <div id="toast-container">
-        
+
     </div>
+
+    <script>
+        // Mount the date-range picker as a popover behind the date field.
+        // calendar.js is loaded with `defer` in the layout head, so
+        // window.Calendar is ready before DOMContentLoaded fires.
+        document.addEventListener('DOMContentLoaded', function () {
+            const mount = document.getElementById('stay-calendar');
+            if (!mount || typeof Calendar === 'undefined') return;
+
+            const wrap = document.querySelector('.date-field-wrap');
+            const field = document.getElementById('date-field');
+            const popover = document.getElementById('cal-popover');
+            const checkinLabel = document.getElementById('checkin-label');
+            const checkoutLabel = document.getElementById('checkout-label');
+            const startInput = document.getElementById('start_date');
+            const endInput = document.getElementById('end_date');
+            const reserveBtn = document.getElementById('reserve-btn');
+
+            // Local midnight today — used to block past dates.
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+
+            // Serialize to YYYY-MM-DD for the server (NOT toLocaleDateString).
+            const toISO = (d) =>
+                d.getFullYear() + '-' +
+                String(d.getMonth() + 1).padStart(2, '0') + '-' +
+                String(d.getDate()).padStart(2, '0');
+
+            const toLabel = (d) => d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
+
+            function setLabel(el, date) {
+                el.textContent = date ? toLabel(date) : 'Add date';
+                el.classList.toggle('is-empty', !date);
+            }
+
+            function open() { popover.hidden = false; field.setAttribute('aria-expanded', 'true'); }
+            function close() { popover.hidden = true; field.setAttribute('aria-expanded', 'false'); }
+
+            new Calendar(mount, {
+                initialDate: today,
+                isDisabled: (date) => date < today,
+                onSelect: function (range) {
+                    startInput.value = range.start ? toISO(range.start) : '';
+                    endInput.value = range.end ? toISO(range.end) : '';
+                    setLabel(checkinLabel, range.start);
+                    setLabel(checkoutLabel, range.end);
+                    // Require a full check-in + check-out range before reserving.
+                    reserveBtn.disabled = !(range.start && range.end);
+                    // Collapse once a full range is chosen.
+                    if (range.start && range.end) close();
+                },
+            });
+
+            field.addEventListener('click', function () {
+                popover.hidden ? open() : close();
+            });
+
+            // Close when clicking outside the field/popover, or on Escape.
+            document.addEventListener('click', function (e) {
+                if (!wrap.contains(e.target)) close();
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') close();
+            });
+        });
+    </script>
 <?php else: ?>
     <h1>Property not found</h1>
     <p>The property you are looking for does not exist.</p>

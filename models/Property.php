@@ -297,6 +297,39 @@ class Property
         return $stmt->fetch();
     }
 
+    /**
+     * True when the host has blocked any day within the requested stay.
+     *
+     * Availability is opt-out: a day is bookable unless an `availability` row
+     * explicitly marks it `is_available = 0`. The absence of a row means open
+     * (matching the column default), so newly created properties — which have
+     * no availability rows — are fully bookable. The range is half-open: the
+     * check-out day is not occupied, so it is not required to be open.
+     *
+     * This is only the host-block layer; existing reservations are checked
+     * separately via Booking::hasOverlap().
+     */
+    public function isRangeBlocked(string $startDate, string $endDate): bool
+    {
+        $sql = "
+            SELECT COUNT(*) AS total
+            FROM availability
+            WHERE property_id = :property_id
+              AND is_available = 0
+              AND date >= :start_date
+              AND date < :end_date
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            'property_id' => $this->getId(),
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+        ]);
+
+        return (int) $stmt->fetch()['total'] > 0;
+    }
+
     public function insertOne(): void
     {
         $host_id = $this->getUser_id();

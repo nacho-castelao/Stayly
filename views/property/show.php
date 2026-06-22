@@ -97,7 +97,7 @@
         <div class="cta">
             <span class="price_per_night"> <?= $prop['price_per_night'] ?> € / night</span>
 
-            <form action="" method="post" id="booking-form" class="booking-form">
+            <form action="<?= DEFAULT_URL ?>public/Booking/create" method="post" id="booking-form" class="booking-form">
                 <!-- Trigger field. Clicking it expands the calendar popover
                      (assets/js/calendar.js); the picked range is mirrored into
                      the labels here and the hidden inputs below (ISO YYYY-MM-DD). -->
@@ -120,6 +120,7 @@
                     </div>
                 </div>
 
+                <input type="hidden" name="property_id" value="<?= $prop['id'] ?>">
                 <input type="hidden" name="start_date" id="start_date">
                 <input type="hidden" name="end_date" id="end_date">
 
@@ -202,6 +203,17 @@
     <div id="toast-container">
 
     </div>
+
+    <!-- Flash toast bridge: surfaces $_SESSION['toast'] set by the booking
+         flow (BookingController), matching the other pages. toast.js is loaded
+         as a classic script so showToast is global for the inline call below. -->
+    <script src="<?= DEFAULT_URL ?>assets/js/toast.js"></script>
+    <?php if (isset($_SESSION['toast'])): ?>
+        <script>
+            showToast('<?= $_SESSION['toast']['type'] ?>', '<?= $_SESSION['toast']['message'] ?>');
+        </script>
+        <?php unset($_SESSION['toast']); ?>
+    <?php endif; ?>
 
     <script>
         // Mount the date-range picker as a popover behind the date field.

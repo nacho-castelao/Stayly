@@ -155,6 +155,33 @@ class Booking{
     }
 
     /**
+     * Fetch a single booking row by id, or false when it does not exist.
+     */
+    public function getById(int $id): array|false {
+        $stmt = $this->db->prepare("SELECT * FROM bookings WHERE id = ?");
+        $stmt->execute([$id]);
+
+        return $stmt->fetch();
+    }
+
+    /**
+     * Move the booking identified by $this->id from awaiting_payment to
+     * confirmed. Guarded by the current status so a booking that was already
+     * confirmed or cancelled (e.g. concurrently) is not reconfirmed. Returns
+     * true only when this call actually performed the transition.
+     */
+    public function confirm(): bool {
+        $stmt = $this->db->prepare("
+            UPDATE bookings
+            SET status = 'confirmed'
+            WHERE id = :id AND status = 'awaiting_payment'
+        ");
+        $stmt->execute(['id' => $this->id]);
+
+        return $stmt->rowCount() > 0;
+    }
+
+    /**
      * Atomically check availability and insert. Runs the overlap check (with a
      * row lock) and the insert inside a single transaction, so two racing
      * requests cannot both pass the check and double-book the same dates.

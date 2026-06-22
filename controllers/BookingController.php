@@ -104,9 +104,8 @@ class BookingController extends BaseController
             $this->redirect($back);
         }
 
-        // TODO (step 6): hand off to PaymentController to collect payment for
-        // this awaiting_payment booking instead of returning to the property.
+        // Hand off to payment for this awaiting_payment booking.
         $this->loadToast('success', 'Booking reserved! Complete payment to confirm.');
-        $this->redirect($back);
+        $this->redirect("public/Payment/show?booking_id=$bookingId");
     }
 }

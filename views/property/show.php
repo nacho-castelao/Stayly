@@ -252,9 +252,24 @@
             function open() { popover.hidden = false; field.setAttribute('aria-expanded', 'true'); }
             function close() { popover.hidden = true; field.setAttribute('aria-expanded', 'false'); }
 
-            new Calendar(mount, {
+            // Unavailable dates for this property, fetched below. Booked ranges
+            // are half-open [start, end) so a check-out day stays selectable as
+            // someone else's check-in. This only greys out cells for UX — the
+            // server re-validates on submit, so a failed/slow fetch is harmless.
+            let bookedRanges = [];          // [{ start: Date, end: Date }]
+            const blockedDays = new Set();  // 'YYYY-MM-DD'
+
+            function isUnavailable(date) {
+                if (blockedDays.has(toISO(date))) return true;
+                for (const r of bookedRanges) {
+                    if (date >= r.start && date < r.end) return true;
+                }
+                return false;
+            }
+
+            const cal = new Calendar(mount, {
                 initialDate: today,
-                isDisabled: (date) => date < today,
+                isDisabled: (date) => date < today || isUnavailable(date),
                 onSelect: function (range) {
                     startInput.value = range.start ? toISO(range.start) : '';
                     endInput.value = range.end ? toISO(range.end) : '';
@@ -270,6 +285,24 @@
             field.addEventListener('click', function () {
                 popover.hidden ? open() : close();
             });
+
+            // Pull booked/blocked dates and repaint so they grey out. The
+            // calendar is already usable (past dates blocked); this just adds
+            // the property-specific unavailability once it arrives.
+            fetch('<?= DEFAULT_URL ?>public/Property/availability?id=<?= (int) $prop['id'] ?>')
+                .then(function (r) { return r.ok ? r.json() : null; })
+                .then(function (data) {
+                    if (!data) return;
+                    bookedRanges = (data.booked || []).map(function (b) {
+                        return {
+                            start: new Date(b.start_date + 'T00:00:00'),
+                            end: new Date(b.end_date + 'T00:00:00'),
+                        };
+                    });
+                    (data.blocked || []).forEach(function (d) { blockedDays.add(d); });
+                    cal.render();
+                })
+                .catch(function () { /* leave calendar open; server still validates */ });
 
             // Close when clicking outside the field/popover, or on Escape.
             document.addEventListener('click', function (e) {

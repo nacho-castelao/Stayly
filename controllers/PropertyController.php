@@ -15,7 +15,24 @@ class PropertyController{
     public function index(){
 
     }
-    
+
+    // JSON feed of unavailable dates for the property's datepicker. Read-only;
+    // the booking endpoint re-validates availability authoritatively.
+    public function availability(){
+        header('Content-Type: application/json');
+
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+
+        if (!$id) {
+            echo json_encode(['booked' => [], 'blocked' => []]);
+            return;
+        }
+
+        $this->propertyModel->setId($id);
+
+        echo json_encode($this->propertyModel->getUnavailability());
+    }
+
     public function showOne(){
         $id = $_GET['id'] ?? false;
 

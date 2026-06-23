@@ -201,21 +201,21 @@ class Property
         return $stmt->fetchAll();
     }
 
-    public function getBySearch(string $search)
+    public function getBySearch(string $search): array
     {
         $search = '%'.$search.'%';
 
         $sql = "
             SELECT p.*, i.image_url AS url
             FROM properties p
-            INNER JOIN property_images i ON i.property_id = p.id 
+            INNER JOIN property_images i ON i.property_id = p.id
             WHERE i.is_main = 1
-            AND p.city LIKE ?
+            AND (p.title LIKE ? OR p.city LIKE ? OR p.address LIKE ?)
             ORDER BY p.id DESC
         ";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$search]);
+        $stmt->execute([$search, $search, $search]);
 
         return $stmt->fetchAll();
     }

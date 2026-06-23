@@ -40,14 +40,12 @@ class HomeController extends BaseController
     {
         $data = json_decode(file_get_contents("php://input"), true);
 
-        $search = $data['search'];
+        $search = $data['search'] ?? '';
 
         $result = $this->propertyModel->getBySearch($search);
 
         header('Content-Type: application/json');
-
         echo json_encode($result);
-
         exit;
     }
 

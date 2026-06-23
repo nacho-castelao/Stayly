@@ -23,10 +23,10 @@
             </a>
         </div>
 
-        <div id="headerForm"> <!-- Working on this div-->
-            <img src="<?= DEFAULT_URL ?>assets/img/Magnifyingglass.svg" alt="Magnyfing glass">
+        <div id="headerForm">
+            <img src="<?= DEFAULT_URL ?>assets/img/Magnifyingglass.svg" alt="Magnifying glass">
 
-            <input type="text" name="search" id="search" placeholder="Search destinations..."> <!-- Here you should capture the event-->
+            <input type="text" name="search" id="search" placeholder="Search destinations...">
 
             <img src="<?= DEFAULT_URL ?>assets/img/icons8-calendar-21.svg" alt="Icon calendar">
         </div>

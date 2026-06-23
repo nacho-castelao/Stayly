@@ -87,39 +87,8 @@ favIcon?.addEventListener("click", function (e) {
 const headerInput = document.querySelector('#search');
 const cardsContainer = document.querySelector(".cards-container");
 
-if (headerInput && cardsContainer) {
-  headerInput.addEventListener('input', (e) => {
-    fetch(`${BASE_URL}/public/Home/showByInput`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json", //"The data I´m gonna send you is in JSON format"
-        "X-Requested-With": "XMLHttpRequest",
-      },
-      body: JSON.stringify({
-        search: e.target.value, //Sending the value of the input
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Server returned ${response.status}`);
-        }
-
-        return response.json();
-      })
-      .then((data) => {
-        if (!Array.isArray(data)) {
-          throw new Error("Expected an array");
-        }
-
-        if (data.length === 0) {
-          cardsContainer.innerHTML = "<p>No results found</p>";
-          return;
-        }
-
-        cardsContainer.innerHTML = ""; //Clean the container.
-
-        data.forEach((element) => {
-          cardsContainer.innerHTML += ` <div class="property-card">
+function buildPropertyCard(element) {
+  return ` <div class="property-card">
                 <div class="property-image">
                     <img src="${BASE_URL}/assets/${element.url}" alt="Property picture">
                 </div>
@@ -184,7 +153,38 @@ if (headerInput && cardsContainer) {
                 </div>
               </div>
             `;
-        });
+}
+
+if (headerInput && cardsContainer) {
+  headerInput.addEventListener('input', (e) => {
+    fetch(`${BASE_URL}/public/Home/showByInput`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      body: JSON.stringify({
+        search: e.target.value,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data)) {
+          throw new Error("Expected an array");
+        }
+
+        if (data.length === 0) {
+          cardsContainer.innerHTML = "<p>No results found</p>";
+          return;
+        }
+
+        cardsContainer.innerHTML = data.map(buildPropertyCard).join("");
       })
       .catch((err) => {
         console.error("Search failed:", err);
@@ -192,7 +192,4 @@ if (headerInput && cardsContainer) {
       });
   });
 }
-
-
-
 

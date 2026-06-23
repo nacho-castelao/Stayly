@@ -77,6 +77,9 @@ class UserController extends BaseController
         $user = $this->userModel->login($email, $psw);
 
         if ($user) {
+            // New session id on privilege change, to thwart session fixation.
+            session_regenerate_id(true);
+
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user'] = $user;
 

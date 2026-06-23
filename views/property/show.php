@@ -21,7 +21,7 @@
 
     <div class="property-main">
         <div class="specs">
-            <span><?= $prop['title']; ?></span>
+            <span><?= htmlspecialchars($prop['title']); ?></span>
 
             <div class="stars">
                 <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -48,7 +48,7 @@
                     </defs>
                 </svg>
 
-                <span><?= $prop['city'] ?></span>
+                <span><?= htmlspecialchars($prop['city']) ?></span>
             </div>
 
             <div class="rooms">
@@ -139,21 +139,21 @@
         </div>
 
         <div class="description">
-            <?= $prop['description'] ?>
+            <?= htmlspecialchars($prop['description']) ?>
         </div>
 
         <div class="host-info">
             <div class="host-img">
-                <img src="<?= DEFAULT_URL ?>assets/img/users/<?= $host['avatar_url'] ?>" alt="avatar">
+                <img src="<?= DEFAULT_URL ?>assets/img/users/<?= htmlspecialchars($host['avatar_url']) ?>" alt="avatar">
             </div>
 
             <div class="host-details">
                 <div>
-                    <span class="host-name"><?= $host['name'] ?></span>
+                    <span class="host-name"><?= htmlspecialchars($host['name']) ?></span>
                     <span class="host-sub">Member since <?= substr($host['created_at'], 0, 4) ?></span>
                 </div>
 
-                <span class="host-desc text-body-small"><?= $host['biography'] ?></span>
+                <span class="host-desc text-body-small"><?= htmlspecialchars($host['biography']) ?></span>
 
                 <span class="host-lang">
                     Languages:
@@ -192,7 +192,7 @@
 
             <div id="map" data-lat="<?= $prop['latitude'] ?>" data-lng="<?= $prop['longitude'] ?>"></div>
 
-            <span class="location-desc text-body "><?= $prop['location_description'] ?></span>
+            <span class="location-desc text-body "><?= htmlspecialchars($prop['location_description']) ?></span>
         </section>
     </div>
 

@@ -25,7 +25,7 @@ class PaymentController extends BaseController
      */
     public function show()
     {
-        $this->requireAuth('public/index.php');
+        $this->requireAuth('index.php');
 
         $bookingId = filter_input(INPUT_GET, 'booking_id', FILTER_VALIDATE_INT);
         $booking = $this->loadOwnPayableBooking($bookingId);
@@ -48,7 +48,7 @@ class PaymentController extends BaseController
             $this->redirect('public/index.php');
         }
 
-        $this->requireAuth('public/index.php');
+        $this->requireAuth('index.php');
 
         $bookingId = filter_input(INPUT_POST, 'booking_id', FILTER_VALIDATE_INT);
         $booking = $this->loadOwnPayableBooking($bookingId);

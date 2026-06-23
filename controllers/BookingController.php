@@ -39,12 +39,15 @@ class BookingController extends BaseController
         $endRaw = $_POST['end_date'] ?? null;
 
         // Where to send the user back to on success or any validation failure.
-        $back = $propertyId
-            ? "public/Property/showOne?id=$propertyId"
-            : 'public/index.php';
+        // $backPath is the bare Controller/action path; requireAuth and the login
+        // flow re-add the public/ prefix, while redirect() below needs it spelled out.
+        $backPath = $propertyId
+            ? "Property/showOne?id=$propertyId"
+            : 'index.php';
+        $back = "public/$backPath";
 
         // Must be logged in to book (mirrors the protected-action pattern).
-        $this->requireAuth($back);
+        $this->requireAuth($backPath);
 
         if (!$propertyId) {
             $this->loadToast('error', 'We could not find that property.');

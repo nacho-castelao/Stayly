@@ -69,7 +69,7 @@
             <h3>Dashboard</h3>
 
             <div class="user">
-                <img src="<?= DEFAULT_URL ?>assets/img/users/<?= $user['avatar_url'] ?>" class="avatar" />
+                <img src="<?= DEFAULT_URL ?>assets/<?= htmlspecialchars($avatar) ?>" class="avatar" alt="<?= htmlspecialchars($user['name'] ?? 'User') ?> avatar" />
 
                 <button class="btn--disabled">
                     <img src="<?= DEFAULT_URL ?>assets/img/dashboard/chevron-down-dashboard.svg" class="chevron" />

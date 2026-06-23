@@ -204,8 +204,14 @@ class UserController extends BaseController
         $bookingsList = $this->userModel->getBookings($id);
         $wishlistList = $this->userModel->getWishlist($id);
 
+        // Resolve the avatar to a path relative to /assets. Falls back to the
+        // generic user icon when the account has no uploaded picture.
+        $avatarFile = $this->userModel->getAvatarUrl($id);
+        $avatar = $avatarFile ? 'img/users/' . $avatarFile : 'img/User.svg';
+
         $this->view('user/dashboard',[
             'user' => $_SESSION['user'],
+            'avatar' => $avatar,
             'bookings' => $bookingsCount,
             'bookingsList' => $bookingsList,
             'wishlist' => $wishlistCount,

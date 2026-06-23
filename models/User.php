@@ -7,12 +7,18 @@ class User
     private string $email;
     private string $psw;
     private string $created_in;
+    private string $avatar_url;
     private \PDO $db;
     private string $googleId;
 
     public function __construct()
     {
         $this->db = Database::connect();
+    }
+
+    public function getAvatar_url() 
+    {
+        return $this->avatar_url;
     }
 
     public function getId()
@@ -43,6 +49,11 @@ class User
     public function getGoogleId()
     {
         return $this->googleId;
+    }
+
+    public function setAvatar_url(string $avatar_url): void
+    {
+        $this->avatar_url = $avatar_url;
     }
 
     public function setId(int $id): void
@@ -142,6 +153,21 @@ class User
         }
 
         return false; // Login failed
+    }
+
+    /**
+     * Return the stored avatar filename for a user, or null when none is set.
+     * Read fresh from the DB so an updated avatar shows even if the session
+     * copy is stale (and new Google users have no $_SESSION['user'] row).
+     */
+    public function getAvatarUrl(int $id): ?string
+    {
+        $sql = "SELECT avatar_url FROM users WHERE id = ? LIMIT 1";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$id]);
+        $row = $stmt->fetch();
+
+        return $row && !empty($row['avatar_url']) ? $row['avatar_url'] : null;
     }
 
     public function getLanguages()

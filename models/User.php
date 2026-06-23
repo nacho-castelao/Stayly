@@ -176,10 +176,20 @@ class User
 
     public function getBookings(int $id)
     {
+        // Join the property and its cover image so the dashboard can render a
+        // full booking card. LEFT JOIN on the image keeps bookings whose
+        // property has no main image flagged.
         $sql = "
-            SELECT * 
-            FROM bookings
-            WHERE user_id = ? 
+            SELECT b.*,
+                   p.title AS property_title,
+                   p.city  AS property_city,
+                   i.image_url AS property_image
+            FROM bookings b
+            INNER JOIN properties p ON p.id = b.property_id
+            LEFT JOIN property_images i
+                   ON i.property_id = p.id AND i.is_main = 1
+            WHERE b.user_id = ?
+            ORDER BY b.start_date DESC
         ";
 
         $stmt = $this->db->prepare($sql);
@@ -233,11 +243,21 @@ class User
 
     public function getWishlist(int $id)
     {
+        // Explicit columns (not SELECT *) so properties.id/created_at aren't
+        // clobbered by the wishlist join. LEFT JOIN the cover image so a
+        // property with no main image still shows.
         $sql = "
-            SELECT *
+            SELECT p.id,
+                   p.title,
+                   p.city,
+                   p.price_per_night,
+                   i.image_url AS image
             FROM properties p
             INNER JOIN wishlist wi ON wi.property_id = p.id
+            LEFT JOIN property_images i
+                   ON i.property_id = p.id AND i.is_main = 1
             WHERE wi.user_id = ?
+            ORDER BY wi.created_at DESC
         ";
 
         $stmt = $this->db->prepare($sql);

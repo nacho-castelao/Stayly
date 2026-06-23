@@ -201,11 +201,15 @@ class UserController extends BaseController
         $deleteError = (int) ($_GET['deleteError'] ?? 0);
         $bookingsCount = $this->userModel->getBookingsCount($id);
         $wishlistCount = $this->userModel->getWishlistCount($id);
+        $bookingsList = $this->userModel->getBookings($id);
+        $wishlistList = $this->userModel->getWishlist($id);
 
         $this->view('user/dashboard',[
             'user' => $_SESSION['user'],
             'bookings' => $bookingsCount,
+            'bookingsList' => $bookingsList,
             'wishlist' => $wishlistCount,
+            'wishlistList' => $wishlistList,
             'page' => $page,
             'deleteError' => $deleteError
         ]);

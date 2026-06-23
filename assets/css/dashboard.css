@@ -33,7 +33,6 @@ body {
 .logo {
   width: 40px;
   height: 40px;
-  background: var(--primary-500);
   border-radius: 50%;
   margin-bottom: 32px;
 }
@@ -232,6 +231,344 @@ body {
 
 .empty-state__btn:hover {
   background: var(--primary-800);
+}
+
+/* ============================================================
+   MY BOOKINGS
+   ============================================================ */
+.bookings {
+  padding: 40px;
+  font-family: var(--font-family);
+}
+
+.bookings__head {
+  margin-bottom: 24px;
+}
+
+.bookings__title {
+  font-size: var(--font-size-h3);
+  margin: 0 0 4px;
+}
+
+.bookings__subtitle {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-body-small);
+  margin: 0;
+}
+
+.booking-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.booking-item {
+  display: flex;
+  align-items: stretch;
+  gap: 18px;
+  background: var(--bg-cards);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  padding: 14px;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.booking-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26, 26, 26, 0.06);
+}
+
+.booking-item__media {
+  flex-shrink: 0;
+  width: 140px;
+  border-radius: 10px;
+  overflow: hidden;
+  display: block;
+}
+
+.booking-item__media img,
+.booking-item__media--ph {
+  display: block;
+  width: 140px;
+  height: 110px;
+  object-fit: cover;
+}
+
+.booking-item__media--ph {
+  background: var(--bg-section);
+}
+
+.booking-item__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-width: 0;
+  padding: 4px 0;
+}
+
+.booking-item__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.booking-item__name {
+  font-size: var(--font-size-body-large);
+  margin: 0 0 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.booking-item__location {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-body-small);
+  margin: 0;
+}
+
+.booking-item__meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  color: var(--text-secondary);
+  font-size: var(--font-size-body-small);
+}
+
+.booking-item__dates small {
+  color: var(--text-tertiary);
+}
+
+.booking-item__guests {
+  color: var(--text-tertiary);
+}
+
+.booking-item__aside {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 4px 6px 4px 0;
+  text-align: right;
+}
+
+.booking-item__price {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-body);
+}
+
+.booking-item__action {
+  margin-top: 10px;
+  background: var(--primary-500);
+  color: var(--white);
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: var(--font-size-body-small);
+  font-weight: var(--font-weight-medium);
+  white-space: nowrap;
+  transition: background 0.15s ease;
+}
+
+.booking-item__action:hover {
+  background: var(--primary-800);
+}
+
+/* Status pills */
+.booking-status {
+  flex-shrink: 0;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  padding: 5px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.booking-status--confirmed {
+  background: var(--success-subtle);
+  color: #15803d;
+}
+
+.booking-status--awaiting_payment {
+  background: var(--warning-subtle);
+  color: #92600a;
+}
+
+.booking-status--pending {
+  background: var(--grey-100);
+  color: var(--grey-700);
+}
+
+.booking-status--cancelled {
+  background: var(--error-subtle);
+  color: #b91c1c;
+}
+
+@media (max-width: 720px) {
+  .bookings {
+    padding: 24px 16px;
+  }
+
+  .booking-item {
+    flex-wrap: wrap;
+  }
+
+  .booking-item__media,
+  .booking-item__media img,
+  .booking-item__media--ph {
+    width: 100%;
+  }
+
+  .booking-item__aside {
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 0;
+  }
+
+  .booking-item__action {
+    margin-top: 0;
+  }
+}
+
+/* ============================================================
+   WISHLIST
+   ============================================================ */
+.wishlist {
+  padding: 40px;
+  font-family: var(--font-family);
+}
+
+.wishlist__head {
+  margin-bottom: 24px;
+}
+
+.wishlist__title {
+  font-size: var(--font-size-h3);
+  margin: 0 0 4px;
+}
+
+.wishlist__subtitle {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-body-small);
+  margin: 0;
+}
+
+.wishlist-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.wish-card {
+  position: relative;
+  background: var(--bg-cards);
+  border: 1px solid var(--border-default);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.wish-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(26, 26, 26, 0.06);
+}
+
+.wish-card__media {
+  display: block;
+  aspect-ratio: 4 / 3;
+}
+
+.wish-card__media img,
+.wish-card__media--ph {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wish-card__media--ph {
+  background: var(--bg-section);
+}
+
+.wish-card__remove {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.wish-card__remove:hover:not(:disabled) {
+  background: var(--white);
+  transform: scale(1.06);
+}
+
+.wish-card__remove:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.wish-card__remove img {
+  width: 18px;
+  height: 18px;
+}
+
+.wish-card__body {
+  padding: 14px 16px 18px;
+}
+
+.wish-card__name {
+  display: block;
+  font-size: var(--font-size-body);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+  text-decoration: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wish-card__name:hover {
+  color: var(--primary-500);
+}
+
+.wish-card__location {
+  margin: 2px 0 10px;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-body-small);
+}
+
+.wish-card__price {
+  margin: 0;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--font-size-body);
+}
+
+.wish-card__price span {
+  font-weight: var(--font-weight-regular);
+  color: var(--text-tertiary);
+  font-size: var(--font-size-body-small);
+}
+
+@media (max-width: 720px) {
+  .wishlist {
+    padding: 24px 16px;
+  }
 }
 
 /* ============================================================

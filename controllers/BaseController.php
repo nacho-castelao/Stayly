@@ -25,7 +25,9 @@ class BaseController
                 'message' => 'You must be logged in to use this feature!'
             ];
 
-            header("Location: " . DEFAULT_URL . "public/Home/showLogin?redirect=$redirect_url");
+            // urlencode so a redirect target carrying its own query string
+            // (e.g. Property/showOne?id=1) survives as a single redirect param.
+            header("Location: " . DEFAULT_URL . "public/Home/showLogin?redirect=" . urlencode($redirect_url));
             exit;
         }
     }

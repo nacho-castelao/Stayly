@@ -37,7 +37,7 @@
                 </section>
 
                 <section class="form">
-                    <form method="post" action="<?=DEFAULT_URL?>public/User/login?redirect=<?= $redirect ?>">
+                    <form method="post" action="<?=DEFAULT_URL?>public/User/login?redirect=<?= urlencode($redirect) ?>">
                         <div>
                             <label for="email">Email</label>
                             <input type="email" id="email" name="email" placeholder="name@example.com">
@@ -51,7 +51,7 @@
                         <input type="submit" value="Log In">
                     </form>
                     
-                    <a href="<?=DEFAULT_URL?>public/User/googleLogin?redirect=<?= $redirect ?>">
+                    <a href="<?=DEFAULT_URL?>public/User/googleLogin?redirect=<?= urlencode($redirect) ?>">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_634_510)">
                             <mask id="mask0_634_510" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">

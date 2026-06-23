@@ -69,7 +69,7 @@
             <h3>Dashboard</h3>
 
             <div class="user">
-                <img src="<?= DEFAULT_URL ?>assets/img/users/<?= $user['avatar_url'] ?>" class="avatar" />
+                <img src="<?= DEFAULT_URL ?>assets/<?= htmlspecialchars($avatar) ?>" class="avatar" alt="<?= htmlspecialchars($user['name'] ?? 'User') ?> avatar" />
 
                 <button class="btn--disabled">
                     <img src="<?= DEFAULT_URL ?>assets/img/dashboard/chevron-down-dashboard.svg" class="chevron" />
@@ -141,26 +141,161 @@
 
             case 'bookings':
             ?>
+                <?php if (empty($bookingsList)): ?>
+                    <main class="main empty-state">
+                        <div class="empty-state__content">
+                            <h3 class="empty-state__title">No upcoming bookings</h3>
+                            <p class="empty-state__subtitle">You don't have any bookings yet.</p>
+                            <a href="<?= DEFAULT_URL ?>public/Home/index" class="empty-state__btn">Explore stays</a>
+                        </div>
+                    </main>
+                <?php else: ?>
+                    <main class="main">
+                        <section class="bookings">
+                            <div class="bookings__head">
+                                <h2 class="bookings__title">My Bookings</h2>
+                                <p class="bookings__subtitle"><?= count($bookingsList) ?> <?= count($bookingsList) === 1 ? 'reservation' : 'reservations' ?></p>
+                            </div>
 
-                <main class="main empty-state">
-                    <div class="empty-state__content">
-                        <h3 class="empty-state__title">No upcoming bookings</h3>
-                        <p class="empty-state__subtitle">You don't have any bookings yet.</p>
-                        <a href="<?= DEFAULT_URL ?>public/Home/index" class="empty-state__btn">Explore stays</a>
-                    </div>
-                </main>
+                            <ul class="booking-list">
+                                <?php foreach ($bookingsList as $b):
+                                    $nights = (int) (new DateTimeImmutable($b['start_date']))
+                                        ->diff(new DateTimeImmutable($b['end_date']))->days;
+                                    $fmt = static fn(string $iso): string =>
+                                        (new DateTimeImmutable($iso))->format('M j, Y');
+                                    $status = $b['status'];
+                                    $statusLabel = ucwords(str_replace('_', ' ', $status));
+                                ?>
+                                    <li class="booking-item">
+                                        <a class="booking-item__media" href="<?= DEFAULT_URL ?>public/Property/showOne?id=<?= (int) $b['property_id'] ?>">
+                                            <?php if (!empty($b['property_image'])): ?>
+                                                <img src="<?= DEFAULT_URL ?>assets/<?= htmlspecialchars($b['property_image']) ?>" alt="<?= htmlspecialchars($b['property_title']) ?>">
+                                            <?php else: ?>
+                                                <span class="booking-item__media--ph" aria-hidden="true"></span>
+                                            <?php endif; ?>
+                                        </a>
+
+                                        <div class="booking-item__body">
+                                            <div class="booking-item__top">
+                                                <div>
+                                                    <h3 class="booking-item__name"><?= htmlspecialchars($b['property_title']) ?></h3>
+                                                    <?php if (!empty($b['property_city'])): ?>
+                                                        <p class="booking-item__location"><?= htmlspecialchars($b['property_city']) ?></p>
+                                                    <?php endif; ?>
+                                                </div>
+                                                <span class="booking-status booking-status--<?= htmlspecialchars($status) ?>"><?= htmlspecialchars($statusLabel) ?></span>
+                                            </div>
+
+                                            <div class="booking-item__meta">
+                                                <span class="booking-item__dates">
+                                                    <?= htmlspecialchars($fmt($b['start_date'])) ?> &ndash; <?= htmlspecialchars($fmt($b['end_date'])) ?>
+                                                    <small>· <?= $nights ?> <?= $nights === 1 ? 'night' : 'nights' ?></small>
+                                                </span>
+                                                <span class="booking-item__guests"><?= (int) $b['guests'] ?> <?= (int) $b['guests'] === 1 ? 'guest' : 'guests' ?></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="booking-item__aside">
+                                            <span class="booking-item__price"><?= number_format((float) $b['total_price'], 2) ?> &euro;</span>
+                                            <?php if ($status === 'awaiting_payment'): ?>
+                                                <a class="booking-item__action" href="<?= DEFAULT_URL ?>public/Payment/show?booking_id=<?= (int) $b['id'] ?>">Complete payment</a>
+                                            <?php endif; ?>
+                                        </div>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </section>
+                    </main>
+                <?php endif; ?>
             <?php
                 break;
 
             case 'wishlist':
             ?>
-                <main class="main empty-state">
-                    <div class="empty-state__content">
-                        <h3 class="empty-state__title">No items in your wishlist</h3>
-                        <p class="empty-state__subtitle">Looks empty… for now.</p>
-                        <a href="<?= DEFAULT_URL ?>public/Home/index" class="empty-state__btn">Explore stays</a>
-                    </div>
-                </main>
+                <?php if (empty($wishlistList)): ?>
+                    <main class="main empty-state">
+                        <div class="empty-state__content">
+                            <h3 class="empty-state__title">No items in your wishlist</h3>
+                            <p class="empty-state__subtitle">Looks empty… for now.</p>
+                            <a href="<?= DEFAULT_URL ?>public/Home/index" class="empty-state__btn">Explore stays</a>
+                        </div>
+                    </main>
+                <?php else: ?>
+                    <main class="main">
+                        <section class="wishlist">
+                            <div class="wishlist__head">
+                                <h2 class="wishlist__title">Wishlist</h2>
+                                <p class="wishlist__subtitle"><?= count($wishlistList) ?> saved <?= count($wishlistList) === 1 ? 'property' : 'properties' ?></p>
+                            </div>
+
+                            <div class="wishlist-grid">
+                                <?php foreach ($wishlistList as $w): ?>
+                                    <article class="wish-card" data-property-id="<?= (int) $w['id'] ?>">
+                                        <a class="wish-card__media" href="<?= DEFAULT_URL ?>public/Property/showOne?id=<?= (int) $w['id'] ?>">
+                                            <?php if (!empty($w['image'])): ?>
+                                                <img src="<?= DEFAULT_URL ?>assets/<?= htmlspecialchars($w['image']) ?>" alt="<?= htmlspecialchars($w['title']) ?>">
+                                            <?php else: ?>
+                                                <span class="wish-card__media--ph" aria-hidden="true"></span>
+                                            <?php endif; ?>
+                                        </a>
+
+                                        <button type="button" class="wish-card__remove" data-id="<?= (int) $w['id'] ?>" aria-label="Remove from wishlist" title="Remove from wishlist">
+                                            <img src="<?= DEFAULT_URL ?>assets/img/trash.svg" alt="">
+                                        </button>
+
+                                        <div class="wish-card__body">
+                                            <a class="wish-card__name" href="<?= DEFAULT_URL ?>public/Property/showOne?id=<?= (int) $w['id'] ?>"><?= htmlspecialchars($w['title']) ?></a>
+                                            <?php if (!empty($w['city'])): ?>
+                                                <p class="wish-card__location"><?= htmlspecialchars($w['city']) ?></p>
+                                            <?php endif; ?>
+                                            <p class="wish-card__price"><?= number_format((float) $w['price_per_night'], 2) ?> &euro; <span>/ night</span></p>
+                                        </div>
+                                    </article>
+                                <?php endforeach; ?>
+                            </div>
+                        </section>
+                    </main>
+
+                    <script>
+                        // Per-card wishlist removal. main.js only binds the first
+                        // .fav-icon, so the grid handles its own clicks via delegation.
+                        document.querySelector('.wishlist-grid')?.addEventListener('click', async (e) => {
+                            const btn = e.target.closest('.wish-card__remove');
+                            if (!btn) return;
+
+                            const card = btn.closest('.wish-card');
+                            const propertyId = btn.dataset.id;
+                            btn.disabled = true;
+
+                            try {
+                                const res = await fetch('<?= DEFAULT_URL ?>public/Wishlist/toggle', {
+                                    method: 'POST',
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        'X-Requested-With': 'XMLHttpRequest'
+                                    },
+                                    body: JSON.stringify({ propertyId })
+                                });
+                                const data = await res.json();
+
+                                if (data.status === 'success' && data.remove === true) {
+                                    card.remove();
+                                    showToast('success', 'Removed from wishlist');
+
+                                    if (!document.querySelector('.wish-card')) {
+                                        location.reload(); // fall back to the empty state
+                                    }
+                                } else {
+                                    btn.disabled = false;
+                                    showToast('error', 'Could not update your wishlist');
+                                }
+                            } catch (err) {
+                                btn.disabled = false;
+                                showToast('error', 'Could not update your wishlist');
+                            }
+                        });
+                    </script>
+                <?php endif; ?>
             <?php
                 break;
 
@@ -226,7 +361,7 @@
                         </div>
 
                         <!-- Personal info form -->
-                        <form action="/profile/update" method="POST" enctype="multipart/form-data" class="settings-form" id="profile-form">
+                        <form action="/profile/update" method="POST" enctype="multipart/form-data" class="settings-form" id="profile-form" onsubmit="return false;">
                             <?php /* CSRF token if your framework uses one */ ?>
                             <!-- <input type="hidden" name="_token" value="<?= /* csrf_token() */ '' ?>"> -->
                             <?php
@@ -281,7 +416,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn--primary btn--save">Save Changes</button>
+                            <button type="button" class="btn btn--primary btn--save" disabled title="Profile editing is coming soon">Save Changes (coming soon)</button>
                         </form>
                     </section>
 
@@ -292,7 +427,7 @@
                         <h3 class="settings-section__title settings-section__title--md">Password</h3>
                         <p class="settings-section__subtitle">Modify your current password.</p>
 
-                        <form action="<?= DEFAULT_URL ?>/profile/password" method="POST" class="settings-form" id="password-form">
+                        <form action="<?= DEFAULT_URL ?>/profile/password" method="POST" class="settings-form" id="password-form" onsubmit="return false;">
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label class="form-label" for="current_password">Current Password</label>
@@ -327,7 +462,7 @@
                     <section class="settings-section">
                         <h3 class="settings-section__title settings-section__title--md">Preferences</h3>
 
-                        <form action="/profile/preferences" method="POST" class="settings-form" id="preferences-form">
+                        <form action="/profile/preferences" method="POST" class="settings-form" id="preferences-form" onsubmit="return false;">
 
                             <!-- Language -->
                             <div class="form-group form-group--inline">

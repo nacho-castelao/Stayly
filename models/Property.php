@@ -201,21 +201,21 @@ class Property
         return $stmt->fetchAll();
     }
 
-    public function getBySearch(string $search)
+    public function getBySearch(string $search): array
     {
         $search = '%'.$search.'%';
 
         $sql = "
             SELECT p.*, i.image_url AS url
             FROM properties p
-            INNER JOIN property_images i ON i.property_id = p.id 
+            INNER JOIN property_images i ON i.property_id = p.id
             WHERE i.is_main = 1
-            AND p.city LIKE ?
+            AND (p.title LIKE ? OR p.city LIKE ? OR p.address LIKE ?)
             ORDER BY p.id DESC
         ";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$search]);
+        $stmt->execute([$search, $search, $search]);
 
         return $stmt->fetchAll();
     }
@@ -295,6 +295,78 @@ class Property
         $stmt->execute([$id]);
 
         return $stmt->fetch();
+    }
+
+    /**
+     * True when the host has blocked any day within the requested stay.
+     *
+     * Availability is opt-out: a day is bookable unless an `availability` row
+     * explicitly marks it `is_available = 0`. The absence of a row means open
+     * (matching the column default), so newly created properties — which have
+     * no availability rows — are fully bookable. The range is half-open: the
+     * check-out day is not occupied, so it is not required to be open.
+     *
+     * This is only the host-block layer; existing reservations are checked
+     * separately via Booking::hasOverlap().
+     */
+    public function isRangeBlocked(string $startDate, string $endDate): bool
+    {
+        $sql = "
+            SELECT COUNT(*) AS total
+            FROM availability
+            WHERE property_id = :property_id
+              AND is_available = 0
+              AND date >= :start_date
+              AND date < :end_date
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([
+            'property_id' => $this->getId(),
+            'start_date' => $startDate,
+            'end_date' => $endDate,
+        ]);
+
+        return (int) $stmt->fetch()['total'] > 0;
+    }
+
+    /**
+     * Future unavailability for this property, for greying out the datepicker.
+     * Returns active bookings as half-open [start_date, end_date) ranges (the
+     * check-out day stays selectable, so back-to-back stays remain possible)
+     * plus host-blocked individual days. Past dates are omitted — the client
+     * blocks those already. This is a UX hint; Booking::hasOverlap() and
+     * isRangeBlocked() remain the authority at submit time.
+     *
+     * @return array{booked: array<int,array{start_date:string,end_date:string}>, blocked: array<int,string>}
+     */
+    public function getUnavailability(): array
+    {
+        $id = $this->getId();
+
+        $stmt = $this->db->prepare("
+            SELECT start_date, end_date
+            FROM bookings
+            WHERE property_id = ?
+              AND status <> 'cancelled'
+              AND end_date > CURDATE()
+            ORDER BY start_date
+        ");
+        $stmt->execute([$id]);
+        $booked = $stmt->fetchAll();
+
+        $stmt = $this->db->prepare("
+            SELECT date
+            FROM availability
+            WHERE property_id = ?
+              AND is_available = 0
+              AND date >= CURDATE()
+            ORDER BY date
+        ");
+        $stmt->execute([$id]);
+        $blocked = array_column($stmt->fetchAll(), 'date');
+
+        return ['booked' => $booked, 'blocked' => $blocked];
     }
 
     public function insertOne(): void

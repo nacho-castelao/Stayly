@@ -23,6 +23,25 @@ class UserController extends BaseController
         $email = trim($_POST['email'] ?? '');
         $psw   = $_POST['psw'] ?? '';
 
+        // Server-side validation: name present, valid email, password >= 8 chars.
+        if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($psw) < 8) {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'Enter a name, a valid email, and a password of at least 8 characters.'
+            ];
+            header("Location: " . DEFAULT_URL . "public/Home/showRegister?error=1");
+            exit;
+        }
+
+        if ($this->userModel->emailExists($email)) {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'That email is already registered. Try logging in instead.'
+            ];
+            header("Location: " . DEFAULT_URL . "public/Home/showRegister?error=1");
+            exit;
+        }
+
         $registered = $this->userModel->register($name, $email, $psw);
 
         if ($registered) {
@@ -58,6 +77,9 @@ class UserController extends BaseController
         $user = $this->userModel->login($email, $psw);
 
         if ($user) {
+            // New session id on privilege change, to thwart session fixation.
+            session_regenerate_id(true);
+
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user'] = $user;
 
@@ -201,11 +223,21 @@ class UserController extends BaseController
         $deleteError = (int) ($_GET['deleteError'] ?? 0);
         $bookingsCount = $this->userModel->getBookingsCount($id);
         $wishlistCount = $this->userModel->getWishlistCount($id);
+        $bookingsList = $this->userModel->getBookings($id);
+        $wishlistList = $this->userModel->getWishlist($id);
+
+        // Resolve the avatar to a path relative to /assets. Falls back to the
+        // generic user icon when the account has no uploaded picture.
+        $avatarFile = $this->userModel->getAvatarUrl($id);
+        $avatar = $avatarFile ? 'img/users/' . $avatarFile : 'img/User.svg';
 
         $this->view('user/dashboard',[
             'user' => $_SESSION['user'],
+            'avatar' => $avatar,
             'bookings' => $bookingsCount,
+            'bookingsList' => $bookingsList,
             'wishlist' => $wishlistCount,
+            'wishlistList' => $wishlistList,
             'page' => $page,
             'deleteError' => $deleteError
         ]);

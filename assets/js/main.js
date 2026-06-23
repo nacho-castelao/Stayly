@@ -5,7 +5,7 @@ import './modal.js';
 import "./toast.js";
 import "./wizard.js";
 
-const BASE_URL = "/stayly";
+const BASE_URL = window.APP_BASE_URL ?? "/stayly";
 
 const arriveCol = document.querySelector(".date-col.arrive");
 const endCol = document.querySelector(".date-col.end");
@@ -87,53 +87,31 @@ favIcon?.addEventListener("click", function (e) {
 const headerInput = document.querySelector('#search');
 const cardsContainer = document.querySelector(".cards-container");
 
-if (headerInput && cardsContainer) {
-  headerInput.addEventListener('input', (e) => {
-    fetch(`${BASE_URL}/public/Home/showByInput`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json", //"The data I´m gonna send you is in JSON format"
-        "X-Requested-With": "XMLHttpRequest",
-      },
-      body: JSON.stringify({
-        search: e.target.value, //Sending the value of the input
-      }),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Server returned ${response.status}`);
-        }
+// Escape DB-supplied strings before they go into innerHTML below, so a host
+// can't inject markup/script through a property title, city, etc.
+function escapeHtml(value) {
+  return String(value ?? "").replace(
+    /[&<>"']/g,
+    (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c])
+  );
+}
 
-        return response.json();
-      })
-      .then((data) => {
-        if (!Array.isArray(data)) {
-          throw new Error("Expected an array");
-        }
-
-        if (data.length === 0) {
-          cardsContainer.innerHTML = "<p>No results found</p>";
-          return;
-        }
-
-        cardsContainer.innerHTML = ""; //Clean the container.
-
-        data.forEach((element) => {
-          cardsContainer.innerHTML += ` <div class="property-card">
+function buildPropertyCard(element) {
+  return ` <div class="property-card">
                 <div class="property-image">
-                    <img src="${BASE_URL}/assets/${element.url}" alt="Property picture">
+                    <img src="${BASE_URL}/assets/${escapeHtml(element.url)}" alt="Property picture">
                 </div>
 
                 <div class="property-info">
 
-                    <h4 class="property-title">${element.title}</h4>
+                    <h4 class="property-title">${escapeHtml(element.title)}</h4>
 
                     <p class="property-location">
                         <svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M3.66667 6.84C3.66654 7.08806 3.59721 7.33116 3.46648 7.54197C3.33575 7.75278 3.14881 7.92295 2.92667 8.03333L1.74 8.63333C1.51786 8.74372 1.33091 8.91388 1.20019 9.1247C1.06946 9.33551 1.00013 9.57861 1 9.82667V10.3333C1 10.5101 1.07024 10.6797 1.19526 10.8047C1.32029 10.9298 1.48986 11 1.66667 11H9.66667C9.84348 11 10.013 10.9298 10.1381 10.8047C10.2631 10.6797 10.3333 10.5101 10.3333 10.3333V9.82667C10.3332 9.57861 10.2639 9.33551 10.1331 9.1247C10.0024 8.91388 9.81547 8.74372 9.59333 8.63333L8.40667 8.03333C8.18453 7.92295 7.99758 7.75278 7.86685 7.54197C7.73613 7.33116 7.6668 7.08806 7.66667 6.84V4.33333C7.66667 4.15652 7.7369 3.98695 7.86193 3.86193C7.98695 3.7369 8.15652 3.66667 8.33333 3.66667C8.68696 3.66667 9.02609 3.52619 9.27614 3.27614C9.52619 3.02609 9.66667 2.68696 9.66667 2.33333C9.66667 1.97971 9.52619 1.64057 9.27614 1.39052C9.02609 1.14048 8.68696 1 8.33333 1H3C2.64638 1 2.30724 1.14048 2.05719 1.39052C1.80714 1.64057 1.66667 1.97971 1.66667 2.33333C1.66667 2.68696 1.80714 3.02609 2.05719 3.27614C2.30724 3.52619 2.64638 3.66667 3 3.66667C3.17681 3.66667 3.34638 3.7369 3.4714 3.86193C3.59643 3.98695 3.66667 4.15652 3.66667 4.33333V6.84Z" stroke="#3A3A3A" stroke-linecap="round" stroke-linejoin="round" />
                             <path d="M5.6665 11V14.3333" stroke="#3A3A3A" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
-                        ${element.city}|${element.address}
+                        ${escapeHtml(element.city)}|${escapeHtml(element.address)}
                     </p>
 
                     <div class="property-details">
@@ -184,7 +162,38 @@ if (headerInput && cardsContainer) {
                 </div>
               </div>
             `;
-        });
+}
+
+if (headerInput && cardsContainer) {
+  headerInput.addEventListener('input', (e) => {
+    fetch(`${BASE_URL}/public/Home/showByInput`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      body: JSON.stringify({
+        search: e.target.value,
+      }),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Server returned ${response.status}`);
+        }
+
+        return response.json();
+      })
+      .then((data) => {
+        if (!Array.isArray(data)) {
+          throw new Error("Expected an array");
+        }
+
+        if (data.length === 0) {
+          cardsContainer.innerHTML = "<p>No results found</p>";
+          return;
+        }
+
+        cardsContainer.innerHTML = data.map(buildPropertyCard).join("");
       })
       .catch((err) => {
         console.error("Search failed:", err);
@@ -192,7 +201,4 @@ if (headerInput && cardsContainer) {
       });
   });
 }
-
-
-
 

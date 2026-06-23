@@ -3,7 +3,7 @@
 $clientID = $_ENV['GOOGLE_CLIENT_ID'] ?? null;
 $clientSecret = $_ENV['GOOGLE_CLIENT_SECRET'] ?? null;
 
-define("DEFAULT_URL","http://localhost/Stayly/");
+define("DEFAULT_URL", $_ENV['APP_URL'] ?? "http://localhost/Stayly/");
 define("DEFAULT_CONTROLLER","HomeController");
 define("DEFAULT_ACTION","index");
 define("GOOGLE_CLIENT_ID",$clientID);

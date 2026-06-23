@@ -23,6 +23,25 @@ class UserController extends BaseController
         $email = trim($_POST['email'] ?? '');
         $psw   = $_POST['psw'] ?? '';
 
+        // Server-side validation: name present, valid email, password >= 8 chars.
+        if ($name === '' || !filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($psw) < 8) {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'Enter a name, a valid email, and a password of at least 8 characters.'
+            ];
+            header("Location: " . DEFAULT_URL . "public/Home/showRegister?error=1");
+            exit;
+        }
+
+        if ($this->userModel->emailExists($email)) {
+            $_SESSION['toast'] = [
+                'type' => 'error',
+                'message' => 'That email is already registered. Try logging in instead.'
+            ];
+            header("Location: " . DEFAULT_URL . "public/Home/showRegister?error=1");
+            exit;
+        }
+
         $registered = $this->userModel->register($name, $email, $psw);
 
         if ($registered) {

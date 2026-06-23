@@ -34,12 +34,21 @@ class PropertyController{
     }
 
     public function showOne(){
-        $id = $_GET['id'] ?? false;
+        $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
 
         $userId = $_SESSION['user_id'] ?? false;
-        $this->propertyModel->setId($id);
 
-        $prop = $this->propertyModel->getOne();
+        $this->propertyModel->setId($id ?: 0);
+        $prop = $id ? $this->propertyModel->getOne() : false;
+
+        // Unknown / non-numeric id: bounce home with a message instead of
+        // fataling on $prop['host_id'] below.
+        if (!$prop) {
+            $_SESSION['toast'] = ['type' => 'error', 'message' => 'That property could not be found.'];
+            header('Location: ' . DEFAULT_URL . 'public/Home/index');
+            exit;
+        }
+
         $images = $this->propertyModel->getImages();
         $amenities = $this->propertyModel->getAmenities();
         $host = $this->propertyModel->getHostInfo();

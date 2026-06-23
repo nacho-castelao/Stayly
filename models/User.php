@@ -110,6 +110,14 @@ class User
         }
     }
 
+    public function emailExists(string $email): bool
+    {
+        $stmt = $this->db->prepare("SELECT 1 FROM users WHERE email = ? LIMIT 1");
+        $stmt->execute([$email]);
+
+        return (bool) $stmt->fetchColumn();
+    }
+
     public function createGoogleUser(string $googleId, string $name, string $email)
     {
         $sql = "

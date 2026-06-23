@@ -361,7 +361,7 @@
                         </div>
 
                         <!-- Personal info form -->
-                        <form action="/profile/update" method="POST" enctype="multipart/form-data" class="settings-form" id="profile-form">
+                        <form action="/profile/update" method="POST" enctype="multipart/form-data" class="settings-form" id="profile-form" onsubmit="return false;">
                             <?php /* CSRF token if your framework uses one */ ?>
                             <!-- <input type="hidden" name="_token" value="<?= /* csrf_token() */ '' ?>"> -->
                             <?php
@@ -416,7 +416,7 @@
                                 </div>
                             </div>
 
-                            <button type="submit" class="btn btn--primary btn--save">Save Changes</button>
+                            <button type="button" class="btn btn--primary btn--save" disabled title="Profile editing is coming soon">Save Changes (coming soon)</button>
                         </form>
                     </section>
 
@@ -427,7 +427,7 @@
                         <h3 class="settings-section__title settings-section__title--md">Password</h3>
                         <p class="settings-section__subtitle">Modify your current password.</p>
 
-                        <form action="<?= DEFAULT_URL ?>/profile/password" method="POST" class="settings-form" id="password-form">
+                        <form action="<?= DEFAULT_URL ?>/profile/password" method="POST" class="settings-form" id="password-form" onsubmit="return false;">
                             <div class="form-grid">
                                 <div class="form-group">
                                     <label class="form-label" for="current_password">Current Password</label>
@@ -462,7 +462,7 @@
                     <section class="settings-section">
                         <h3 class="settings-section__title settings-section__title--md">Preferences</h3>
 
-                        <form action="/profile/preferences" method="POST" class="settings-form" id="preferences-form">
+                        <form action="/profile/preferences" method="POST" class="settings-form" id="preferences-form" onsubmit="return false;">
 
                             <!-- Language -->
                             <div class="form-group form-group--inline">

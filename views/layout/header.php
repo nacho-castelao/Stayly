@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/calendar.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
+    <script>window.APP_BASE_URL = "<?= rtrim(parse_url(DEFAULT_URL, PHP_URL_PATH), '/') ?>";</script>
     <script src="<?= DEFAULT_URL ?>assets/js/calendar.js" defer></script>
     <script type="module" src="<?= DEFAULT_URL ?>assets/js/main.js" defer></script>
 

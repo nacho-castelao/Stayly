@@ -5,7 +5,7 @@ import './modal.js';
 import "./toast.js";
 import "./wizard.js";
 
-const BASE_URL = "/stayly";
+const BASE_URL = window.APP_BASE_URL ?? "/stayly";
 
 const arriveCol = document.querySelector(".date-col.arrive");
 const endCol = document.querySelector(".date-col.end");

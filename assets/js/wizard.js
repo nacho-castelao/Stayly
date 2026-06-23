@@ -122,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
       
       if (seconds <= 0) {
         clearInterval(interval);
-        window.location.href = "http://localhost/stayly/public";
+        window.location.href = (window.APP_BASE_URL ?? "/stayly") + "/public";
       }
     }, 1000);
   }

@@ -16,7 +16,7 @@ class PaymentController extends BaseController
         $this->paymentModel = new Payment();
     }
 
-    public function index()
+    public function index(): void
     {
     }
 
@@ -24,7 +24,7 @@ class PaymentController extends BaseController
      * Payment summary for an awaiting_payment booking. Reached from
      * BookingController::create after a stay is reserved.
      */
-    public function show()
+    public function show(): void
     {
         $this->requireAuth('index.php');
 
@@ -59,7 +59,7 @@ class PaymentController extends BaseController
      * record it as paid and confirm the booking in one transaction so the two
      * never drift apart.
      */
-    public function process()
+    public function process(): void
     {
         if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
             $this->redirect('public/index.php');
@@ -102,7 +102,7 @@ class PaymentController extends BaseController
      * still awaiting payment. Redirects (which exits) on any failure, so a
      * returned value is always a valid, payable booking owned by the user.
      */
-    private function loadOwnPayableBooking($bookingId): array
+    private function loadOwnPayableBooking(int|false|null $bookingId): array
     {
         if (!$bookingId) {
             $this->loadToast('error', 'Booking not found.');

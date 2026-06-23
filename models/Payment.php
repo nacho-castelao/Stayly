@@ -7,54 +7,54 @@ class Payment
     private float $amount;
     private string $status = 'initiated';
     private ?string $provider = null;
-    private $db;
+    private PDO $db;
 
     public function __construct()
     {
         $this->db = Database::connect();
     }
 
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function getBooking_id()
+    public function getBooking_id(): int
     {
         return $this->booking_id;
     }
 
-    public function setBooking_id($booking_id): void
+    public function setBooking_id(int $booking_id): void
     {
         $this->booking_id = $booking_id;
     }
 
-    public function getAmount()
+    public function getAmount(): float
     {
         return $this->amount;
     }
 
-    public function setAmount($amount): void
+    public function setAmount(float $amount): void
     {
         $this->amount = $amount;
     }
 
-    public function getStatus()
+    public function getStatus(): string
     {
         return $this->status;
     }
 
-    public function setStatus($status): void
+    public function setStatus(string $status): void
     {
         $this->status = $status;
     }
 
-    public function getProvider()
+    public function getProvider(): ?string
     {
         return $this->provider;
     }
 
-    public function setProvider($provider): void
+    public function setProvider(?string $provider): void
     {
         $this->provider = $provider;
     }

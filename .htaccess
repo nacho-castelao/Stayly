@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# Bare domain -> the app's front controller
+RewriteRule ^$ /public/ [L,R=302]
+
+# Block hidden files/dirs (.env, .git) but allow Let's Encrypt's ACME challenge
+RewriteRule (^|/)\.(?!well-known) - [F]
+
+# Block source & config directories that must never be web-served
+RewriteRule ^(core|models|controllers|views|database)(/|$) - [F]
+RewriteRule ^vendor(/|$) - [F]
+
+# Block Composer metadata
+RewriteRule ^composer\.(json|lock)$ - [F]

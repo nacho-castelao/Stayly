@@ -164,7 +164,7 @@ CREATE TABLE `users` (
   `email` varchar(150) NOT NULL,
   `google_id` varchar(255) DEFAULT NULL,
   `biography` text DEFAULT NULL,
-  `password_hash` varchar(255) NOT NULL,
+  `password_hash` varchar(255) DEFAULT NULL,
   `role` enum('guest','host','admin') NOT NULL DEFAULT 'guest',
   `avatar_url` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),

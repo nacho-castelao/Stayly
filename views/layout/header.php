@@ -38,28 +38,28 @@
 
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="drop-down drop-down-logged">
-                    <a href="<?= DEFAULT_URL ?>public/User/showDashboard?page=dashboard">
+                    <a href="<?= DEFAULT_URL ?>public/User/showDashboard?page=settings">
                         <img src="<?= DEFAULT_URL ?>assets/img/ArrowDoor.svg" alt="Profile settings">
 
                         <span>Profile settings</span>
                     </a>
-                    <a href="">
+                    <a href="<?= DEFAULT_URL ?>public/User/showDashboard?page=bookings">
                         <img src="<?= DEFAULT_URL ?>assets/img/calendar.svg" alt="My Bookings">
 
                         <span>My Bookings</span>
                     </a>
 
-                    <a href="">
+                    <a href="<?= DEFAULT_URL ?>public/User/showDashboard?page=wishlist">
                         <img src="<?= DEFAULT_URL ?>assets/img/heart (3).svg" alt="Wishlist">
 
                         <span>Wishlist</span>
                     </a>
-                    <a href="">
+                    <a href="<?= DEFAULT_URL ?>public/User/showDashboard?page=messages">
                         <img src="<?= DEFAULT_URL ?>assets/img/message-square (1).svg" alt="Messages">
 
                         <span>Messages</span>
                     </a>
-                    <a href="">
+                    <a href="<?= DEFAULT_URL ?>public/User/showDashboard?page=payments">
                         <img src="<?= DEFAULT_URL ?>assets/img/credit-card (2).svg" alt="Payments">
 
                         <span>Payments</span>

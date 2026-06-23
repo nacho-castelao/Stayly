@@ -3,6 +3,7 @@
 require_once BASE_PATH . '/controllers/BaseController.php';
 require_once BASE_PATH . '/models/Booking.php';
 require_once BASE_PATH . '/models/Payment.php';
+require_once BASE_PATH . '/models/Property.php';
 
 class PaymentController extends BaseController
 {
@@ -29,6 +30,22 @@ class PaymentController extends BaseController
 
         $bookingId = filter_input(INPUT_GET, 'booking_id', FILTER_VALIDATE_INT);
         $booking = $this->loadOwnPayableBooking($bookingId);
+
+        // Enrich the summary with the property and its cover image so the
+        // checkout shows what's being booked, not just raw dates.
+        $propertyModel = new Property();
+        $propertyModel->setId((int) $booking['property_id']);
+        $property = $propertyModel->getOne() ?: [];
+
+        $mainImage = null;
+        $images = $propertyModel->getImages();
+        while ($img = $images->fetch()) {
+            if ((int) $img['is_main'] === 1) {
+                $mainImage = $img['image_url'];
+                break;
+            }
+            $mainImage = $mainImage ?? $img['image_url'];
+        }
 
         require_once BASE_PATH . '/views/layout/header.php';
         require_once BASE_PATH . '/views/payment/show.php';

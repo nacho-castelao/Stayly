@@ -1,0 +1,289 @@
+/* Payment / checkout page (views/payment/show.php).
+   Uses the design tokens defined in style.css (:root). */
+
+.checkout {
+  max-width: 1040px;
+  margin: 0 auto;
+  padding: 32px 24px 72px;
+  font-family: var(--font-family);
+  color: var(--text-primary);
+}
+
+.checkout__back {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: var(--font-size-body-small);
+  color: var(--text-tertiary);
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: color 0.15s;
+}
+
+.checkout__back:hover {
+  color: var(--primary-500);
+}
+
+.checkout__head {
+  margin-bottom: 28px;
+}
+
+.checkout__head h1 {
+  font-family: "Poppins-SemiBold", var(--font-family);
+  font-size: 30px;
+  line-height: 1.2;
+  letter-spacing: var(--letter-spacing-h1);
+  margin: 0 0 6px;
+}
+
+.checkout__sub {
+  margin: 0;
+  color: var(--text-tertiary);
+  font-size: var(--font-size-body);
+}
+
+.checkout__grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 32px;
+  align-items: start;
+}
+
+/* ---------- Payment panel ---------- */
+
+.pay-card {
+  background: var(--bg-cards);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(26, 26, 26, 0.04);
+}
+
+.pay-card__status {
+  margin-bottom: 18px;
+}
+
+.pay-card__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--warning-subtle);
+  color: #92600a;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  padding: 6px 12px;
+  border-radius: 999px;
+}
+
+.pay-card__title {
+  font-family: "Poppins-SemiBold", var(--font-family);
+  font-size: 20px;
+  margin: 0 0 18px;
+}
+
+/* Faux payment element standing in for a real provider's iframe */
+.pay-card__placeholder {
+  border: 1px dashed var(--border-default);
+  border-radius: 12px;
+  padding: 18px;
+  background: var(--bg-hover);
+  margin-bottom: 22px;
+}
+
+.pay-field {
+  height: 44px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #efe9e1 0%, #f6f1ea 50%, #efe9e1 100%);
+  border: 1px solid var(--border-subtle);
+}
+
+.pay-field--lg {
+  margin-bottom: 12px;
+}
+
+.pay-field-row {
+  display: flex;
+  gap: 12px;
+}
+
+.pay-field-row .pay-field {
+  flex: 1;
+}
+
+.pay-field--sm {
+  max-width: 120px;
+}
+
+.pay-card__note {
+  margin: 14px 0 0;
+  font-size: var(--font-size-caption);
+  color: var(--text-tertiary);
+  text-align: center;
+}
+
+.pay-card__form {
+  margin: 0;
+}
+
+.pay-card__submit {
+  width: 100%;
+  font-family: "Poppins-Medium", var(--font-family);
+  font-size: var(--font-size-body-large);
+  padding: 16px 24px;
+}
+
+.pay-card__trust {
+  list-style: none;
+  margin: 22px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+}
+
+.pay-card__trust li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: var(--font-size-body-small);
+  color: var(--text-secondary);
+}
+
+.pay-card__tick {
+  display: inline-grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: var(--success-subtle);
+  color: var(--success-primary);
+  font-size: 12px;
+}
+
+/* ---------- Summary card ---------- */
+
+.checkout__aside {
+  position: sticky;
+  top: 24px;
+}
+
+.summary-card {
+  background: var(--bg-cards);
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 4px 20px rgba(26, 26, 26, 0.04);
+}
+
+.summary-card__property {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.summary-card__img {
+  width: 96px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 12px;
+  flex-shrink: 0;
+}
+
+.summary-card__img--ph {
+  background: var(--bg-section);
+}
+
+.summary-card__property-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.summary-card__name {
+  font-family: "Poppins-Medium", var(--font-family);
+  font-size: var(--font-size-body);
+  line-height: 1.3;
+}
+
+.summary-card__location {
+  font-size: var(--font-size-body-small);
+  color: var(--text-tertiary);
+}
+
+.summary-card__divider {
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 20px 0;
+}
+
+.summary-card__trip,
+.summary-card__price {
+  margin: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.summary-card__row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+}
+
+.summary-card__row dt {
+  color: var(--text-tertiary);
+  font-size: var(--font-size-body-small);
+}
+
+.summary-card__row dd {
+  margin: 0;
+  font-size: var(--font-size-body-small);
+  color: var(--text-primary);
+  text-align: right;
+  font-weight: var(--font-weight-medium);
+}
+
+.summary-card__total {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  font-family: "Poppins-SemiBold", var(--font-family);
+  font-size: var(--font-size-body-large);
+}
+
+.summary-card__total small {
+  color: var(--text-tertiary);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--font-size-caption);
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 880px) {
+  .checkout__grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  /* Put the price summary first on narrow screens */
+  .checkout__aside {
+    position: static;
+    order: -1;
+  }
+}
+
+@media (max-width: 480px) {
+  .checkout {
+    padding: 24px 16px 56px;
+  }
+
+  .checkout__head h1 {
+    font-size: 24px;
+  }
+
+  .pay-card,
+  .summary-card {
+    padding: 20px 18px;
+  }
+}

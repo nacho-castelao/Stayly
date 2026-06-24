@@ -268,12 +268,24 @@ input[type="submit"] {
   gap: 20px;
 }
 
+/* Keep the magnifier + calendar icons at their natural size; only the input
+   flexes. Without this the icons would shrink before the text field does. */
+#headerForm > img {
+  flex-shrink: 0;
+}
+
 #headerForm input {
   border: none;
   color: var(--text-primary);
   font-size: var(--font-size-body);
   font-family: var(--font-family);
   padding-left: 30px;
+  /* Let the field absorb the row width and shrink below its intrinsic
+     min-content size; otherwise the input refuses to shrink and pushes the
+     calendar icon past #headerForm's right border → horizontal scroll on
+     narrow screens. */
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 #headerForm input:focus {
@@ -296,7 +308,13 @@ input::placeholder {
 .drop-down {
   position: absolute;
   top: 40px;
-  left: 0;
+  /* Anchor to the right edge of the right-aligned .options cluster so the
+     200px panel opens leftward (toward the page) and can't spill past the
+     viewport at desktop widths where the header padding is too small to
+     absorb it. Previously anchored left:0, which overflowed → horizontal
+     scroll. The same flip was already applied below ~1024px. */
+  right: 0;
+  left: auto;
   width: 200px;
   display: flex;
   flex-direction: column;
@@ -1137,14 +1155,6 @@ footer .media a:hover {
   .options {
     order: 2;
     margin-left: auto;
-  }
-
-  /* The account dropdown is anchored to the left of the right-aligned
-     options cluster; flip it to the right edge so its 200px panel can't
-     spill past the viewport when opened on a phone. */
-  .drop-down {
-    left: auto;
-    right: 0;
   }
 }
 

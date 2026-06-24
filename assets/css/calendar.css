@@ -126,7 +126,8 @@
 }
 
 .cal-cell-inner {
-  width: 50px;
+  width: 100%;
+  max-width: 50px;
   height: 44px;
   border-radius: 6px;
   display: flex;
@@ -278,4 +279,41 @@
 .cal-status strong {
   color: var(--primary-800);
   font-weight: var(--font-weight-medium);
+}
+
+/* ============================================================
+   RESPONSIVE  —  date-range picker
+   On narrow phones anchor the popover to the trigger field's width
+   instead of a centred 430px card so it can't overflow the viewport.
+   ============================================================ */
+@media (max-width: 480px) {
+  .cal-popover {
+    left: 0;
+    right: 0;
+    transform: none;
+  }
+
+  .cal-card {
+    width: 100%;
+  }
+
+  .cal-header {
+    padding: 12px 10px 10px;
+    gap: 6px;
+  }
+
+  .month-pills {
+    gap: 6px;
+  }
+
+  .nav-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .cal-days-header,
+  .cal-grid {
+    padding-left: 4px;
+    padding-right: 4px;
+  }
 }

@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>User Settings</title>
     <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/style.css" />
     <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/dashboard.css" />

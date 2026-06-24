@@ -862,11 +862,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
 }
 
-/* Header picker floats over the home grid/title, so it needs to read as a
-   solid, opaque panel — give the popover its own surface + shadow and lift it
-   above page content so nothing shows through behind the (transparent) day
-   cells. Scoped to the header so the property page picker is untouched. */
-#header-cal-popover {
+/* Both pickers float over page content (the home title/grid; the booking
+   form's Guests select + Reserve button), so each needs to read as a solid,
+   opaque panel — give the popover its own surface + shadow and lift it above
+   that content, so nothing shows through behind the calendar's transparent
+   day cells. */
+#header-cal-popover,
+#cal-popover {
   z-index: 1000;
   background: #f3f4f6;
   border-radius: 16px;

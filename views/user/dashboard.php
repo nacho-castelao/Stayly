@@ -7,8 +7,11 @@
     <title>User Settings</title>
     <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/style.css" />
     <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/dashboard.css" />
+    <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/toast.css" />
+    <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/review.css" />
     <script src="<?= DEFAULT_URL ?>assets/js/main.js" defer></script>
     <script src="<?= DEFAULT_URL ?>assets/js/modal.js" defer></script>
+    <script src="<?= DEFAULT_URL ?>assets/js/review.js" defer></script>
 </head>
 
 <body>
@@ -181,6 +184,15 @@
                                         (new DateTimeImmutable($iso))->format('M j, Y');
                                     $status = $b['status'];
                                     $statusLabel = ucwords(str_replace('_', ' ', $status));
+
+                                    // Review CTA gating (mirrors ReviewController's
+                                    // server-side rules): paid, the stay has ended,
+                                    // and the guest isn't reviewing their own listing.
+                                    $isHost     = (int) $b['property_host_id'] === (int) $_SESSION['user_id'];
+                                    $finished   = $b['end_date'] < date('Y-m-d');
+                                    $isPaid     = (int) $b['is_paid'] === 1;
+                                    $hasReview  = !empty($b['review_id']);
+                                    $canReview  = $isPaid && $finished && !$isHost;
                                 ?>
                                     <li class="booking-item">
                                         <a class="booking-item__media" href="<?= DEFAULT_URL ?>public/Property/showOne?id=<?= (int) $b['property_id'] ?>">
@@ -215,12 +227,39 @@
                                             <span class="booking-item__price"><?= number_format((float) $b['total_price'], 2) ?> &euro;</span>
                                             <?php if ($status === 'awaiting_payment'): ?>
                                                 <a class="booking-item__action" href="<?= DEFAULT_URL ?>public/Payment/show?booking_id=<?= (int) $b['id'] ?>">Complete payment</a>
+                                            <?php elseif ($hasReview): ?>
+                                                <button type="button"
+                                                    class="booking-item__action booking-item__action--ghost js-review-btn"
+                                                    data-mode="edit"
+                                                    data-review-id="<?= (int) $b['review_id'] ?>"
+                                                    data-booking-id="<?= (int) $b['id'] ?>"
+                                                    data-property-title="<?= htmlspecialchars($b['property_title'], ENT_QUOTES) ?>"
+                                                    data-rating="<?= (int) $b['review_rating'] ?>"
+                                                    data-cleanliness="<?= (int) $b['review_cleanliness'] ?>"
+                                                    data-accuracy="<?= (int) $b['review_accuracy'] ?>"
+                                                    data-communication="<?= (int) $b['review_communication'] ?>"
+                                                    data-checkin="<?= (int) $b['review_checkin'] ?>"
+                                                    data-location="<?= (int) $b['review_location'] ?>"
+                                                    data-value="<?= (int) $b['review_value'] ?>"
+                                                    data-comment="<?= htmlspecialchars($b['review_comment'] ?? '', ENT_QUOTES) ?>">
+                                                    View / edit review
+                                                </button>
+                                            <?php elseif ($canReview): ?>
+                                                <button type="button"
+                                                    class="booking-item__action js-review-btn"
+                                                    data-mode="create"
+                                                    data-booking-id="<?= (int) $b['id'] ?>"
+                                                    data-property-title="<?= htmlspecialchars($b['property_title'], ENT_QUOTES) ?>">
+                                                    Leave a review
+                                                </button>
                                             <?php endif; ?>
                                         </div>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
                         </section>
+
+                        <?php require BASE_PATH . '/views/review/_modal.php'; ?>
                     </main>
                 <?php endif; ?>
             <?php

@@ -213,15 +213,35 @@ class User
         // Join the property and its cover image so the dashboard can render a
         // full booking card. LEFT JOIN on the image keeps bookings whose
         // property has no main image flagged.
+        //
+        // Also pull what the review CTA needs: the property's host (to hide the
+        // button when the guest is the host), whether the stay was paid, and the
+        // existing review (if any) so the card can switch between "Leave review"
+        // and "View / Edit review" and prefill the edit modal.
         $sql = "
             SELECT b.*,
-                   p.title AS property_title,
-                   p.city  AS property_city,
-                   i.image_url AS property_image
+                   p.title   AS property_title,
+                   p.city    AS property_city,
+                   p.host_id AS property_host_id,
+                   i.image_url AS property_image,
+                   EXISTS (
+                       SELECT 1 FROM payments pay
+                       WHERE pay.booking_id = b.id AND pay.status = 'paid'
+                   ) AS is_paid,
+                   r.id            AS review_id,
+                   r.rating        AS review_rating,
+                   r.cleanliness   AS review_cleanliness,
+                   r.accuracy      AS review_accuracy,
+                   r.communication AS review_communication,
+                   r.checkin       AS review_checkin,
+                   r.location      AS review_location,
+                   r.value         AS review_value,
+                   r.comment       AS review_comment
             FROM bookings b
             INNER JOIN properties p ON p.id = b.property_id
             LEFT JOIN property_images i
                    ON i.property_id = p.id AND i.is_main = 1
+            LEFT JOIN reviews r ON r.booking_id = b.id
             WHERE b.user_id = ?
             ORDER BY b.start_date DESC
         ";

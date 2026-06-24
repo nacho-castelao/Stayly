@@ -2,14 +2,17 @@
 require_once BASE_PATH . '/models/Property.php';
 require_once BASE_PATH . '/models/User.php';
 require_once BASE_PATH . '/models/Wishlist.php';
+require_once BASE_PATH . '/models/Review.php';
 
 class PropertyController{
     private Property $propertyModel;
     private Wishlist $wishlistModel;
+    private Review $reviewModel;
 
     public function __construct(){
         $this->propertyModel = new Property();
         $this->wishlistModel = new Wishlist();
+        $this->reviewModel = new Review();
     }
     
     public function index(){
@@ -64,7 +67,15 @@ class PropertyController{
             $this->wishlistModel->setProperty_id($id);
             $isSaved = $this->wishlistModel->isSaved();
         }
-        
+
+        // Reviews: the property's rating summary + the individual reviews
+        // (newest first), plus the host's overall rating for the host card.
+        $reviewStats = $this->reviewModel->getPropertyStats((int) $prop['id']);
+        $reviews = $reviewStats['total'] > 0
+            ? $this->reviewModel->getForProperty((int) $prop['id'])
+            : [];
+        $hostStats = $this->reviewModel->getHostStats((int) $prop['host_id']);
+
         require_once BASE_PATH . "/views/layout/header.php";
         require_once BASE_PATH . '/views/property/show.php';
         require_once BASE_PATH . "/views/layout/footer.php";

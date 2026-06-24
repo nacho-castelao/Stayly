@@ -470,7 +470,10 @@ main h4 {
 .property-header {
   margin: 0 auto;
   width: 1056px;
-  height: auto;
+  /* Fixed height so the 1fr rows resolve to a definite size; without it the
+     rows collapse to each image's natural height and tall source images
+     stretch the whole gallery. object-fit:cover then fills every slot. */
+  height: 340px;
   display: grid;
   gap: 5px;
   column-gap: 10px;
@@ -479,7 +482,7 @@ main h4 {
 }
 
 .property-header img {
-  max-width: 100%;
+  width: 100%;
   height: 100%;
   object-fit: cover;
   border-radius: 5px;

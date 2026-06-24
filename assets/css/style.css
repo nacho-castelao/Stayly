@@ -894,8 +894,13 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   pointer-events: auto;
 }
 
+/* Lifted above the backdrop while the picker is open. Give it a solid white
+   fill + soft shadow so it reads as one clean elevated pill, instead of a
+   transparent frame letting the dimmed page show through its padding. */
 #headerForm.picker-open {
   z-index: 1000;
+  background: var(--white);
+  box-shadow: 0 6px 20px rgba(0, 14, 51, 0.12);
 }
 
 .booking-form .guests {

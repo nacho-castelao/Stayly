@@ -36,21 +36,19 @@ $fmtDate = static fn(string $iso): string =>
 
                 <h2 class="pay-card__title">Payment</h2>
 
-                <!-- Stub checkout: a real provider (Stripe/Redsys) would mount its
-                     payment element in place of this notice. -->
-                <div class="pay-card__placeholder" aria-hidden="true">
-                    <div class="pay-field pay-field--lg"></div>
-                    <div class="pay-field-row">
-                        <div class="pay-field"></div>
-                        <div class="pay-field pay-field--sm"></div>
-                    </div>
-                    <p class="pay-card__note">Secure card payment — no real charge is taken in this demo.</p>
+                <!-- Card details are entered on Stripe's hosted, PCI-compliant
+                     checkout page; we never see or store the card. -->
+                <div class="pay-card__redirect">
+                    <p class="pay-card__note">
+                        You'll be redirected to <strong>Stripe's secure checkout</strong> to enter
+                        your card details. You'll come right back once payment is complete.
+                    </p>
                 </div>
 
                 <form action="<?= DEFAULT_URL ?>public/Payment/process" method="post" class="pay-card__form">
                     <input type="hidden" name="booking_id" value="<?= (int) $booking['id'] ?>">
                     <button type="submit" class="reserve-btn pay-card__submit">
-                        Confirm &amp; pay <?= number_format($total, 2) ?> &euro;
+                        Pay <?= number_format($total, 2) ?> &euro; with card
                     </button>
                 </form>
 

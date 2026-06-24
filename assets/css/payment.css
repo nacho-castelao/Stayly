@@ -81,8 +81,8 @@
   margin: 0 0 18px;
 }
 
-/* Faux payment element standing in for a real provider's iframe */
-.pay-card__placeholder {
+/* Notice that the card form lives on Stripe's hosted checkout page */
+.pay-card__redirect {
   border: 1px dashed var(--border-default);
   border-radius: 12px;
   padding: 18px;
@@ -90,32 +90,8 @@
   margin-bottom: 22px;
 }
 
-.pay-field {
-  height: 44px;
-  border-radius: 8px;
-  background: linear-gradient(90deg, #efe9e1 0%, #f6f1ea 50%, #efe9e1 100%);
-  border: 1px solid var(--border-subtle);
-}
-
-.pay-field--lg {
-  margin-bottom: 12px;
-}
-
-.pay-field-row {
-  display: flex;
-  gap: 12px;
-}
-
-.pay-field-row .pay-field {
-  flex: 1;
-}
-
-.pay-field--sm {
-  max-width: 120px;
-}
-
 .pay-card__note {
-  margin: 14px 0 0;
+  margin: 0;
   font-size: var(--font-size-caption);
   color: var(--text-tertiary);
   text-align: center;

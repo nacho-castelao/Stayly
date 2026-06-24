@@ -68,6 +68,7 @@ CREATE TABLE `payments` (
   `amount` decimal(10,2) NOT NULL,
   `status` enum('initiated','paid','failed') DEFAULT 'initiated',
   `provider` enum('stripe','redsys') DEFAULT NULL,
+  `provider_ref` varchar(255) DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
   PRIMARY KEY (`id`),
   KEY `booking_id` (`booking_id`),

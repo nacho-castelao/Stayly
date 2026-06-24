@@ -11,6 +11,7 @@
         "google/apiclient": "^2.19",
         "kint-php/kint": "^6.1",
         "vlucas/phpdotenv": "^5.6",
-        "symfony/var-dumper": "^7.4"
+        "symfony/var-dumper": "^7.4",
+        "stripe/stripe-php": "^20.2"
     }
 }

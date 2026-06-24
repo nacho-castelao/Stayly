@@ -876,6 +876,14 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   overflow: hidden;
 }
 
+/* The native Guests <select> paints above the opaque popover (a quirk of how
+   browsers composite native form controls), so it bled through the open
+   calendar. While the picker is open (popover no longer [hidden]) hide just
+   that select — the popover already covers its slot, so there's no shift. */
+.booking-form:has(#cal-popover:not([hidden])) #guests {
+  visibility: hidden;
+}
+
 /* Airbnb-style dimming backdrop: while the picker is open the rest of the page
    (notably the wide "Find your perfect accommodation" title that flanks the
    430px card) recedes, so it no longer visually collides with the calendar.

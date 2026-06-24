@@ -38,7 +38,7 @@
             <?php if (isset($_SESSION['user_id'])): ?>
                 <div class="drop-down drop-down-logged">
                     <a href="<?= DEFAULT_URL ?>public/User/showDashboard?page=settings">
-                        <img src="<?= DEFAULT_URL ?>assets/img/ArrowDoor.svg" alt="Profile settings">
+                        <img src="<?= DEFAULT_URL ?>assets/img/user-cog 1.svg" alt="Profile settings">
 
                         <span>Profile settings</span>
                     </a>

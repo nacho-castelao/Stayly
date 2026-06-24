@@ -30,7 +30,21 @@
 
             <input type="text" name="search" id="search" placeholder="Search destinations...">
 
-            <img src="<?= DEFAULT_URL ?>assets/img/icons8-calendar-21.svg" alt="Icon calendar">
+            <!-- Selected stay, mirrored from the date picker. Editing reopens the
+                 picker; the × clears the range and re-runs the search. -->
+            <span id="searchDates" class="search-dates" hidden>
+                <button type="button" class="search-dates-edit" aria-label="Edit dates"></button>
+                <button type="button" class="search-dates-clear" aria-label="Clear dates" title="Clear dates">&times;</button>
+            </span>
+
+            <button type="button" id="headerCalBtn" class="header-cal-btn"
+                aria-haspopup="dialog" aria-expanded="false" aria-controls="header-cal-popover" aria-label="Choose dates">
+                <img src="<?= DEFAULT_URL ?>assets/img/icons8-calendar-21.svg" alt="">
+            </button>
+
+            <div class="cal-popover" id="header-cal-popover" role="dialog" aria-label="Choose dates" hidden>
+                <div id="header-calendar"></div>
+            </div>
         </div>
 
         <div class="options">

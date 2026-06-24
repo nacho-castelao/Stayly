@@ -1,5 +1,6 @@
 <?php
 require_once BASE_PATH . '/models/Property.php';
+require_once BASE_PATH . '/models/DateRange.php';
 require_once BASE_PATH . '/controllers/BaseController.php';
 class HomeController extends BaseController
 {
@@ -41,8 +42,23 @@ class HomeController extends BaseController
         $data = json_decode(file_get_contents("php://input"), true);
 
         $search = $data['search'] ?? '';
+        $startDate = $data['start_date'] ?? '';
+        $endDate = $data['end_date'] ?? '';
 
-        $result = $this->propertyModel->getBySearch($search);
+        // Only narrow by availability when the client sent a full, valid stay.
+        // DateRange is the same authoritative validator the booking flow uses,
+        // so a bad/partial range simply falls back to a plain text search.
+        $startIso = null;
+        $endIso = null;
+        if (trim($startDate) !== '' || trim($endDate) !== '') {
+            $range = DateRange::fromStrings($startDate, $endDate);
+            if ($range->isValid()) {
+                $startIso = $range->startIso();
+                $endIso = $range->endIso();
+            }
+        }
+
+        $result = $this->propertyModel->getBySearch($search, $startIso, $endIso);
 
         header('Content-Type: application/json');
         echo json_encode($result);

@@ -298,6 +298,85 @@ input::placeholder {
   color: var(--grey-550);
 }
 
+/* Calendar trigger inside the search bar — opens the date-range popover.
+   flex-shrink:0 so it keeps its size while the text input absorbs the row. */
+.header-cal-btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: none;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.header-cal-btn:hover {
+  background: var(--bg-hover);
+}
+
+.header-cal-btn[aria-expanded="true"] {
+  background: var(--bg-active);
+}
+
+/* Selected-stay chip; sits between the input and the calendar trigger. */
+.search-dates {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  max-width: 160px;
+  padding: 3px 4px 3px 10px;
+  background: var(--primary-200);
+  color: var(--primary-800);
+  border-radius: 999px;
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-medium);
+  font-family: var(--font-family);
+}
+
+.search-dates[hidden] {
+  display: none;
+}
+
+.search-dates-edit {
+  max-width: 120px;
+  padding: 0;
+  background: none;
+  border: none;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.search-dates-clear {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  color: inherit;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.search-dates-clear:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
 .options {
   position: relative;
   display: flex;
@@ -1141,7 +1220,9 @@ footer .media a:hover {
   }
 
   #headerForm {
-    position: static;
+    /* relative (not static) so the date popover keeps anchoring to the search
+       bar; the mobile .cal-popover rule then stretches it full-width. */
+    position: relative;
     left: auto;
     transform: none;
     order: 3;

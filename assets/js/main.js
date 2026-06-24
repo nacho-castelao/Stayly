@@ -164,41 +164,147 @@ function buildPropertyCard(element) {
             `;
 }
 
-if (headerInput && cardsContainer) {
-  headerInput.addEventListener('input', (e) => {
-    fetch(`${BASE_URL}/public/Home/showByInput`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "X-Requested-With": "XMLHttpRequest",
-      },
-      body: JSON.stringify({
-        search: e.target.value,
-      }),
+// Shared header-search state: the text query lives in #search, the chosen stay
+// (ISO YYYY-MM-DD) lives here and is mirrored from the date picker below. Both
+// are sent together so location + date filtering stay in sync.
+const searchDates = { start: "", end: "" };
+
+// Re-run the home search with the current query + dates and repaint the grid.
+// Only acts where the results grid exists (the home page); on other pages the
+// date picker still opens but there is nothing to filter.
+function runHeaderSearch() {
+  if (!cardsContainer) return;
+
+  fetch(`${BASE_URL}/public/Home/showByInput`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Requested-With": "XMLHttpRequest",
+    },
+    body: JSON.stringify({
+      search: headerInput ? headerInput.value : "",
+      start_date: searchDates.start,
+      end_date: searchDates.end,
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Server returned ${response.status}`);
+      }
+
+      return response.json();
     })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Server returned ${response.status}`);
-        }
+    .then((data) => {
+      if (!Array.isArray(data)) {
+        throw new Error("Expected an array");
+      }
 
-        return response.json();
-      })
-      .then((data) => {
-        if (!Array.isArray(data)) {
-          throw new Error("Expected an array");
-        }
+      if (data.length === 0) {
+        cardsContainer.innerHTML = "<p>No results found</p>";
+        return;
+      }
 
-        if (data.length === 0) {
-          cardsContainer.innerHTML = "<p>No results found</p>";
-          return;
-        }
+      cardsContainer.innerHTML = data.map(buildPropertyCard).join("");
+    })
+    .catch((err) => {
+      console.error("Search failed:", err);
+      showToast("error", "Search failed. Please try again.");
+    });
+}
 
-        cardsContainer.innerHTML = data.map(buildPropertyCard).join("");
-      })
-      .catch((err) => {
-        console.error("Search failed:", err);
-        showToast("error", "Search failed. Please try again.");
-      });
+if (headerInput && cardsContainer) {
+  headerInput.addEventListener("input", runHeaderSearch);
+}
+
+// ── Header date-range picker ─────────────────────────────────────
+// Reuses the embeddable Calendar component (assets/js/calendar.js, exposed as
+// window.Calendar) as a popover behind the search bar's calendar icon — the
+// same pattern the property page uses, kept DRY here.
+function initHeaderDatePicker() {
+  const mount = document.querySelector("#header-calendar");
+  const trigger = document.querySelector("#headerCalBtn");
+  const popover = document.querySelector("#header-cal-popover");
+  const chip = document.querySelector("#searchDates");
+  if (!mount || !trigger || !popover || typeof window.Calendar === "undefined") {
+    return;
+  }
+
+  const chipLabel = chip?.querySelector(".search-dates-edit");
+  const chipClear = chip?.querySelector(".search-dates-clear");
+
+  // Local midnight today — past dates are not selectable.
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Serialize to YYYY-MM-DD for the server (NOT toLocaleDateString).
+  const toISO = (d) =>
+    d.getFullYear() +
+    "-" +
+    String(d.getMonth() + 1).padStart(2, "0") +
+    "-" +
+    String(d.getDate()).padStart(2, "0");
+
+  const toLabel = (d) =>
+    d.toLocaleDateString(undefined, { month: "short", day: "numeric" });
+
+  const open = () => {
+    popover.hidden = false;
+    trigger.setAttribute("aria-expanded", "true");
+  };
+  const close = () => {
+    popover.hidden = true;
+    trigger.setAttribute("aria-expanded", "false");
+  };
+
+  function renderChip(range) {
+    if (!chip) return;
+    if (range.start && range.end) {
+      chipLabel.textContent = `${toLabel(range.start)} – ${toLabel(range.end)}`;
+      chip.hidden = false;
+    } else {
+      chip.hidden = true;
+    }
+  }
+
+  const cal = new window.Calendar(mount, {
+    initialDate: today,
+    isDisabled: (date) => date < today,
+    onSelect: (range) => {
+      searchDates.start = range.start ? toISO(range.start) : "";
+      searchDates.end = range.end ? toISO(range.end) : "";
+      renderChip(range);
+      // Search once a full stay is chosen (and collapse), or when cleared.
+      if (range.start && range.end) {
+        close();
+        runHeaderSearch();
+      } else if (!range.start && !range.end) {
+        runHeaderSearch();
+      }
+    },
+  });
+
+  trigger.addEventListener("click", (e) => {
+    e.stopPropagation();
+    popover.hidden ? open() : close();
+  });
+
+  // The chip's label reopens the picker; the × clears the stay.
+  chipLabel?.addEventListener("click", open);
+  chipClear?.addEventListener("click", () => {
+    cal.clear(); // fires onSelect → resets state, hides chip, re-runs search
+    close();
+  });
+
+  // Close when clicking outside the bar, or on Escape.
+  document.addEventListener("click", (e) => {
+    if (!popover.contains(e.target) && !trigger.contains(e.target) && !(chip && chip.contains(e.target))) {
+      close();
+    }
+  });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") close();
   });
 }
+
+initHeaderDatePicker();
 

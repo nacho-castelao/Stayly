@@ -201,21 +201,57 @@ class Property
         return $stmt->fetchAll();
     }
 
-    public function getBySearch(string $search): array
+    /**
+     * Properties matching a free-text query (title / city / address), optionally
+     * narrowed to those available for a given stay.
+     *
+     * When both $startDate and $endDate (ISO YYYY-MM-DD, pre-validated by
+     * DateRange) are supplied, a property is excluded if either layer marks it
+     * unavailable for the half-open range [check-in, check-out):
+     *   - an active booking overlaps it (existing.start < end AND existing.end > start),
+     *   - or a host block (availability.is_available = 0) falls inside it.
+     * This mirrors Booking::hasOverlap() + Property::isRangeBlocked(), the same
+     * rules the booking flow enforces authoritatively at reserve time.
+     */
+    public function getBySearch(string $search, ?string $startDate = null, ?string $endDate = null): array
     {
-        $search = '%'.$search.'%';
+        $like = '%' . $search . '%';
+        $params = ['search' => $like];
+
+        $availabilityFilter = '';
+        if ($startDate !== null && $endDate !== null) {
+            $availabilityFilter = "
+                AND NOT EXISTS (
+                    SELECT 1 FROM bookings b
+                    WHERE b.property_id = p.id
+                      AND b.status <> 'cancelled'
+                      AND b.start_date < :end_date
+                      AND b.end_date > :start_date
+                )
+                AND NOT EXISTS (
+                    SELECT 1 FROM availability a
+                    WHERE a.property_id = p.id
+                      AND a.is_available = 0
+                      AND a.date >= :start_date
+                      AND a.date < :end_date
+                )
+            ";
+            $params['start_date'] = $startDate;
+            $params['end_date'] = $endDate;
+        }
 
         $sql = "
             SELECT p.*, i.image_url AS url
             FROM properties p
             INNER JOIN property_images i ON i.property_id = p.id
             WHERE i.is_main = 1
-            AND (p.title LIKE ? OR p.city LIKE ? OR p.address LIKE ?)
+            AND (p.title LIKE :search OR p.city LIKE :search OR p.address LIKE :search)
+            $availabilityFilter
             ORDER BY p.id DESC
         ";
 
         $stmt = $this->db->prepare($sql);
-        $stmt->execute([$search, $search, $search]);
+        $stmt->execute($params);
 
         return $stmt->fetchAll();
     }

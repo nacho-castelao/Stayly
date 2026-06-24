@@ -409,6 +409,15 @@ main h4 {
 .property-info .property-title {
   text-align: left;
   /* Keep long, host-entered titles on one line so they can't break the card. */
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Same one-line clamp for the city|address line, so cards stay equal height. */
+.property-info .property-location {
+  min-width: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

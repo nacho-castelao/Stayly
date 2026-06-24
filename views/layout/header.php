@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/style.css">
-    <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/toast.css">
-    <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/calendar.css">
+    <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/style.css?v=<?= filemtime(BASE_PATH . '/assets/css/style.css') ?>">
+    <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/toast.css?v=<?= filemtime(BASE_PATH . '/assets/css/toast.css') ?>">
+    <link rel="stylesheet" href="<?= DEFAULT_URL ?>assets/css/calendar.css?v=<?= filemtime(BASE_PATH . '/assets/css/calendar.css') ?>">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin="" defer></script>
     <script>window.APP_BASE_URL = "<?= rtrim(parse_url(DEFAULT_URL, PHP_URL_PATH), '/') ?>";</script>

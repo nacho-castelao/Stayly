@@ -314,7 +314,10 @@ input::placeholder {
 .dropAnimate {
   max-height: 375px;
   opacity: 1;
-  z-index: 0;
+  /* Float above the (wrapped) search row and page content so every item —
+     including the bottom "Become a host" link — stays visible and tappable
+     on mobile. z-index:0 left the lowest item underlapping page content. */
+  z-index: 1000;
 }
 
 .drop-down a {

@@ -15,7 +15,9 @@
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <div class="logo">
-                <img src="<?= DEFAULT_URL ?>/assets/img/LogoLittle.svg" alt="Stayly Logo">
+                <a href="<?= DEFAULT_URL ?>public/">
+                    <img src="<?= DEFAULT_URL ?>/assets/img/LogoLittle.svg" alt="Stayly Logo">
+                </a>
             </div>
 
             <nav class="menu">
@@ -69,12 +71,25 @@
             <h3>Dashboard</h3>
 
             <div class="user">
-                <img src="<?= DEFAULT_URL ?>assets/<?= htmlspecialchars($avatar) ?>" class="avatar" alt="<?= htmlspecialchars($user['name'] ?? 'User') ?> avatar" />
-
-                <button class="btn--disabled">
-                    <img src="<?= DEFAULT_URL ?>assets/img/dashboard/chevron-down-dashboard.svg" class="chevron" />
-
+                <button type="button" class="user-menu__toggle" id="userMenuToggle" aria-haspopup="true" aria-expanded="false">
+                    <img src="<?= DEFAULT_URL ?>assets/<?= htmlspecialchars($avatar) ?>" class="avatar" alt="<?= htmlspecialchars($user['name'] ?? 'User') ?> avatar" />
+                    <img src="<?= DEFAULT_URL ?>assets/img/dashboard/chevron-down-dashboard.svg" class="chevron" alt="" />
                 </button>
+
+                <div class="user-menu__dropdown" id="userMenuDropdown" role="menu">
+                    <a href="<?= DEFAULT_URL ?>public/User/showDashboard?page=dashboard" role="menuitem">
+                        <img src="<?= DEFAULT_URL ?>assets/img/dashboard/layout-dashboard.svg" class="icon" alt="" />
+                        Dashboard
+                    </a>
+                    <a href="<?= DEFAULT_URL ?>public/User/showDashboard?page=settings" role="menuitem">
+                        <img src="<?= DEFAULT_URL ?>assets/img/dashboard/settings-dashboard.svg" class="icon" alt="" />
+                        Profile Settings
+                    </a>
+                    <a href="<?= DEFAULT_URL ?>public/User/logout" role="menuitem">
+                        <img src="<?= DEFAULT_URL ?>assets/img/dashboard/log-out-dashboard.svg" class="icon" alt="" />
+                        Log Out
+                    </a>
+                </div>
             </div>
         </header>
 
@@ -563,6 +578,34 @@
     </div>
 
     <div id="toast-container"></div>
+
+    <script>
+        // Topbar account dropdown: self-contained toggle + outside-click/Esc close.
+        (function () {
+            const toggle = document.getElementById('userMenuToggle');
+            const dropdown = document.getElementById('userMenuDropdown');
+            if (!toggle || !dropdown) return;
+
+            const close = () => {
+                dropdown.classList.remove('is-open');
+                toggle.setAttribute('aria-expanded', 'false');
+            };
+
+            toggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const open = dropdown.classList.toggle('is-open');
+                toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!dropdown.contains(e.target) && !toggle.contains(e.target)) close();
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') close();
+            });
+        })();
+    </script>
 
     <script src="<?= DEFAULT_URL ?>assets/js/toast.js"></script>
 </body>

@@ -282,14 +282,14 @@ input::placeholder {
 .options {
   position: relative;
   display: flex;
-  width: 64px;
+  width: fit-content;
   gap: 16px;
 }
 
 .drop-down {
   position: absolute;
-  top: 30px;
-  left: 58px;
+  top: 40px;
+  left: 0;
   width: 200px;
   display: flex;
   flex-direction: column;

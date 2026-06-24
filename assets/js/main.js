@@ -229,8 +229,15 @@ function initHeaderDatePicker() {
     return;
   }
 
+  const headerForm = document.querySelector("#headerForm");
   const chipLabel = chip?.querySelector(".search-dates-edit");
   const chipClear = chip?.querySelector(".search-dates-clear");
+
+  // Dimming backdrop (Airbnb-style) so the page behind the open picker recedes
+  // instead of clashing with the calendar. Injected once, toggled on open/close.
+  const backdrop = document.createElement("div");
+  backdrop.className = "search-backdrop";
+  document.body.appendChild(backdrop);
 
   // Local midnight today — past dates are not selectable.
   const today = new Date();
@@ -250,10 +257,14 @@ function initHeaderDatePicker() {
   const open = () => {
     popover.hidden = false;
     trigger.setAttribute("aria-expanded", "true");
+    backdrop.classList.add("is-visible");
+    headerForm?.classList.add("picker-open");
   };
   const close = () => {
     popover.hidden = true;
     trigger.setAttribute("aria-expanded", "false");
+    backdrop.classList.remove("is-visible");
+    headerForm?.classList.remove("picker-open");
   };
 
   function renderChip(range) {
@@ -287,6 +298,8 @@ function initHeaderDatePicker() {
     e.stopPropagation();
     popover.hidden ? open() : close();
   });
+
+  backdrop.addEventListener("click", close);
 
   // The chip's label reopens the picker; the × clears the stay.
   chipLabel?.addEventListener("click", open);

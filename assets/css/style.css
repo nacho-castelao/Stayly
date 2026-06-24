@@ -874,6 +874,30 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   overflow: hidden;
 }
 
+/* Airbnb-style dimming backdrop: while the picker is open the rest of the page
+   (notably the wide "Find your perfect accommodation" title that flanks the
+   430px card) recedes, so it no longer visually collides with the calendar.
+   Injected into <body> by main.js; the search bar is lifted above it so it
+   stays bright and visually connected to the popover. */
+.search-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 900;
+  background: rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.search-backdrop.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#headerForm.picker-open {
+  z-index: 1000;
+}
+
 .booking-form .guests {
   border-top: none;
   border-radius: 10px;

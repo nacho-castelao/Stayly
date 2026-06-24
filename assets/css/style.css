@@ -716,6 +716,10 @@ main h4 {
   justify-content: space-between;
   width: 100%;
 
+  /* Native <select> falls back to the system field colour (a light grey)
+     once appearance:none strips the control; pin it white so only the arrow
+     background-image shows. Longhand so it doesn't clobber that image. */
+  background-color: #fff;
   background-image: url("../img/arrow-down1.svg");
   background-repeat: no-repeat;
   background-position: right 20px center;

@@ -136,6 +136,11 @@ body {
   line-height: var(--line-height-body);
   letter-spacing: var(--letter-spacing-default);
   font-weight: var(--font-weight-regular);
+  /* Safety net against accidental horizontal scroll. `clip` (not `hidden`)
+     is used deliberately: it clips horizontal overflow without turning the
+     body into a scroll container, so position:sticky descendants (wizard
+     nav, checkout summary) keep working. overflow-y stays visible. */
+  overflow-x: clip;
 }
 
 h1,
@@ -958,6 +963,8 @@ footer .media a:hover {
 .pagination {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
   gap: 6px;
 }
 
@@ -1239,8 +1246,6 @@ footer .media a:hover {
   }
 
   .pagination {
-    flex-wrap: wrap;
-    justify-content: center;
     gap: 6px 4px;
   }
 

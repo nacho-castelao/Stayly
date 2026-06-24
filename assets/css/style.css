@@ -862,6 +862,18 @@ input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
 }
 
+/* Header picker floats over the home grid/title, so it needs to read as a
+   solid, opaque panel — give the popover its own surface + shadow and lift it
+   above page content so nothing shows through behind the (transparent) day
+   cells. Scoped to the header so the property page picker is untouched. */
+#header-cal-popover {
+  z-index: 1000;
+  background: #f3f4f6;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 14, 51, 0.18);
+  overflow: hidden;
+}
+
 .booking-form .guests {
   border-top: none;
   border-radius: 10px;

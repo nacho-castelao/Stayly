@@ -1,3 +1,4 @@
+<?php require_once BASE_PATH . '/views/review/_stars.php'; ?>
 <?php if ($prop && $images): ?>
     <div class="property-header">
         <?php while ($img = $images->fetch()): ?>
@@ -24,17 +25,24 @@
             <span><?= htmlspecialchars($prop['title']); ?></span>
 
             <div class="stars">
-                <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <rect width="28" height="28" fill="url(#pattern0_124_227)" />
-                    <defs>
-                        <pattern id="pattern0_124_227" patternContentUnits="objectBoundingBox" width="1" height="1">
-                            <use xlink:href="#image0_124_227" transform="scale(0.02)" />
-                        </pattern>
-                        <image id="image0_124_227" width="50" height="50" preserveAspectRatio="none" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAD5klEQVR4nO2ZaahNaxjHf8c5uAfXlEPGpMzDByGzW265fCDXUPcDMuSTWfKB4pshlCljXVxdRd2MR9dMXeEDkumQFNec46Acw3G2Hv1Xve32OXvtY6119opfrdq969nP87zvWut9hhd+4IsawFngjH7Hll+BhK6hxJg9zkT+JqY0BkqBMl2lGosds/QkCoGj+j2TGHJFzo8Bxur3NWJGbzn+AqgN1AKeaawXMWKznF7ljK3W2CZiQj7wSk53ccY7aawEqEMMmCSH/0tx77zuTSQGnJOzU1Lcm6p7Fu2zmg5AOfAW+DnF/XrAG03GXrWsZbmc3FaJzHbJLCNLyQMey8m+lcj1k8xToCZZyCg5eMuH7A3JjiQLOSjn5vmQnS/ZA1RDbCgA2gE9gcHAcGAcMB1YAHwCPkguHQWS/aT/Tpeu4dLdU7YKZNsXE4A/gX3AceACcB24DxQrc034vPZmsDh7M9BbJl/uy7cL8nWffLc58NyHolLlTfeAy4oVhXJmK7AGWAI0z2AiLfSfNdJhugql+7JsvZDtdP7ZHPhNaUNCe/x4oBvQFmgE5FL95MqXtvJtvBOPSjSHr7QHbjoZ6y9kL/2BJ/L1blI+95X6zs5jH+EMso9p2iTMx3/1lCp8hF50tmtLlgStvBR+2Vha/gDe6U/28TWl+mgMnJAv74HJmSqwvfyBFNzTRxY1HYHb8uFxmtQn7RZ5UYosox1NdIxwdlPbjtt8q0KruXdIYbne1TC7hjnAQuCzbO4JuqKc7UR5C151CZ6fgL+cRVuqiYX6uK3d0zpA3abLayGVyFaoWGVXJIOW5wSF9/oWRVk9rpdRy5WCwl4j07mOCPHSmQEB6hwonVZ0RUILJ8EMMupbpH4t3a2IsG91KATdh6Pse+2SsTkh6J4r3TuJgIcyFkbK0l26HxEynWXoic9A1UlnI0d9bqk5Tq1htkJjpoxY9E334S5MKlM/Kr2xI4bK2C35UOuh/TJSWSrdRwc6XpqxXVe5c9hjMhUxWXJmKxRyneOCVKlJvla8zEn97VTXY5CadwklhFvUC06mlZOm+CqeMsVrdVp9kMwQ4I5TJq+tIKnMVwT3ylVr7wxLIVfko/VaZRZL+QZnrKFW1nttrurYLR09gEtJ/bAmzv2NGl8Uwjw4LeVecTXOORd8p5XOJNLnqTR4Kx0v1XE0ftfYqaAnUUf1sr3/XYF/nNU8p5K0qlhr9Jij74ieWJlewUDrnmHOynuNsWKdSgVR+ORIV7GTx3nNj1TfUJVZmdSitDyrJcHTzEmBvGtFkAZOSun/OgcJm1GylZDtwBiiXasB0dFANs3298MXw0hXuTS4jKMAAAAASUVORK5CYII=" />
-                    </defs>
-                </svg>
-
-
+                <?php if ($reviewStats['total'] > 0): ?>
+                    <a href="#reviews" class="rating-summary" title="See all reviews">
+                        <svg class="star star--on rating-summary__icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                        <span class="rating-summary__value"><?= stayly_rating_label($reviewStats['average']) ?></span>
+                        <span class="rating-summary__count">·
+                            <?= (int) $reviewStats['total'] ?> <?= $reviewStats['total'] === 1 ? 'review' : 'reviews' ?>
+                        </span>
+                    </a>
+                <?php else: ?>
+                    <span class="rating-summary rating-summary--new">
+                        <svg class="star star--on rating-summary__icon" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                        <span class="rating-summary__value">New</span>
+                    </span>
+                <?php endif; ?>
             </div>
 
             <div class="location">
@@ -144,13 +152,23 @@
 
         <div class="host-info">
             <div class="host-img">
-                <img src="<?= DEFAULT_URL ?>assets/img/users/<?= htmlspecialchars($host['avatar_url']) ?>" alt="avatar">
+                <?php $hostAvatar = !empty($host['avatar_url']) ? 'img/users/' . $host['avatar_url'] : 'img/User.svg'; ?>
+                <img src="<?= DEFAULT_URL ?>assets/<?= htmlspecialchars($hostAvatar) ?>" alt="avatar">
             </div>
 
             <div class="host-details">
                 <div>
                     <span class="host-name"><?= htmlspecialchars($host['name']) ?></span>
                     <span class="host-sub">Member since <?= substr($host['created_at'], 0, 4) ?></span>
+                    <?php if ($hostStats['total'] > 0): ?>
+                        <span class="host-rating">
+                            <svg class="star star--on" viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                            </svg>
+                            <?= stayly_rating_label($hostStats['average']) ?> ·
+                            <?= (int) $hostStats['total'] ?> <?= $hostStats['total'] === 1 ? 'review' : 'reviews' ?>
+                        </span>
+                    <?php endif; ?>
                 </div>
 
                 <span class="host-desc text-body-small"><?= htmlspecialchars($host['biography']) ?></span>
@@ -173,6 +191,103 @@
                     </div>
                 <?php endwhile; ?>
             </div>
+        </section>
+
+        <section class="reviews" id="reviews">
+            <?php if ($reviewStats['total'] > 0): ?>
+                <div class="reviews__head">
+                    <h2 class="reviews__title">
+                        <svg class="star star--on" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                        <?= stayly_rating_label($reviewStats['average']) ?>
+                        <span class="reviews__count">·
+                            <?= (int) $reviewStats['total'] ?> <?= $reviewStats['total'] === 1 ? 'review' : 'reviews' ?>
+                        </span>
+                    </h2>
+                </div>
+
+                <div class="reviews__overview">
+                    <!-- Star distribution (5 → 1) -->
+                    <ul class="rating-bars">
+                        <?php foreach ([5, 4, 3, 2, 1] as $star):
+                            $count = $reviewStats['distribution'][$star];
+                            $pct = $reviewStats['total'] > 0 ? round($count / $reviewStats['total'] * 100) : 0;
+                        ?>
+                            <li class="rating-bar">
+                                <span class="rating-bar__label"><?= $star ?></span>
+                                <span class="rating-bar__track">
+                                    <span class="rating-bar__fill" style="width: <?= $pct ?>%"></span>
+                                </span>
+                                <span class="rating-bar__count"><?= $count ?></span>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+
+                    <!-- Per-category averages -->
+                    <ul class="rating-categories">
+                        <?php foreach (Review::CATEGORIES as $key => $label):
+                            $avg = $reviewStats['categories'][$key];
+                        ?>
+                            <li class="rating-category">
+                                <span class="rating-category__label"><?= htmlspecialchars($label) ?></span>
+                                <span class="rating-category__track">
+                                    <span class="rating-category__fill" style="width: <?= ($avg ?? 0) / 5 * 100 ?>%"></span>
+                                </span>
+                                <span class="rating-category__value"><?= $avg !== null ? number_format($avg, 1) : '—' ?></span>
+                            </li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+
+                <ul class="review-list">
+                    <?php foreach ($reviews as $rev):
+                        $avatar = !empty($rev['guest_avatar'])
+                            ? 'img/users/' . $rev['guest_avatar']
+                            : 'img/User.svg';
+                        $reviewDate = (new DateTimeImmutable($rev['created_at']))->format('F Y');
+                    ?>
+                        <li class="review-card">
+                            <div class="review-card__head">
+                                <img class="review-card__avatar"
+                                    src="<?= DEFAULT_URL ?>assets/<?= htmlspecialchars($avatar) ?>"
+                                    alt="<?= htmlspecialchars($rev['guest_name']) ?>">
+                                <div class="review-card__meta">
+                                    <span class="review-card__name"><?= htmlspecialchars($rev['guest_name']) ?></span>
+                                    <span class="review-card__date"><?= htmlspecialchars($reviewDate) ?></span>
+                                </div>
+                            </div>
+
+                            <div class="review-card__rating">
+                                <?= stayly_stars((int) $rev['rating']) ?>
+                            </div>
+
+                            <?php if (!empty($rev['comment'])): ?>
+                                <p class="review-card__comment"><?= nl2br(htmlspecialchars($rev['comment'])) ?></p>
+                            <?php endif; ?>
+
+                            <ul class="review-card__categories">
+                                <?php foreach (Review::CATEGORIES as $key => $label): ?>
+                                    <li>
+                                        <span class="review-card__cat-label"><?= htmlspecialchars($label) ?></span>
+                                        <span class="review-card__cat-value"><?= (int) $rev[$key] ?></span>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <div class="reviews__head">
+                    <h2 class="reviews__title">
+                        <svg class="star star--on" viewBox="0 0 24 24" aria-hidden="true">
+                            <path d="M12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                        </svg>
+                        No reviews yet
+                    </h2>
+                </div>
+                <p class="reviews__empty">This place is waiting for its first review. Be the first to stay and share your experience.</p>
+            <?php endif; ?>
         </section>
 
         <section class="map-wrapper">

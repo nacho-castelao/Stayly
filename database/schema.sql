@@ -146,15 +146,28 @@ DROP TABLE IF EXISTS `reviews`;
 CREATE TABLE `reviews` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `booking_id` int(11) NOT NULL,
+  `property_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `rating` int(11) DEFAULT NULL CHECK (`rating` between 1 and 5),
+  `host_id` int(11) NOT NULL,
+  `rating` tinyint(4) NOT NULL CHECK (`rating` between 1 and 5),
+  `cleanliness` tinyint(4) NOT NULL CHECK (`cleanliness` between 1 and 5),
+  `accuracy` tinyint(4) NOT NULL CHECK (`accuracy` between 1 and 5),
+  `communication` tinyint(4) NOT NULL CHECK (`communication` between 1 and 5),
+  `checkin` tinyint(4) NOT NULL CHECK (`checkin` between 1 and 5),
+  `location` tinyint(4) NOT NULL CHECK (`location` between 1 and 5),
+  `value` tinyint(4) NOT NULL CHECK (`value` between 1 and 5),
   `comment` text DEFAULT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
   PRIMARY KEY (`id`),
   UNIQUE KEY `booking_id` (`booking_id`),
+  KEY `property_id` (`property_id`),
   KEY `user_id` (`user_id`),
+  KEY `host_id` (`host_id`),
   CONSTRAINT `reviews_ibfk_1` FOREIGN KEY (`booking_id`) REFERENCES `bookings` (`id`) ON DELETE CASCADE,
-  CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
+  CONSTRAINT `reviews_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `reviews_ibfk_3` FOREIGN KEY (`property_id`) REFERENCES `properties` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `reviews_ibfk_4` FOREIGN KEY (`host_id`) REFERENCES `users` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `user_languages`;

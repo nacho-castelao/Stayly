@@ -408,6 +408,10 @@ main h4 {
 
 .property-info .property-title {
   text-align: left;
+  /* Keep long, host-entered titles on one line so they can't break the card. */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .property-details {

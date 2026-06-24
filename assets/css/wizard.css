@@ -948,5 +948,67 @@ STEP 2
   color: var(--error-primary);
 }
 
+/* ============================================================
+   RESPONSIVE  —  hosting wizard
+   ============================================================ */
+@media (max-width: 768px) {
+  nav {
+    padding: 20px 20px;
+    height: auto;
+  }
+
+  .progress-bar {
+    padding: 0 16px;
+  }
+
+  main,
+  .step-2 {
+    padding: 36px 20px;
+  }
+
+  /* Capacity inputs stack one per row on small screens. */
+  .capacity-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* Review-step amenity list drops from 3 columns to 2. */
+  .amenity-list {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  footer {
+    padding: 0 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cards {
+    gap: 14px;
+  }
+
+  /* Let the property-type cards flex to the available width instead of
+     a rigid 200px so two never overflow a small phone. */
+  .card {
+    width: 100%;
+    max-width: 240px;
+    height: 150px;
+  }
+
+  .price-row {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .price-input {
+    width: 100%;
+  }
+
+  .btn-back,
+  .btn-next {
+    padding: 11px 20px;
+  }
+}
+
 
 

@@ -171,4 +171,52 @@ form{
     gap: 20px;
 }
 
+/* ============================================================
+   RESPONSIVE  —  auth (login / register)
+   ============================================================ */
+
+/* Keep the side-by-side split on tablets but stop the form panel
+   from stretching uncomfortably wide. */
+@media (max-width: 1024px) {
+    .left {
+        padding: 56px 40px;
+    }
+
+    .form-wrapper {
+        width: 100%;
+        max-width: 420px;
+    }
+
+    /* The welcome overlay text is pinned with large fixed offsets that
+       only line up on wide viewports — pull it in proportionally. */
+    .right .welcome,
+    .right span:last-child {
+        left: clamp(24px, 8vw, 229px);
+    }
+}
+
+/* On phones the decorative image panel + absolutely-positioned overlay
+   text can't lay out sensibly, so collapse to a single full-width form
+   column and drop the image panel. */
+@media (max-width: 768px) {
+    body {
+        flex-direction: column;
+        min-height: 100vh;
+    }
+
+    .left {
+        flex: 1;
+        padding: 40px 24px;
+        justify-content: center;
+    }
+
+    .form-wrapper {
+        max-width: 100%;
+    }
+
+    .right {
+        display: none;
+    }
+}
+
 

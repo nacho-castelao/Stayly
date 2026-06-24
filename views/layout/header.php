@@ -33,8 +33,6 @@
         </div>
 
         <div class="options">
-            <img src="<?= DEFAULT_URL ?>assets/img/Shopping_Cart_01.svg" alt="Shopping cart">
-
             <img src="<?= DEFAULT_URL ?>assets/img/User.svg" class="user-icon" alt="User Icon">
 
             <?php if (isset($_SESSION['user_id'])): ?>

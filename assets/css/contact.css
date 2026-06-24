@@ -1,0 +1,123 @@
+/* Contact page */
+.contact-page {
+  display: flex;
+  justify-content: center;
+  padding: 56px 20px 80px;
+}
+
+.contact-card {
+  width: 100%;
+  max-width: 640px;
+  background: #fff;
+  border: 1px solid var(--border-default);
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
+.contact-card__head {
+  margin-bottom: 28px;
+  text-align: center;
+}
+
+.contact-card__title {
+  font-size: 1.75rem;
+  margin: 0 0 8px;
+  color: var(--text-primary);
+}
+
+.contact-card__subtitle {
+  margin: 0;
+  color: var(--grey-550, #6b7280);
+  font-size: 0.95rem;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.contact-form__row {
+  display: flex;
+  gap: 18px;
+}
+
+.contact-form__row .contact-field {
+  flex: 1;
+}
+
+.contact-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contact-field__label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.contact-field__optional {
+  font-weight: 400;
+  color: var(--grey-550, #9ca3af);
+}
+
+.contact-field__input {
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: var(--text-primary);
+  background: #fff;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.contact-field__input::placeholder {
+  color: var(--grey-550, #9ca3af);
+}
+
+.contact-field__input:focus {
+  outline: none;
+  border-color: #ff5b8c;
+  box-shadow: 0 0 0 3px rgba(255, 91, 140, 0.15);
+}
+
+.contact-field__textarea {
+  resize: vertical;
+  min-height: 130px;
+}
+
+.contact-form__submit {
+  align-self: flex-start;
+  margin-top: 6px;
+  background: #ff5b8c;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.05s;
+}
+
+.contact-form__submit:hover {
+  background: #f0457a;
+}
+
+.contact-form__submit:active {
+  transform: translateY(1px);
+}
+
+@media (max-width: 560px) {
+  .contact-card {
+    padding: 28px 20px;
+  }
+
+  .contact-form__row {
+    flex-direction: column;
+  }
+}

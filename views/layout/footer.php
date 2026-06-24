@@ -48,7 +48,7 @@
                 </div>
             </div>            
 
-            <a href="#" class="contact">Contact Us</a>
+            <a href="<?= DEFAULT_URL ?>public/Contact/index" class="contact">Contact Us</a>
 
             <div class="media">
                 <a href="https://github.com/nacho-castelao" target="_blank">

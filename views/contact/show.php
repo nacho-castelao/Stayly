@@ -2,12 +2,12 @@
 
 <main class="contact-page">
     <section class="contact-card">
-        <header class="contact-card__head">
+        <div class="contact-card__head">
             <h1 class="contact-card__title">Contact Us</h1>
             <p class="contact-card__subtitle">
                 Have a question or some feedback? Send us a message and we'll get back to you.
             </p>
-        </header>
+        </div>
 
         <form class="contact-form" action="<?= DEFAULT_URL ?>public/Contact/send" method="POST" novalidate>
             <div class="contact-form__row">

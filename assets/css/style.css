@@ -386,7 +386,9 @@ input::placeholder {
 
 .drop-down {
   position: absolute;
-  top: 40px;
+  /* Sit just below the 24px user icon (icon spans ≈28–52px in the 80px header)
+     so the panel hangs underneath it rather than overlapping. */
+  top: 56px;
   /* Anchor to the right edge of the right-aligned .options cluster so the
      200px panel opens leftward (toward the page) and can't spill past the
      viewport at desktop widths where the header padding is too small to
@@ -457,6 +459,11 @@ input::placeholder {
 
 .user-icon {
   cursor: pointer;
+  /* User.svg has ~4px of internal whitespace on its right (24px box, glyph ends
+     ~x=20); the logo art is flush at x=0. Nudge the icon outward by that gap so
+     the visible icon edge matches the logo's left inset. This also pulls the
+     dropdown (anchored right:0 to .options) flush with the icon's visible edge. */
+  margin-right: -4px;
 }
 
 /* MAIN */

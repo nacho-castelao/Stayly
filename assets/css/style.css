@@ -386,9 +386,10 @@ input::placeholder {
 
 .drop-down {
   position: absolute;
-  /* Sit just below the 24px user icon (icon spans ≈28–52px in the 80px header)
-     with a ~10px gap so the panel hangs directly underneath it. */
-  top: 62px;
+  /* Sit just below the 24px user icon with a ~10px gap so the panel hangs
+     directly underneath it. `top` is measured from .options (which is only as
+     tall as the icon), so 24px icon height + 10px gap = 34px. */
+  top: 34px;
   /* Anchor flush to the right edge of the right-aligned .options cluster, which
      (thanks to the icon's margin-right:-4px) sits at the user icon's visible
      right edge — so the panel's right edge lines up with the icon. The 200px

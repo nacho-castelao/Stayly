@@ -380,23 +380,35 @@ input::placeholder {
 .options {
   position: relative;
   display: flex;
-  width: fit-content;
   gap: 16px;
+  /* Nudge the user icon in from the header's right padding. */
+  margin-right: 80px;
+}
+
+/* Positioning anchor for the dropdown: an inline-flex box that shrink-wraps the
+   user icon's margin-box, so its right/bottom edges *are* the icon's edges. The
+   panel anchors to this rather than to .options, which removes the fragile
+   fit-content sizing the dropdown used to depend on. */
+.user-menu {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
 }
 
 .drop-down {
   position: absolute;
-  /* Sit just below the 24px user icon with a ~10px gap so the panel hangs
-     directly underneath it. `top` is measured from .options (which is only as
-     tall as the icon), so 24px icon height + 10px gap = 34px. */
-  top: 34px;
-  /* Anchor flush to the right edge of the right-aligned .options cluster, which
-     (thanks to the icon's margin-right:-4px) sits at the user icon's visible
-     right edge — so the panel's right edge lines up with the icon. The 200px
-     panel opens leftward (toward the page) and stays inside the header padding,
-     so it can't spill past the viewport. Previously anchored left:0, which
-     overflowed → horizontal scroll. */
-  right: 0;
+  /* Sit 10px below the icon (within the 8–12px target). `top: 100%` is the
+     bottom of .user-menu (== the icon), so this stays correct regardless of
+     icon height. */
+  top: calc(100% + 10px);
+  /* Anchor flush to the right edge of .user-menu, which (thanks to the icon's
+     margin-right:-4px) sits at the user icon's visible right edge — so the
+     panel's right edge lines up with the icon. The 200px panel opens leftward
+     (toward the page) and stays inside the header padding, so it can't spill
+     past the viewport. */
+  /* .options is inset 70px from the header's right padding, so anchor the
+     panel back out by that amount to pin its right edge flush to the right. */
+  right: -183px;
   left: auto;
   width: 200px;
   display: flex;

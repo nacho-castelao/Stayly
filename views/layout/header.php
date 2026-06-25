@@ -48,6 +48,7 @@
         </div>
 
         <div class="options">
+            <div class="user-menu">
             <img src="<?= DEFAULT_URL ?>assets/img/User.svg" class="user-icon" alt="User Icon">
 
             <?php if (isset($_SESSION['user_id'])): ?>
@@ -104,6 +105,7 @@
                     </a>
                 </div>
             <?php endif; ?>
+            </div>
         </div>
     </header>
     <main>

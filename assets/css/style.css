@@ -1315,6 +1315,48 @@ footer .media a:hover {
   }
 }
 
+/* ── Header user dropdown: on phones the desktop `right: -183px` anchor
+   (tuned to the desktop .options spacing) pushes the 200px panel off the
+   right edge. Re-anchor it to the icon's right edge so it opens leftward
+   into the viewport and stays fully on-screen. Mobile only. ── */
+@media (max-width: 480px) {
+  /* Fixed, symmetric mobile gutter so the logo, user icon and full-width search
+     bar all share one consistent left/right margin (the desktop clamp varied the
+     gutter with viewport width). The 16px gap gives an even vertical rhythm
+     between the top row (logo + icon) and the search bar. */
+  header {
+    padding: 16px 20px;
+    gap: 16px;
+  }
+
+  /* The logo SVG is otherwise unsized and renders huge next to the 24px user
+     icon, unbalancing the top row. Constrain it to an icon-matched height; the
+     header's align-items:center then centers logo and icon against each other. */
+  .logo img {
+    display: block;
+    height: 30px;
+    width: auto;
+  }
+
+  /* The desktop 80px right inset on .options leaves a big gap on phones;
+     drop it so the user icon aligns to the header's right padding edge,
+     mirroring the logo's left inset. */
+  .options {
+    margin-right: 0;
+  }
+
+  /* Nudge the user icon 3px left of the right gutter (base rule sits at
+     margin-right:-4px, so -1px shifts it inward by 3px). */
+  .user-icon {
+    margin-right: -1px;
+  }
+
+  .drop-down {
+    right: 0;
+    left: auto;
+  }
+}
+
 /* ── Property detail ── */
 @media (max-width: 900px) {
   /* Single column: switch from the explicit grid placement to a

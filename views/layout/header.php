@@ -80,6 +80,12 @@
                         <span>Payments</span>
                     </a>
 
+                    <a href="<?= DEFAULT_URL ?>public/Home/showHost">
+                        <img src="<?= DEFAULT_URL ?>assets/img/house 1.svg" alt="Become a host">
+
+                        <span>Become a host</span>
+                    </a>
+
                     <a href="<?= DEFAULT_URL ?>public/User/logout">
                         <img src="<?= DEFAULT_URL ?>assets/img/log-out.svg" alt="Log out">
 

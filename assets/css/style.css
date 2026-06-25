@@ -425,7 +425,7 @@ input::placeholder {
 }
 
 .dropAnimate {
-  max-height: 375px;
+  max-height: 480px;
   opacity: 1;
   /* Float above the (wrapped) search row and page content so every item —
      including the bottom "Become a host" link — stays visible and tappable

@@ -389,12 +389,13 @@ input::placeholder {
   /* Sit just below the 24px user icon (icon spans ≈28–52px in the 80px header)
      so the panel hangs underneath it rather than overlapping. */
   top: 56px;
-  /* Anchor to the right edge of the right-aligned .options cluster so the
+  /* Anchor near the right edge of the right-aligned .options cluster so the
      200px panel opens leftward (toward the page) and can't spill past the
      viewport at desktop widths where the header padding is too small to
-     absorb it. Previously anchored left:0, which overflowed → horizontal
-     scroll. The same flip was already applied below ~1024px. */
-  right: 0;
+     absorb it. The small +6px inset tucks the panel's right edge just inside
+     the user icon for a tidier look (icon slightly overhangs it). Previously
+     anchored left:0, which overflowed → horizontal scroll. */
+  right: 6px;
   left: auto;
   width: 200px;
   display: flex;

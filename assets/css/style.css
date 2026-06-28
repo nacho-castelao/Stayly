@@ -652,6 +652,11 @@ main h4 {
   margin: 25px auto 0px;
   width: min(1130px, calc(100% - 32px));
   padding-left: 36px;
+  /* Mirror of padding-left: the gallery (.property-header) is 1056px wide while
+     this content area is 1130px. padding-left already aligns the left edges;
+     this insets the right edge by the same amount so the booking card's right
+     edge (.cta, justify-self:end) lines up with the gallery's right edge. */
+  padding-right: 36px;
 }
 
 .specs {
@@ -1367,6 +1372,7 @@ footer .media a:hover {
     flex-direction: column;
     width: min(720px, calc(100% - 32px));
     padding-left: 0;
+    padding-right: 0;
     row-gap: 32px;
   }
 
